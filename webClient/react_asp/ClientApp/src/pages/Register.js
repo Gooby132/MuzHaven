@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid'; // Import uuid
+const axios = require('axios');
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -60,6 +61,24 @@ const Register = () => {
         profile: null,
       });
       setErrors({});
+
+      try {
+
+        // fetch('https://localhost:44423/weatherforecast/test',
+        fetch('https://localhost:7065/weatherforecast/test',
+        // fetch('https://localhost:5016/weatherforecast/test',
+          {
+            method: 'POST',
+            // body: new FormData(document.querySelector('form'))
+          })
+          .then(response => console.log(response))
+          .catch((error) => {
+            console.log('error happend in fetch');
+          });
+
+      } catch (err) {
+        console.error(err)
+      }
     }
   };
 

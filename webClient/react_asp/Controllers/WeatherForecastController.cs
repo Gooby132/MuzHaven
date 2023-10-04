@@ -29,4 +29,21 @@ public class WeatherForecastController : ControllerBase
         })
         .ToArray();
     }
+
+    [HttpGet("test")]
+    
+    public IActionResult Test()
+    {
+        try
+        {
+            var message = "This is a test action!";
+            return Ok(message);
+        }
+        catch (Exception ex)
+        {
+            // Log the exception
+            Console.WriteLine(ex);
+            return StatusCode(500, "Internal Server Error");
+        }
+    }
 }
