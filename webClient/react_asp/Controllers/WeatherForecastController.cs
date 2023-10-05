@@ -17,6 +17,13 @@ public class WeatherForecastController : ControllerBase
     {
         _logger = logger;
     }
+//Tesing the get request
+// [HttpGet]
+// public IActionResult Get()
+// {
+//     string message = "This is a test action!";
+//     return Ok(new { message });
+//     }
 
     [HttpGet]
     public IEnumerable<WeatherForecast> Get()
@@ -30,20 +37,12 @@ public class WeatherForecastController : ControllerBase
         .ToArray();
     }
 
-    [HttpGet("test")]
-    
-    public IActionResult Test()
-    {
-        try
-        {
-            var message = "This is a test action!";
-            return Ok(message);
-        }
-        catch (Exception ex)
-        {
-            // Log the exception
-            Console.WriteLine(ex);
-            return StatusCode(500, "Internal Server Error");
-        }
+
+[HttpPost]
+public IActionResult Post()
+{
+    string message = "This is a post action!";
+    return Ok(new { message });
     }
+
 }

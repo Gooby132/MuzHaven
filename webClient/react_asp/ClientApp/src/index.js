@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Layout from "./pages/Layout";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
+import FetchData from "./components/FetchData";
 import FileUpload from "./pages/FileUpload";
 import { store } from './store/configureStore';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -20,6 +21,7 @@ root.render(
         <Route path="/register" element={<Register />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/fileupload" element={<FileUpload />} />
+        <Route path="/Fetch-data" element={<FetchData />} />
       </Route>
     </Routes>
   </BrowserRouter>

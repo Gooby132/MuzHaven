@@ -64,9 +64,7 @@ const Register = () => {
 
       try {
 
-        // fetch('https://localhost:44423/weatherforecast/test',
-        fetch('https://localhost:7065/weatherforecast/test',
-        // fetch('https://localhost:5016/weatherforecast/test',
+        fetch('weatherforecast ',
           {
             method: 'POST',
             // body: new FormData(document.querySelector('form'))
