@@ -47,6 +47,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainSeed", "DomainSeed\Do
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PermissionService.Infrastructure", "PermissionService.Infrastructure\PermissionService.Infrastructure.csproj", "{E15DE4F5-0888-49E1-B736-3E63B281C326}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiService.Contracts", "ApiService.Contracts\ApiService.Contracts.csproj", "{6291D62B-0C4B-4A4F-AD52-E0FDDF05483B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -113,6 +115,10 @@ Global
 		{E15DE4F5-0888-49E1-B736-3E63B281C326}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E15DE4F5-0888-49E1-B736-3E63B281C326}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E15DE4F5-0888-49E1-B736-3E63B281C326}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6291D62B-0C4B-4A4F-AD52-E0FDDF05483B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6291D62B-0C4B-4A4F-AD52-E0FDDF05483B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6291D62B-0C4B-4A4F-AD52-E0FDDF05483B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6291D62B-0C4B-4A4F-AD52-E0FDDF05483B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -137,6 +143,7 @@ Global
 		{FED5CCCB-423E-4493-AA8C-34D8CD3437BE} = {FB8C549C-0ECB-4E52-9486-F72E1F82FFD0}
 		{2274AAB4-22A7-43B2-9766-3107773192FC} = {FDF259D1-27AF-422C-B483-32BCCE61A741}
 		{E15DE4F5-0888-49E1-B736-3E63B281C326} = {ED015FCC-8525-47FB-8144-2F44690CB924}
+		{6291D62B-0C4B-4A4F-AD52-E0FDDF05483B} = {FDF259D1-27AF-422C-B483-32BCCE61A741}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BC75A1CE-CB2B-4FE6-A08A-30A09A26CCBA}

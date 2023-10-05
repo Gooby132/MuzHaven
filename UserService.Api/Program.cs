@@ -27,9 +27,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapPost("/register-user", async (RegisterUserRequest request, IMediator mediator) =>
+app.MapPost("/register-user", async (RegisterRequest request, IMediator mediator) =>
 {
-    var res = await mediator.Send(new RegisterUserCommand.Command
+    var res = await mediator.Send(new RegisterCommand.Command
     {
         Name = request.Name,
         Bio = request.Bio,
