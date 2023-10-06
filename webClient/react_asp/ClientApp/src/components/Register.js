@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid'; // Import uuid
 const axios = require('axios');
 
-const Register = () => {
+export const Register = () => {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -155,5 +155,3 @@ const Register = () => {
     </div>
   );
 };
-
-export default Register;

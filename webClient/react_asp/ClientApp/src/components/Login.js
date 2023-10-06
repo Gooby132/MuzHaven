@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { decrement, increment } from '../reducers/counterSlice'
 
-const LoginPage = ({ login }) => {
+export const Login = ({ login }) => {
 
 
   const count = useSelector((state: RootState) => state.counter.value)
@@ -60,5 +60,3 @@ const LoginPage = ({ login }) => {
     </div>
   );
 }
-
-export default LoginPage;

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
- class FetchData extends Component {
+ export class FetchData extends Component {
   static displayName = FetchData.name;
 
   constructor(props) {
@@ -57,4 +57,3 @@ import React, { Component } from 'react';
     this.setState({ forecasts: data, loading: false });
   }
 }
-export default FetchData;

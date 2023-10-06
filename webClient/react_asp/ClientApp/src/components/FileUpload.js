@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const FileUpload = () => {
+export const FileUpload = () => {
     const [fileName, setFileName] = useState('');
     const [selectedFile, setSelectedFile] = useState(null);
     const [fileNameError, setFileNameError] = useState('');
@@ -58,6 +58,3 @@ const FileUpload = () => {
         </div>
     );
 }
-
-export default FileUpload;
-
