@@ -6,4 +6,20 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Projects\Commands\" />
+    <Folder Include="Projects\Queries\" />
+    <Folder Include="Users\Commands\" />
+    <Folder Include="Users\Queries\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ProjectService.Contracts\ProjectService.Contracts.csproj" />
+    <ProjectReference Include="..\ProjectService.Domain\ProjectService.Domain.csproj" />
+    <ProjectReference Include="..\ProjectService.Infrastructure\ProjectService.Infrastructure.csproj" />
+    <ProjectReference Include="..\UserService.Contracts\UserService.Contracts.csproj" />
+    <ProjectReference Include="..\UserService.Domain\UserService.Domain.csproj" />
+    <ProjectReference Include="..\UserService.Persistence\UserService.Persistence.csproj" />
+  </ItemGroup>
+
 </Project>
