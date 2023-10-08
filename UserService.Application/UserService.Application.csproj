@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\UserService.Contracts\UserService.Contracts.csproj" />
+    <ProjectReference Include="..\UserService.Domain\UserService.Domain.csproj" />
     <ProjectReference Include="..\UserService.Persistence\UserService.Persistence.csproj" />
   </ItemGroup>
 
