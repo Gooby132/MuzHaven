@@ -7,10 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.1.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ApiService.Application\ApiService.Application.csproj" />
     <ProjectReference Include="..\ApiService.Contracts\ApiService.Contracts.csproj" />
     <ProjectReference Include="..\PermissionService.Contracts\PermissionService.Contracts.csproj" />
     <ProjectReference Include="..\ProjectService.Contracts\ProjectService.Contracts.csproj" />

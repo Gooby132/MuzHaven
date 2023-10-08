@@ -7,13 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Projects\Commands\" />
-    <Folder Include="Projects\Queries\" />
-    <Folder Include="Users\Commands\" />
-    <Folder Include="Users\Queries\" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\DomainSeed\DomainSeed.csproj" />
+    <ProjectReference Include="..\PermissionService.Infrastructure\PermissionService.Infrastructure.csproj" />
     <ProjectReference Include="..\ProjectService.Contracts\ProjectService.Contracts.csproj" />
     <ProjectReference Include="..\ProjectService.Domain\ProjectService.Domain.csproj" />
     <ProjectReference Include="..\ProjectService.Infrastructure\ProjectService.Infrastructure.csproj" />

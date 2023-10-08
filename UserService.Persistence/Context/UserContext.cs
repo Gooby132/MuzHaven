@@ -20,6 +20,7 @@ internal class UserContext : DbContext
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<User>().OwnsOne(u => u.MetaData).WithOwner();
+        modelBuilder.Entity<User>().OwnsOne(u => u.ArtistDescription).WithOwner();
 
     }
 

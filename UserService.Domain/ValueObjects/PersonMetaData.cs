@@ -10,53 +10,51 @@ public class PersonMetaData : ValueObject
     public const string DefaultImage = "default-user.png";
     public const int MinNameLength = 2;
     public const int MaxNameLength = 30;
-    public const int MinBioLength = 2;
-    public const int MaxBioLength = 150;
 
-    public string Name { get; set; }
-    public string Bio { get; set; }
-    public string Image { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public string Email { get; set; }
 
     private PersonMetaData() { }
 
     private PersonMetaData(
-        string name,
-        string bio,
-        string image)
+        string firstName,
+        string lastName,
+        string email)
     {
-        Name = name;
-        Bio = bio;
-        Image = image;
+        FirstName = firstName;
+        LastName = lastName;
+        Email = email;
     }
 
     public static Result<PersonMetaData> Create(
-        string name,
-        string bio,
-        string? image)
+        string firstName,
+        string lastName,
+        string email)
     {
 
-        if (name.Length < MinNameLength)
+        if (firstName.Length < MinNameLength)
             return new InvalidNameError(InvalidNameError.ErrorCodes.NameTooShortCode);
 
-        if (name.Length > MaxNameLength)
+        if (firstName.Length > MaxNameLength)
+            return new InvalidNameError(InvalidNameError.ErrorCodes.NameTooLongCode);
+        
+        if (lastName.Length < MinNameLength)
+            return new InvalidNameError(InvalidNameError.ErrorCodes.NameTooShortCode);
+
+        if (lastName.Length > MaxNameLength)
             return new InvalidNameError(InvalidNameError.ErrorCodes.NameTooLongCode);
 
-        if (bio.Length < MinBioLength)
-            return new InvalidBioError(InvalidBioError.ErrorCodes.BioTooShortCode);
-
-        if (bio.Length > MaxBioLength)
-            return new InvalidBioError(InvalidBioError.ErrorCodes.BioTooLongCode);
-
         return new PersonMetaData(
-            name, 
-            bio, 
-            image ?? DefaultImage);
+            firstName, 
+            lastName, 
+            email);
     }
 
     protected override IEnumerable<object> GetEqualityComponents()
     {
-        yield return Name;
-        yield return Bio;
-        yield return Image;
+        yield return FirstName;
+        yield return LastName;
+        yield return Email;
     }
 }

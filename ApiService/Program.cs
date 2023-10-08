@@ -1,6 +1,4 @@
-using PermissionServiceClient.HttpClient.DependencyInjection;
-using ProjectServiceClient.HttpClient.DependencyInjection;
-using UserServiceClient.HttpClient.DependencyInjection;
+using ApiService.Application.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,16 +7,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen();
 
-builder.Services
-    .ConfigurePermissionServiceHttpClient(builder.Configuration);
-
-builder.Services
-    .ConfigureProjectServiceHttpClient(builder.Configuration);
-
-builder.Services
-    .ConfigureUserServiceHttpClient(builder.Configuration);
+builder.Services.ConfigureApiService(builder.Configuration);
 
 var app = builder.Build();
 

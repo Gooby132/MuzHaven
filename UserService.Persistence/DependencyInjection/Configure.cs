@@ -12,7 +12,7 @@ public static class Configure
 
     public const string Key = "Persistence";
 
-    public static IServiceCollection ConfigurePersistence(
+    public static IServiceCollection ConfigureUserPersistence(
         this IServiceCollection services, 
         IConfiguration configuration)
     {
@@ -21,7 +21,7 @@ public static class Configure
         services.AddDbContext<UserContext>();
 
         services.AddTransient<IUserRepository, UserRepository>();
-        services.AddTransient<IUnitOfWork, UnitOfWork>();
+        services.AddTransient<IUserUnitOfWork, UnitOfWork>();
 
         return services;
     }

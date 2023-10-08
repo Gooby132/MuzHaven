@@ -2,7 +2,5 @@
 
 public class GetUserByIdRequest
 {
-
     public Guid Id { get; init; }
-
 }

@@ -1,5 +1,10 @@
-﻿namespace DomainSeed;
+﻿using System.Collections.Generic;
 
-public class Aggregate<AggregateId> : Entity<AggregateId>
+namespace DomainSeed;
+
+public abstract class Aggregate<AggregateId> : Entity<AggregateId>
 {
+
+    public abstract DomainEvent? DequeueDomainEvent();
+
 }

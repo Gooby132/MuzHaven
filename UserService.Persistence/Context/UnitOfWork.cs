@@ -3,7 +3,7 @@ using FluentResults;
 
 namespace UserService.Persistence.Context;
 
-internal class UnitOfWork : IUnitOfWork
+internal class UnitOfWork : IUserUnitOfWork
 {
     private readonly UserContext _context;
 

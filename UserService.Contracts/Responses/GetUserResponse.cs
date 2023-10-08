@@ -2,7 +2,7 @@
 
 namespace UserService.Contracts.Responses;
 
-public class RegisterResponse
+public class GetUserResponse
 {
 
     public UserDto User { get; set; }
