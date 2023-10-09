@@ -46,8 +46,7 @@ export const Register = () => {
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
     } else {
-      // Form data is valid, you can submit it to your server
-      // Include formData in your API request
+
       console.log('Form data:', formData);
 
       // Reset the form and errors
@@ -64,14 +63,12 @@ export const Register = () => {
 
       try {
 
-        // const response = await fetch('https://localhost:7026/weatherforecast');
-
         fetch('https://localhost:7026/weatherforecast ',
           {
             method: 'POST',
             // body: new FormData(document.querySelector('form'))
             headers: {
-              "Content-Type": "application/json",
+              // "Content-Type": "application/json",
               // 'Content-Type': 'application/x-www-form-urlencoded',
             },
           })

@@ -53,9 +53,7 @@ import React, { Component } from 'react';
 
   async populateWeatherData() {
     const response = await fetch('https://localhost:7026/weatherforecast');
-    console.log(response);
     const data = await response.json();
-    // console.log(data);
     this.setState({ forecasts: data, loading: false });
   }
 }
