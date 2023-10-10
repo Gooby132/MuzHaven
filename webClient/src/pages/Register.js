@@ -47,9 +47,6 @@ export const Register = () => {
       setErrors(validationErrors);
     } else {
 
-      console.log('Form data:', formData);
-
-      // Reset the form and errors
       setFormData({
         firstName: '',
         lastName: '',
@@ -60,52 +57,29 @@ export const Register = () => {
         profile: null,
       });
       setErrors({});
-
-      try {
-
-        fetch('https://localhost:7026/weatherforecast ',
-          {
-            method: 'POST',
-            // body: new FormData(document.querySelector('form'))
-            headers: {
-              // "Content-Type": "application/json",
-              // 'Content-Type': 'application/x-www-form-urlencoded',
-            },
-          })
-          .then(response => console.log(response))
-          
-          .catch((error) => {
-            console.log('error happend in fetch');
-          });
-
-      } catch (err) {
-        console.error(err)
-      }
     }
   };
 
+  useEffect(() => {
 
-
-  useEffect(()=>{
-
-  },[]);
+  }, []);
 
   return (
-    <div>
-      <h1>Register Me</h1>
-      <form onSubmit={handleSubmit}>
+    <div className='w-full m-auto justify-center px-500 px-5'>
+      <form onSubmit={handleSubmit} className='grid grid-cols-3 gap-8'>
         <div>
-          <label>First Name:</label>
-          <input
-            type="text"
+          <label className='mt-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+          >First Name:</label>
+          <input className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+            ty0pe="text"
             name="firstName"
             value={formData.firstName}
             onChange={handleChange}
           />
         </div>
         <div>
-          <label>Last Name:</label>
-          <input
+          <label className='mt-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>Last Name:</label>
+          <input className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
             type="text"
             name="lastName"
             value={formData.lastName}
@@ -113,8 +87,8 @@ export const Register = () => {
           />
         </div>
         <div>
-          <label>Stage Name:</label>
-          <input
+          <label className='mt-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>Stage Name:</label>
+          <input className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
             type="text"
             name="stageName"
             value={formData.stageName}
@@ -122,8 +96,8 @@ export const Register = () => {
           />
         </div>
         <div>
-          <label>Email:</label>
-          <input
+          <label className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>Email:</label>
+          <input className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
             type="text"
             name="email"
             value={formData.email}
@@ -131,8 +105,9 @@ export const Register = () => {
           />
         </div>
         <div>
-          <label>Bio:</label>
+          <label className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>Bio:</label>
           <textarea
+            className='block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
             name="bio"
             value={formData.bio}
             onChange={handleChange}
@@ -140,8 +115,8 @@ export const Register = () => {
           {errors.bio && <span className="error">{errors.bio}</span>}
         </div>
         <div>
-          <label>Password:</label>
-          <input
+          <label className='mt-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>Password:</label>
+          <input className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
             type="password"
             name="password"
             value={formData.password}
@@ -150,8 +125,8 @@ export const Register = () => {
           {errors.password && <span className="error">{errors.password}</span>}
         </div>
         <div>
-          <label>Profile Picture:</label>
-          <input
+          <label className='mt-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>Profile Picture:</label>
+          <input className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
             type="file"
             name="profile"
             accept="image/*"
@@ -159,7 +134,7 @@ export const Register = () => {
           />
         </div>
         <div>
-          <button type="submit">Register</button>
+          <button type="submit" className='mt-5 w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'>Register</button>
         </div>
       </form>
     </div>

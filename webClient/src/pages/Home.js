@@ -9,6 +9,9 @@ export class Home extends Component {
         <h1 >
       Grove street
     </h1>
+    <h1 className="text-3xl font-bold underline">
+      Home
+    </h1>
       </div>
     );
   }

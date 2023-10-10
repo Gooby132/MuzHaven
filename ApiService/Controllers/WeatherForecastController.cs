@@ -55,7 +55,9 @@ namespace ApiService.Controllers
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var tokenString = tokenHandler.WriteToken(token);
-            return Ok(new { message, token = tokenString });
+
+            string message = "This is a post action!";
+            return Ok(new { token = tokenString });
         }
     }
 }

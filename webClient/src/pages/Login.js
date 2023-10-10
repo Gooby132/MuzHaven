@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
-import { decrement, increment } from '../reducers/counterSlice'
+import { addToken } from '../reducers/tokenSlice'
 
 export const Login = ({ login }) => {
 
 
-  const count = useSelector((state: RootState) => state.counter.value)
+  const count = useSelector((state: RootState) => state.tokenState.value)
   const dispatch = useDispatch();
 
 
@@ -22,21 +22,39 @@ export const Login = ({ login }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
+
+    try {
+
+      fetch('https://localhost:7026/weatherforecast ',
+        {
+          method: 'POST',
+        })
+        .then(response => {
+          response.json()
+            .then(res => {
+              dispatch(addToken(res.token));
+            })
+
+        })
+
+        .catch((error) => {
+          console.log('error happend in fetch');
+        });
+
+    } catch (err) {
+      console.error(err)
+    }
   };
 
+
   return (
-    <div>
-      <h2>Login</h2>
-      <button
-          aria-label="Increment value"
-          onClick={() => dispatch(increment())}
-        >checking to see redux state work</button>
+    <div className="w-full max-w-xs  m-auto justify-center">
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email:</label>
+        <div className='mb-6'>
+          <label class='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' >Email:</label>
           <input
             type="email"
+            className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
             name="email"
             value={email}
             onChange={handleChange}
@@ -44,9 +62,10 @@ export const Login = ({ login }) => {
           />
         </div>
         <div>
-          <label>Password:</label>
+          <label className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>Password:</label>
           <input
             type="password"
+            className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
             name="password"
             value={password}
             onChange={handleChange}
@@ -54,7 +73,9 @@ export const Login = ({ login }) => {
           />
         </div>
         <div>
-          <button type="submit">Login</button>
+          <button type="submit"
+            className='mt-5 w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
+          >Login</button>
         </div>
       </form>
     </div>
