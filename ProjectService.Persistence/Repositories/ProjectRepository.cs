@@ -11,6 +11,7 @@ namespace ProjectService.Persistence.Repositories;
 
 internal class ProjectRepository : IProjectRepository
 {
+
     #region Fields
 
     private readonly ILogger<ProjectRepository> _logger;

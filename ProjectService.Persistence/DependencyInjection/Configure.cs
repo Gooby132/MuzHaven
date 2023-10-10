@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ProjectService.Domain.Context;
 using ProjectService.Domain.Repositories;
 using ProjectService.Persistence.Context;
 using ProjectService.Persistence.Repositories;
@@ -17,7 +18,7 @@ public static class Configure
 
         services.AddDbContext<ProjectContext>();
 
-        services.AddTransient<IProjectUnitOfWork>(prov => new UnitOfWork(prov.GetRequiredService<ProjectContext>()));
+        services.AddTransient<IProjectUnitOfWork, UnitOfWork>();
         services.AddTransient<IProjectRepository, ProjectRepository>();
 
         return services;
