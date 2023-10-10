@@ -40,7 +40,6 @@ public static class GetUserById
                 return Result.Fail(user.Errors);
             }
 
-
             return Result.Ok(user.Value);
         }
     }

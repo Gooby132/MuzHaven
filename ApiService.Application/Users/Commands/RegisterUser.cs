@@ -87,7 +87,6 @@ public static class RegisterUser
                 return Result.Fail(register.Errors);
             }
 
-
             var persist = await _userUnitOfWork.CommitAsync(cancellationToken);
 
             if(persist.IsFailed)

@@ -10,7 +10,7 @@ namespace UserService.Persistence.DependencyInjection;
 public static class Configure
 {
 
-    public const string Key = "Persistence";
+    public const string Key = "Users";
 
     public static IServiceCollection ConfigureUserPersistence(
         this IServiceCollection services, 
