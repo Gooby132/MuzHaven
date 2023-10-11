@@ -3,6 +3,7 @@ using ApiService.Application.Users.Queries;
 using ApiService.Contracts.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using PermissionService.Infrastructure.Authorization.Abstracts;
 using UserService.Contracts.Requests;
 using UserService.Contracts.Responses;
 using UserService.Domain.Errors;
@@ -18,6 +19,7 @@ public class UsersController : ControllerBase
 
     private readonly ILogger<UsersController> _logger;
     private readonly IMediator _mediator;
+    private readonly IAuthorizationTokenProvider _tokenProvider;
 
     #endregion
 
@@ -25,10 +27,12 @@ public class UsersController : ControllerBase
 
     public UsersController(
         ILogger<UsersController> logger,
-        IMediator mediator)
+        IMediator mediator,
+        IAuthorizationTokenProvider tokenProvider)
     {
         _logger = logger;
         _mediator = mediator;
+        _tokenProvider = tokenProvider;
     }
 
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(RegisterResponse))]
@@ -45,6 +49,7 @@ public class UsersController : ControllerBase
             FirstName = request.FirstName,
             LastName = request.LastName,
             StageName = request.StageName,
+            Password = request.Password,
         });
 
         if (res.IsFailed)
@@ -70,7 +75,8 @@ public class UsersController : ControllerBase
                     FirstName = res.Value.MetaData.FirstName,
                     LastName = res.Value.MetaData.LastName,
                     Email = res.Value.MetaData.Email,
-                }
+                },
+                Token = _tokenProvider.CreateGuestToken(res.Value.Id).RawToken,
             });
     }
 

@@ -20,6 +20,7 @@ public static class RegisterUser
         public string LastName { get; set; }
         public string Email { get; set; }
         public string Bio { get; set; }
+        public string Password { get; set; }
     }
 
     internal class Handler : IRequestHandler<Command, Result<User>>
@@ -67,7 +68,7 @@ public static class RegisterUser
                 return Result.Fail(person.Errors);
             }
 
-            var user = User.Create(person.Value, artists.Value);
+            var user = User.Create(person.Value, artists.Value, request.Password);
 
             if(user.IsFailed)
             {
