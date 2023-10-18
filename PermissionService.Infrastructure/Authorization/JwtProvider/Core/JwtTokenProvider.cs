@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using PermissionService.Infrastructure.Authorization.Abstracts;
+using PermissionService.Domain.UserPermissions.ValueObjects;
 using PermissionService.Infrastructure.Authorization.Core;
 using PermissionService.Infrastructure.Authorization.JwtProvider.Options;
 using System.IdentityModel.Tokens.Jwt;
@@ -25,7 +26,7 @@ internal class JwtTokenProvider : IAuthorizationTokenProvider
         _config = options.Value;
     }
 
-    public Token CreateCommenterToken(Guid userId, Guid project)
+    public Token CreateCommenterToken(string userId, Guid project)
     {
         var issuer = _config.Issuer;
         var audience = _config.Audience;
@@ -51,7 +52,7 @@ internal class JwtTokenProvider : IAuthorizationTokenProvider
         return new Token(tokenHandler.WriteToken(token));
     }
 
-    public Token CreateContributerToken(Guid userId, Guid project)
+    public Token CreateContributerToken(string userId, Guid project)
     {
         var issuer = _config.Issuer;
         var audience = _config.Audience;
@@ -77,7 +78,7 @@ internal class JwtTokenProvider : IAuthorizationTokenProvider
         return new Token(tokenHandler.WriteToken(token));
     }
 
-    public Token CreateGuestToken(Guid userId)
+    public Token CreateGuestToken(string userId)
     {
         var issuer = _config.Issuer;
         var audience = _config.Audience;
@@ -87,22 +88,23 @@ internal class JwtTokenProvider : IAuthorizationTokenProvider
         {
             Subject = new ClaimsIdentity(new[]
             {
-                new Claim("type", "guest"),
-                new Claim("userId", userId.ToString()),
+                new Claim(IAuthorizationTokenProvider.PermissionTypeClaim, Permissions.Guest.Name),
+                new Claim(IAuthorizationTokenProvider.UserIdClaim, userId.ToString()),
+                new Claim(ClaimTypes.Role, Permissions.Guest.Name)
             }),
             Expires = DateTime.UtcNow.AddMinutes(15),
             Issuer = issuer,
             Audience = audience,
-            SigningCredentials = new SigningCredentials(
-                new SymmetricSecurityKey(key),
-                SecurityAlgorithms.HmacSha512Signature)
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+
         };
         var tokenHandler = new JwtSecurityTokenHandler();
         var token = tokenHandler.CreateToken(tokenDescriptor);
-        return new Token(tokenHandler.WriteToken(token));
+        var stringToken = tokenHandler.WriteToken(token);
+        return new Token(stringToken);
     }
 
-    public Token CreateReaderToken(Guid userId, Guid project)
+    public Token CreateReaderToken(string userId, Guid project)
     {
         var issuer = _config.Issuer;
         var audience = _config.Audience;

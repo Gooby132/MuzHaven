@@ -8,13 +8,19 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DomainSeed\DomainSeed.csproj" />
+    <ProjectReference Include="..\PermissionService.Domain\PermissionService.Domain.csproj" />
     <ProjectReference Include="..\PermissionService.Infrastructure\PermissionService.Infrastructure.csproj" />
+    <ProjectReference Include="..\PermissionService.Persistence\PermissionService.Persistence.csproj" />
     <ProjectReference Include="..\ProjectService.Contracts\ProjectService.Contracts.csproj" />
     <ProjectReference Include="..\ProjectService.Domain\ProjectService.Domain.csproj" />
     <ProjectReference Include="..\ProjectService.Persistence\ProjectService.Persistence.csproj" />
     <ProjectReference Include="..\UserService.Contracts\UserService.Contracts.csproj" />
     <ProjectReference Include="..\UserService.Domain\UserService.Domain.csproj" />
     <ProjectReference Include="..\UserService.Persistence\UserService.Persistence.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Permissions\Commands\" />
   </ItemGroup>
 
 </Project>

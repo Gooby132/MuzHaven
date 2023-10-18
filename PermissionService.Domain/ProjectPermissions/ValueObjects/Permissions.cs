@@ -1,6 +1,6 @@
 ﻿using Ardalis.SmartEnum;
 
-namespace PermissionService.Domain.ProjectPermissions.Entities;
+namespace PermissionService.Domain.ProjectPermissions.ValueObjects;
 
 public class Permissions : SmartEnum<Permissions>
 {
@@ -10,7 +10,5 @@ public class Permissions : SmartEnum<Permissions>
     public static readonly Permissions Commenter = new Permissions("Commenter", 3);
     public static readonly Permissions Reader = new Permissions("Reader", 4);
 
-    private Permissions(string name, int value) : base(name, value)
-    {
-    }
+    private Permissions(string name, int value) : base(name, value) {  }
 }

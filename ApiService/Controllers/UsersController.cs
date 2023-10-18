@@ -76,7 +76,7 @@ public class UsersController : ControllerBase
                     LastName = res.Value.MetaData.LastName,
                     Email = res.Value.MetaData.Email,
                 },
-                Token = _tokenProvider.CreateGuestToken(res.Value.Id).RawToken,
+                Token = _tokenProvider.CreateGuestToken(request.Email).RawToken,
             });
     }
 

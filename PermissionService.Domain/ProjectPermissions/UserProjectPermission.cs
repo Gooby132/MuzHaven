@@ -1,6 +1,6 @@
 ﻿using FluentResults;
-using PermissionService.Domain.ProjectPermissions.Entities;
 using PermissionService.Domain.ProjectPermissions.Errors;
+using PermissionService.Domain.ProjectPermissions.ValueObjects;
 
 namespace PermissionService.Domain.ProjectPermissions;
 

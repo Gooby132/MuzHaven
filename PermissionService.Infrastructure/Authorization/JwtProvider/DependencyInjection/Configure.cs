@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using PermissionService.Infrastructure.Authorization.Abstracts;
 using PermissionService.Infrastructure.Authorization.JwtProvider.Core;
 using PermissionService.Infrastructure.Authorization.JwtProvider.Options;
@@ -31,15 +32,26 @@ public static class Configure
             options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
         }).AddJwtBearer(options =>
         {
+            string key = configuration["Options:Key"];
+            string issuer = configuration["Options:Issuer"];
+            string audience = configuration["Options:Audience"];
+
+            options.Events = new JwtBearerEvents
+            {
+                OnAuthenticationFailed = async (c) =>
+                {
+                    ;
+                }
+            };
             options.TokenValidationParameters = new TokenValidationParameters
             {
                 ValidIssuer = configuration["Options:Issuer"],
                 ValidAudience = configuration["Options:Audience"],
                 IssuerSigningKey = new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes(configuration["Options:Key"])),
+                    Encoding.UTF8.GetBytes(key)),
                 ValidateIssuer = true,
                 ValidateAudience = true,
-                ValidateLifetime = false,
+                ValidateLifetime = true,
                 ValidateIssuerSigningKey = true,
             };
         });

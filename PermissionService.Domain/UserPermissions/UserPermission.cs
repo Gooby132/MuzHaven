@@ -1,5 +1,5 @@
 ﻿using FluentResults;
-using PermissionService.Domain.UserPermissions.Entities;
+using PermissionService.Domain.UserPermissions.ValueObjects;
 using PermissionService.Domain.UserPermissions.Errors;
 
 namespace PermissionService.Domain.UserPermissions;
@@ -13,16 +13,29 @@ public class UserPermission
 
     private UserPermission() { }
 
-    public static UserPermission Create(string userId)
+    public static Result<UserPermission> Create(string userId, string password)
     {
-        return new UserPermission() { UserId = userId, Permission = Permissions.Guest };
+        return new UserPermission()
+        {
+            UserId = userId,
+            Permission = Permissions.Guest,
+            Password = password
+        };
     }
 
-    public Result Authorize()
+    public Result Authorize(string password)
+    {
+        if (Password != password)
+            return Result.Fail(Unauthorized.BadPassword());
+
+        return Result.Ok();
+    }
+
+    public Result Verify()
     {
         if (Permission != Permissions.Guest)
             return InvalidOperationError.InvalidTransitionOfPermission();
-    
+
         Permission = Permissions.Normal;
 
         return Result.Ok();
@@ -30,7 +43,7 @@ public class UserPermission
 
     public Result Elevate()
     {
-        if(Permission != Permissions.Normal)
+        if (Permission != Permissions.Normal)
             return InvalidOperationError.InvalidTransitionOfPermission();
 
         Permission = Permissions.Verified;

@@ -12,20 +12,18 @@ public class User : Aggregate<Guid>
 
     public PersonMetaData MetaData { get; init; }
     public ArtistDescription ArtistDescription { get; init; }
-    public string Password { get; init; }
 
     private User() { }
 
-    private User(PersonMetaData metaData, ArtistDescription artistDescription, string password)
+    private User(PersonMetaData metaData, ArtistDescription artistDescription)
     {
         MetaData = metaData;
         ArtistDescription = artistDescription;
-        Password = password;
     }
 
-    public static Result<User> Create(PersonMetaData metaData, ArtistDescription artistDescription, string password)
+    public static Result<User> Create(PersonMetaData metaData, ArtistDescription artistDescription)
     {
-        var user = new User(metaData, artistDescription, password);
+        var user = new User(metaData, artistDescription);
 
         user._domainEvents.Enqueue(new UserCreatedEvent(user.Id));
 

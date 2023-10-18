@@ -34,7 +34,7 @@ internal class UserPermissionRepository : IUserPermissionRepository
         }
     }
 
-    public async Task<Result<UserPermission>> Register(UserPermission userPermission, CancellationToken token = default)
+    public async Task<Result<UserPermission>> Permit(UserPermission userPermission, CancellationToken token = default)
     {
         try
         {
