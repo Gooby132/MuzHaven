@@ -25,7 +25,8 @@ public static class Configure
             .Bind(configuration.GetRequiredSection(JwtProviderOptions.OptionsKey))
             .ValidateDataAnnotations();
 
-        services.AddAuthentication(options =>
+        services
+            .AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -36,13 +37,6 @@ public static class Configure
             string issuer = configuration["Options:Issuer"];
             string audience = configuration["Options:Audience"];
 
-            options.Events = new JwtBearerEvents
-            {
-                OnAuthenticationFailed = async (c) =>
-                {
-                    ;
-                }
-            };
             options.TokenValidationParameters = new TokenValidationParameters
             {
                 ValidIssuer = configuration["Options:Issuer"],
