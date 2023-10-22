@@ -25,8 +25,7 @@ public static class Configure
             .Bind(configuration.GetRequiredSection(JwtProviderOptions.OptionsKey))
             .ValidateDataAnnotations();
 
-        services
-            .AddAuthentication(options =>
+        services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
