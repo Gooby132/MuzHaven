@@ -4,7 +4,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using PermissionService.Infrastructure.Authorization.Abstracts;
-using PermissionService.Domain.UserPermissions.ValueObjects;
 using PermissionService.Infrastructure.Authorization.Core;
 using PermissionService.Infrastructure.Authorization.JwtProvider.Options;
 using System.IdentityModel.Tokens.Jwt;
@@ -28,6 +27,9 @@ internal class JwtTokenProvider : IAuthorizationTokenProvider
 
     public Token CreateCommenterToken(string userId, Guid project)
     {
+        _logger.LogTrace("{this} create commenter was requested for user - '{userId}' and project - '{project}'",
+            this, userId, project);
+
         var issuer = _config.Issuer;
         var audience = _config.Audience;
         var key = Encoding.ASCII.GetBytes(_config.Key);
@@ -36,9 +38,10 @@ internal class JwtTokenProvider : IAuthorizationTokenProvider
         {
             Subject = new ClaimsIdentity(new[]
             {
-                new Claim("type", "commenter"),
-                new Claim("userId", userId.ToString()),
-                new Claim("projectId", project.ToString()),
+                new Claim(IAuthorizationTokenProvider.PermissionTypeClaim, Domain.ProjectPermissions.ValueObjects.Permissions.Commenter.Name),
+                new Claim(IAuthorizationTokenProvider.UserIdClaim, userId.ToString()),
+                new Claim(IAuthorizationTokenProvider.ProjectIdClaim, project.ToString()),
+                new Claim(ClaimTypes.Role, Domain.ProjectPermissions.ValueObjects.Permissions.Commenter.Name),
             }),
             Expires = DateTime.UtcNow.AddMinutes(15),
             Issuer = issuer,
@@ -62,9 +65,37 @@ internal class JwtTokenProvider : IAuthorizationTokenProvider
         {
             Subject = new ClaimsIdentity(new[]
             {
-                new Claim("type", "contributer"),
-                new Claim("userId", userId.ToString()),
-                new Claim("projectId", project.ToString()),
+                new Claim(IAuthorizationTokenProvider.PermissionTypeClaim, Domain.ProjectPermissions.ValueObjects.Permissions.Contributer.Name),
+                new Claim(IAuthorizationTokenProvider.UserIdClaim, userId.ToString()),
+                new Claim(IAuthorizationTokenProvider.ProjectIdClaim, project.ToString()),
+                new Claim(ClaimTypes.Role, Domain.ProjectPermissions.ValueObjects.Permissions.Contributer.Name),
+            }),
+            Expires = DateTime.UtcNow.AddMinutes(15),
+            Issuer = issuer,
+            Audience = audience,
+            SigningCredentials = new SigningCredentials(
+                new SymmetricSecurityKey(key),
+                SecurityAlgorithms.HmacSha512Signature)
+        };
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+        return new Token(tokenHandler.WriteToken(token));
+    }
+
+    public Token CreateReaderToken(string userId, Guid project)
+    {
+        var issuer = _config.Issuer;
+        var audience = _config.Audience;
+        var key = Encoding.ASCII.GetBytes(_config.Key);
+
+        var tokenDescriptor = new SecurityTokenDescriptor
+        {
+            Subject = new ClaimsIdentity(new[]
+            {
+                new Claim(IAuthorizationTokenProvider.PermissionTypeClaim, Domain.ProjectPermissions.ValueObjects.Permissions.Reader.Name),
+                new Claim(IAuthorizationTokenProvider.UserIdClaim, userId.ToString()),
+                new Claim(IAuthorizationTokenProvider.ProjectIdClaim, project.ToString()),
+                new Claim(ClaimTypes.Role, Domain.ProjectPermissions.ValueObjects.Permissions.Reader.Name),
             }),
             Expires = DateTime.UtcNow.AddMinutes(15),
             Issuer = issuer,
@@ -88,9 +119,9 @@ internal class JwtTokenProvider : IAuthorizationTokenProvider
         {
             Subject = new ClaimsIdentity(new[]
             {
-                new Claim(IAuthorizationTokenProvider.PermissionTypeClaim, Permissions.Guest.Name),
+                new Claim(IAuthorizationTokenProvider.PermissionTypeClaim, Domain.UserPermissions.ValueObjects.Permissions.Guest.Name),
                 new Claim(IAuthorizationTokenProvider.UserIdClaim, userId.ToString()),
-                new Claim(ClaimTypes.Role, Permissions.Guest.Name)
+                new Claim(ClaimTypes.Role, Domain.UserPermissions.ValueObjects.Permissions.Guest.Name)
             }),
             Expires = DateTime.UtcNow.AddMinutes(15),
             Issuer = issuer,
@@ -104,29 +135,4 @@ internal class JwtTokenProvider : IAuthorizationTokenProvider
         return new Token(stringToken);
     }
 
-    public Token CreateReaderToken(string userId, Guid project)
-    {
-        var issuer = _config.Issuer;
-        var audience = _config.Audience;
-        var key = Encoding.ASCII.GetBytes(_config.Key);
-
-        var tokenDescriptor = new SecurityTokenDescriptor
-        {
-            Subject = new ClaimsIdentity(new[]
-            {
-                new Claim("type", "reader"),
-                new Claim("userId", userId.ToString()),
-                new Claim("projectId", project.ToString()),
-            }),
-            Expires = DateTime.UtcNow.AddMinutes(15),
-            Issuer = issuer,
-            Audience = audience,
-            SigningCredentials = new SigningCredentials(
-                new SymmetricSecurityKey(key),
-                SecurityAlgorithms.HmacSha512Signature)
-        };
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var token = tokenHandler.CreateToken(tokenDescriptor);
-        return new Token(tokenHandler.WriteToken(token));
-    }
 }

@@ -7,6 +7,7 @@ public interface IAuthorizationTokenProvider
 
     public const string PermissionTypeClaim = "type";
     public const string UserIdClaim = "userId";
+    public const string ProjectIdClaim = "projectId";
 
     public Token CreateGuestToken(string userId);
     public Token CreateReaderToken(string userId, Guid project);
