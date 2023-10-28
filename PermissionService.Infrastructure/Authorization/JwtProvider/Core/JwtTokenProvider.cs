@@ -25,8 +25,11 @@ internal class JwtTokenProvider : IAuthorizationTokenProvider
         _config = options.Value;
     }
 
-    public Token CreateCommenterToken(Guid userId, Guid project)
+    public Token CreateCommenterToken(string userId, Guid project)
     {
+        _logger.LogTrace("{this} create commenter was requested for user - '{userId}' and project - '{project}'",
+            this, userId, project);
+
         var issuer = _config.Issuer;
         var audience = _config.Audience;
         var key = Encoding.ASCII.GetBytes(_config.Key);
@@ -35,9 +38,10 @@ internal class JwtTokenProvider : IAuthorizationTokenProvider
         {
             Subject = new ClaimsIdentity(new[]
             {
-                new Claim("type", "commenter"),
-                new Claim("userId", userId.ToString()),
-                new Claim("projectId", project.ToString()),
+                new Claim(IAuthorizationTokenProvider.PermissionTypeClaim, Domain.ProjectPermissions.ValueObjects.Permissions.Commenter.Name),
+                new Claim(IAuthorizationTokenProvider.UserIdClaim, userId.ToString()),
+                new Claim(IAuthorizationTokenProvider.ProjectIdClaim, project.ToString()),
+                new Claim(ClaimTypes.Role, Domain.ProjectPermissions.ValueObjects.Permissions.Commenter.Name),
             }),
             Expires = DateTime.UtcNow.AddMinutes(15),
             Issuer = issuer,
@@ -51,7 +55,7 @@ internal class JwtTokenProvider : IAuthorizationTokenProvider
         return new Token(tokenHandler.WriteToken(token));
     }
 
-    public Token CreateContributerToken(Guid userId, Guid project)
+    public Token CreateContributerToken(string userId, Guid project)
     {
         var issuer = _config.Issuer;
         var audience = _config.Audience;
@@ -61,9 +65,10 @@ internal class JwtTokenProvider : IAuthorizationTokenProvider
         {
             Subject = new ClaimsIdentity(new[]
             {
-                new Claim("type", "contributer"),
-                new Claim("userId", userId.ToString()),
-                new Claim("projectId", project.ToString()),
+                new Claim(IAuthorizationTokenProvider.PermissionTypeClaim, Domain.ProjectPermissions.ValueObjects.Permissions.Contributer.Name),
+                new Claim(IAuthorizationTokenProvider.UserIdClaim, userId.ToString()),
+                new Claim(IAuthorizationTokenProvider.ProjectIdClaim, project.ToString()),
+                new Claim(ClaimTypes.Role, Domain.ProjectPermissions.ValueObjects.Permissions.Contributer.Name),
             }),
             Expires = DateTime.UtcNow.AddMinutes(15),
             Issuer = issuer,
@@ -77,7 +82,7 @@ internal class JwtTokenProvider : IAuthorizationTokenProvider
         return new Token(tokenHandler.WriteToken(token));
     }
 
-    public Token CreateGuestToken(Guid userId)
+    public Token CreateReaderToken(string userId, Guid project)
     {
         var issuer = _config.Issuer;
         var audience = _config.Audience;
@@ -87,8 +92,10 @@ internal class JwtTokenProvider : IAuthorizationTokenProvider
         {
             Subject = new ClaimsIdentity(new[]
             {
-                new Claim("type", "guest"),
-                new Claim("userId", userId.ToString()),
+                new Claim(IAuthorizationTokenProvider.PermissionTypeClaim, Domain.ProjectPermissions.ValueObjects.Permissions.Reader.Name),
+                new Claim(IAuthorizationTokenProvider.UserIdClaim, userId.ToString()),
+                new Claim(IAuthorizationTokenProvider.ProjectIdClaim, project.ToString()),
+                new Claim(ClaimTypes.Role, Domain.ProjectPermissions.ValueObjects.Permissions.Reader.Name),
             }),
             Expires = DateTime.UtcNow.AddMinutes(15),
             Issuer = issuer,
@@ -102,7 +109,7 @@ internal class JwtTokenProvider : IAuthorizationTokenProvider
         return new Token(tokenHandler.WriteToken(token));
     }
 
-    public Token CreateReaderToken(Guid userId, Guid project)
+    public Token CreateGuestToken(string userId)
     {
         var issuer = _config.Issuer;
         var audience = _config.Audience;
@@ -112,19 +119,20 @@ internal class JwtTokenProvider : IAuthorizationTokenProvider
         {
             Subject = new ClaimsIdentity(new[]
             {
-                new Claim("type", "reader"),
-                new Claim("userId", userId.ToString()),
-                new Claim("projectId", project.ToString()),
+                new Claim(IAuthorizationTokenProvider.PermissionTypeClaim, Domain.UserPermissions.ValueObjects.Permissions.Guest.Name),
+                new Claim(IAuthorizationTokenProvider.UserIdClaim, userId.ToString()),
+                new Claim(ClaimTypes.Role, Domain.UserPermissions.ValueObjects.Permissions.Guest.Name)
             }),
             Expires = DateTime.UtcNow.AddMinutes(15),
             Issuer = issuer,
             Audience = audience,
-            SigningCredentials = new SigningCredentials(
-                new SymmetricSecurityKey(key),
-                SecurityAlgorithms.HmacSha512Signature)
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+
         };
         var tokenHandler = new JwtSecurityTokenHandler();
         var token = tokenHandler.CreateToken(tokenDescriptor);
-        return new Token(tokenHandler.WriteToken(token));
+        var stringToken = tokenHandler.WriteToken(token);
+        return new Token(stringToken);
     }
+
 }

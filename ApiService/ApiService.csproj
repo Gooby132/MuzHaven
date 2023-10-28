@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.1.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.0.2" />
     <!-- Add the following line to include System.IdentityModel.Tokens.Jwt version 6.15.0 -->
@@ -14,9 +15,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PermissionServiceClient\PermissionServiceClient.csproj" />
-    <ProjectReference Include="..\ProjectServiceClient\ProjectServiceClient.csproj" />
-    <ProjectReference Include="..\UserServiceClient\UserServiceClient.csproj" />
+    <ProjectReference Include="..\ApiService.Application\ApiService.Application.csproj" />
+    <ProjectReference Include="..\ApiService.Contracts\ApiService.Contracts.csproj" />
+    <ProjectReference Include="..\PermissionService.Contracts\PermissionService.Contracts.csproj" />
+    <ProjectReference Include="..\ProjectService.Contracts\ProjectService.Contracts.csproj" />
+    <ProjectReference Include="..\UserService.Contracts\UserService.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

@@ -34,18 +34,18 @@ app.MapGet("/cached-permission", () =>
 })
 .WithName("cached-permissions");
 
-app.MapPost("/create-permission", (CreatePermissionRequest request, [FromServices] IAuthorizationTokenProvider provider) =>
+app.MapPost("/create-permission", (CreateContextRequest request, [FromServices] IAuthorizationTokenProvider provider) =>
 {
     switch (request.Permission)
     {
-        case CreatePermissionRequest.UserPermission.Guest:
-            return Results.Ok(provider.CreateGuestToken(request.UserId));
-        case CreatePermissionRequest.UserPermission.Reader:
-            return Results.Ok(provider.CreateReaderToken(request.UserId, request.ProjectId));
-        case CreatePermissionRequest.UserPermission.Commenter:
-            return Results.Ok(provider.CreateCommenterToken(request.UserId, request.ProjectId));
-        case CreatePermissionRequest.UserPermission.Contributer:
-            return Results.Ok(provider.CreateContributerToken(request.UserId, request.ProjectId));
+        case CreateContextRequest.Contexts.Guest:
+            return Results.Ok(provider.CreateGuestToken(request.Permission));
+        case CreateContextRequest.Contexts.Reader:
+            return Results.Ok(provider.CreateReaderToken(request.Permission, request.ContextId));
+        case CreateContextRequest.Contexts.Commenter:
+            return Results.Ok(provider.CreateCommenterToken(request.Permission, request.ContextId));
+        case CreateContextRequest.Contexts.Contributer:
+            return Results.Ok(provider.CreateContributerToken(request.Permission, request.ContextId));
         default:
             return Results.BadRequest();
     }

@@ -8,7 +8,7 @@ using UserService.Domain.ValueObjects;
 
 namespace UserService.Application.Users.Command;
 
-public static class RegisterUserCommand
+public static class RegisterCommand
 {
 
     public class Command : IRequest<Result<User>>
@@ -31,7 +31,7 @@ public static class RegisterUserCommand
 
         #region Properties
 
-        public string Name { get; set; } = nameof(RegisterUserCommand);
+        public string Name { get; set; } = nameof(RegisterCommand);
 
         #endregion
 

@@ -1,0 +1,114 @@
+﻿using ApiService.Application.Permissions.Queries;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using PermissionService.Domain.UserPermissions.ValueObjects;
+using PermissionService.Contracts.Requests;
+using PermissionService.Domain.UserPermissions.Errors;
+using PermissionService.Infrastructure.Authorization.Abstracts;
+using PermissionService.Contracts.Responses;
+
+namespace ApiService.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class PermissionController : ControllerBase
+    {
+        private readonly ILogger<PermissionController> _logger;
+        private readonly IAuthorizationTokenProvider _tokenProvider;
+        private readonly IMediator _mediator;
+
+        public string Name { get; set; } = nameof(PermissionController);
+
+        public PermissionController(
+            ILogger<PermissionController> logger,
+            IAuthorizationTokenProvider tokenProvider,
+            IMediator mediator)
+        {
+            _logger = logger;
+            _tokenProvider = tokenProvider;
+            _mediator = mediator;
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginRequest request, CancellationToken token = default)
+        {
+
+            var res = await _mediator.Send(new GetPermissionByUserId.Query
+            {
+                UserId = request.Email,
+                Password = request.Password
+            });
+
+            if (res.IsFailed)
+            {
+                if (res.HasError<Unauthorized>())
+                    return Unauthorized();
+
+                return Problem();
+            }
+
+            switch (res.Value.Permission.Name)
+            {
+                case nameof(Permissions.Guest):
+                    return Ok(new LoginResponse
+                    {
+                        Token = _tokenProvider.CreateGuestToken(request.Email).RawToken
+                    });
+            }
+
+            return Problem();
+        }
+
+        [Authorize()]
+        [HttpPatch("refresh-token")]
+        public IActionResult RefreshToken()
+        {
+
+            var type = User.Claims
+                .FirstOrDefault(claim => claim.Type == IAuthorizationTokenProvider.PermissionTypeClaim);
+            var userId = User.Claims
+                .FirstOrDefault(claim => claim.Type == IAuthorizationTokenProvider.UserIdClaim);
+
+            if (type is null)
+            {
+                _logger.LogError("{this} type received was null.",
+                    this);
+
+                return BadRequest(nameof(type));
+            }
+
+            if (userId is null)
+            {
+                _logger.LogError("{this} userId received was null.",
+                    this);
+
+                return BadRequest(nameof(type));
+            }
+
+            if (!Permissions.TryFromName(type.Value, true, out var permission))
+            {
+                _logger.LogError("{this} type received was malformed.",
+                    this);
+
+                return BadRequest(nameof(type));
+            }
+
+            switch (permission.Name)
+            {
+                case nameof(Permissions.Guest):
+                    return Ok(_tokenProvider.CreateGuestToken(userId.Value).RawToken);
+                case nameof(Permissions.Normal):
+                case nameof(Permissions.Verified):
+                default:
+                    break;
+            }
+
+            return Problem();
+        }
+
+        public override string ToString() => Name;
+
+    }
+}

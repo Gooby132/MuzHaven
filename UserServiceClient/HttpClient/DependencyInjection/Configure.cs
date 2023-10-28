@@ -10,7 +10,7 @@ public static class Configure
 {
     public const string Key = "HttpClient";
 
-    public static IServiceCollection ConfigurePermissionServiceHttpClient(
+    public static IServiceCollection ConfigureUserServiceHttpClient(
         this IServiceCollection services,
         IConfiguration configuration)
     {

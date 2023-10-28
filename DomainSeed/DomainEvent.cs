@@ -2,14 +2,15 @@
 
 namespace DomainSeed;
 
-public class DomainEvent : INotification
+public abstract class DomainEvent : INotification
 {
 
-    public DateTime CreatedOnUtc { get; }
+    public Guid Id { get; init; }
+
+    public DateTime CreatedOnUtc { get; init; } = DateTime.UtcNow;
 
     public DomainEvent()
     {
-        CreatedOnUtc = DateTime.UtcNow;
     }
 
 }
