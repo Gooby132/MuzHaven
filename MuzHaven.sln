@@ -9,9 +9,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{A6BE14BC
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core", "core", "{FDF259D1-27AF-422C-B483-32BCCE61A741}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiService", "ApiService\ApiService.csproj", "{76C09089-5D1A-45DC-8A7F-8EE77E308AD6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiService", "ApiService\ApiService.csproj", "{76C09089-5D1A-45DC-8A7F-8EE77E308AD6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectService.Api", "ProjectService.Api\ProjectService.Api.csproj", "{1AE7D6DD-6F4B-45F4-B528-E8B2750C8691}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectService.Api", "ProjectService.Api\ProjectService.Api.csproj", "{1AE7D6DD-6F4B-45F4-B528-E8B2750C8691}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "api service", "api service", "{711B0134-36B0-4714-A620-D77452A4FB20}"
 EndProject
@@ -19,33 +19,57 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "project service", "project 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "user service", "user service", "{FB8C549C-0ECB-4E52-9486-F72E1F82FFD0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserService.Api", "UserService.Api\UserService.Api.csproj", "{598079E5-8557-4DB3-894D-1F2E72E7F535}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserService.Api", "UserService.Api\UserService.Api.csproj", "{598079E5-8557-4DB3-894D-1F2E72E7F535}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "permission service", "permission service", "{ED015FCC-8525-47FB-8144-2F44690CB924}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PermissionService.Api", "PermissionService.Api\PermissionService.Api.csproj", "{CE4839C0-F8A1-434C-8FE1-4DCAEA75F083}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PermissionService.Api", "PermissionService.Api\PermissionService.Api.csproj", "{CE4839C0-F8A1-434C-8FE1-4DCAEA75F083}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectServiceClient", "ProjectServiceClient\ProjectServiceClient.csproj", "{6882931D-6A59-4867-A5B0-3A4142144420}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectServiceClient", "ProjectServiceClient\ProjectServiceClient.csproj", "{6882931D-6A59-4867-A5B0-3A4142144420}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PermissionServiceClient", "PermissionServiceClient\PermissionServiceClient.csproj", "{8850E821-610F-4C5D-AF23-F6FE91CF718E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PermissionServiceClient", "PermissionServiceClient\PermissionServiceClient.csproj", "{8850E821-610F-4C5D-AF23-F6FE91CF718E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserServiceClient", "UserServiceClient\UserServiceClient.csproj", "{C5D5B2D4-3249-4868-888D-1B6DCE18C0AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserServiceClient", "UserServiceClient\UserServiceClient.csproj", "{C5D5B2D4-3249-4868-888D-1B6DCE18C0AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PermissionService.Contracts", "PermissionService.Contracts\PermissionService.Contracts.csproj", "{D9A6056A-98D0-4429-8FE5-1E1243A85C05}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PermissionService.Contracts", "PermissionService.Contracts\PermissionService.Contracts.csproj", "{D9A6056A-98D0-4429-8FE5-1E1243A85C05}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectService.Contracts", "ProjectService.Contracts\ProjectService.Contracts.csproj", "{0BC5A066-2136-44A7-8AB8-D819C09B95A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectService.Contracts", "ProjectService.Contracts\ProjectService.Contracts.csproj", "{0BC5A066-2136-44A7-8AB8-D819C09B95A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserService.Contracts", "UserService.Contracts\UserService.Contracts.csproj", "{3A9F3955-0822-4BA5-AB6A-9DFD4CB5878A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserService.Contracts", "UserService.Contracts\UserService.Contracts.csproj", "{3A9F3955-0822-4BA5-AB6A-9DFD4CB5878A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserService.Domain", "UserService.Domain\UserService.Domain.csproj", "{699FC3C1-1130-482F-B5E5-886D0EF09996}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserService.Domain", "UserService.Domain\UserService.Domain.csproj", "{699FC3C1-1130-482F-B5E5-886D0EF09996}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserService.Persistence", "UserService.Persistence\UserService.Persistence.csproj", "{40383734-0EA4-4978-9CD9-44CC9F306CF4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserService.Persistence", "UserService.Persistence\UserService.Persistence.csproj", "{40383734-0EA4-4978-9CD9-44CC9F306CF4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserService.Application", "UserService.Application\UserService.Application.csproj", "{FED5CCCB-423E-4493-AA8C-34D8CD3437BE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserService.Application", "UserService.Application\UserService.Application.csproj", "{FED5CCCB-423E-4493-AA8C-34D8CD3437BE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainSeed", "DomainSeed\DomainSeed.csproj", "{2274AAB4-22A7-43B2-9766-3107773192FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainSeed", "DomainSeed\DomainSeed.csproj", "{2274AAB4-22A7-43B2-9766-3107773192FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PermissionService.Infrastructure", "PermissionService.Infrastructure\PermissionService.Infrastructure.csproj", "{E15DE4F5-0888-49E1-B736-3E63B281C326}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PermissionService.Infrastructure", "PermissionService.Infrastructure\PermissionService.Infrastructure.csproj", "{E15DE4F5-0888-49E1-B736-3E63B281C326}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiService.Contracts", "ApiService.Contracts\ApiService.Contracts.csproj", "{6291D62B-0C4B-4A4F-AD52-E0FDDF05483B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiService.Application", "ApiService.Application\ApiService.Application.csproj", "{B16C91C6-D1B9-47C2-BE01-748A3756BA44}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectService.Domain", "ProjectService.Domain\ProjectService.Domain.csproj", "{464F2576-4367-41FE-B63A-9731E786EC1C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectService.Persistence", "ProjectService.Persistence\ProjectService.Persistence.csproj", "{EA1BE09C-E971-4923-8915-A2483C4553BC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "user service", "user service", "{D5514F42-656A-4E83-9AD6-EE8B66B39430}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "project service", "project service", "{71AEA7F4-98D1-45FA-A973-DB9D111F9E6B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "permission service", "permission service", "{2A278BF2-6633-481D-B110-F4824DC0D0AC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "api service", "api service", "{712849D5-B845-4AED-B649-0562005B08DD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PermissionService.Domain", "PermissionService.Domain\PermissionService.Domain.csproj", "{35C7AB99-616F-43EE-BB44-E5B772E09456}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PermissionService.Persistence", "PermissionService.Persistence\PermissionService.Persistence.csproj", "{155AFFA0-9435-4FDB-8CAB-8D307B0B2C52}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "stem service", "stem service", "{53B38C89-2496-4289-9098-ED591F740146}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StemService.Domain", "StemService.Domain\StemService.Domain.csproj", "{B05FC89F-FE9F-4A24-AC22-F511E9D778F9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -113,6 +137,34 @@ Global
 		{E15DE4F5-0888-49E1-B736-3E63B281C326}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E15DE4F5-0888-49E1-B736-3E63B281C326}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E15DE4F5-0888-49E1-B736-3E63B281C326}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6291D62B-0C4B-4A4F-AD52-E0FDDF05483B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6291D62B-0C4B-4A4F-AD52-E0FDDF05483B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6291D62B-0C4B-4A4F-AD52-E0FDDF05483B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6291D62B-0C4B-4A4F-AD52-E0FDDF05483B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B16C91C6-D1B9-47C2-BE01-748A3756BA44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B16C91C6-D1B9-47C2-BE01-748A3756BA44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B16C91C6-D1B9-47C2-BE01-748A3756BA44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B16C91C6-D1B9-47C2-BE01-748A3756BA44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{464F2576-4367-41FE-B63A-9731E786EC1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{464F2576-4367-41FE-B63A-9731E786EC1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{464F2576-4367-41FE-B63A-9731E786EC1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{464F2576-4367-41FE-B63A-9731E786EC1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA1BE09C-E971-4923-8915-A2483C4553BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA1BE09C-E971-4923-8915-A2483C4553BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA1BE09C-E971-4923-8915-A2483C4553BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA1BE09C-E971-4923-8915-A2483C4553BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35C7AB99-616F-43EE-BB44-E5B772E09456}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35C7AB99-616F-43EE-BB44-E5B772E09456}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35C7AB99-616F-43EE-BB44-E5B772E09456}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35C7AB99-616F-43EE-BB44-E5B772E09456}.Release|Any CPU.Build.0 = Release|Any CPU
+		{155AFFA0-9435-4FDB-8CAB-8D307B0B2C52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{155AFFA0-9435-4FDB-8CAB-8D307B0B2C52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{155AFFA0-9435-4FDB-8CAB-8D307B0B2C52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{155AFFA0-9435-4FDB-8CAB-8D307B0B2C52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B05FC89F-FE9F-4A24-AC22-F511E9D778F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B05FC89F-FE9F-4A24-AC22-F511E9D778F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B05FC89F-FE9F-4A24-AC22-F511E9D778F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B05FC89F-FE9F-4A24-AC22-F511E9D778F9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -137,6 +189,18 @@ Global
 		{FED5CCCB-423E-4493-AA8C-34D8CD3437BE} = {FB8C549C-0ECB-4E52-9486-F72E1F82FFD0}
 		{2274AAB4-22A7-43B2-9766-3107773192FC} = {FDF259D1-27AF-422C-B483-32BCCE61A741}
 		{E15DE4F5-0888-49E1-B736-3E63B281C326} = {ED015FCC-8525-47FB-8144-2F44690CB924}
+		{6291D62B-0C4B-4A4F-AD52-E0FDDF05483B} = {FDF259D1-27AF-422C-B483-32BCCE61A741}
+		{B16C91C6-D1B9-47C2-BE01-748A3756BA44} = {711B0134-36B0-4714-A620-D77452A4FB20}
+		{464F2576-4367-41FE-B63A-9731E786EC1C} = {F3AA8285-8D2C-49C4-93D3-2310AD93C648}
+		{EA1BE09C-E971-4923-8915-A2483C4553BC} = {F3AA8285-8D2C-49C4-93D3-2310AD93C648}
+		{D5514F42-656A-4E83-9AD6-EE8B66B39430} = {A6BE14BC-99B1-4532-9912-08DEB556265C}
+		{71AEA7F4-98D1-45FA-A973-DB9D111F9E6B} = {A6BE14BC-99B1-4532-9912-08DEB556265C}
+		{2A278BF2-6633-481D-B110-F4824DC0D0AC} = {A6BE14BC-99B1-4532-9912-08DEB556265C}
+		{712849D5-B845-4AED-B649-0562005B08DD} = {A6BE14BC-99B1-4532-9912-08DEB556265C}
+		{35C7AB99-616F-43EE-BB44-E5B772E09456} = {ED015FCC-8525-47FB-8144-2F44690CB924}
+		{155AFFA0-9435-4FDB-8CAB-8D307B0B2C52} = {ED015FCC-8525-47FB-8144-2F44690CB924}
+		{53B38C89-2496-4289-9098-ED591F740146} = {4A15FFE4-E149-4008-99CA-3CFC571CC03C}
+		{B05FC89F-FE9F-4A24-AC22-F511E9D778F9} = {53B38C89-2496-4289-9098-ED591F740146}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BC75A1CE-CB2B-4FE6-A08A-30A09A26CCBA}
