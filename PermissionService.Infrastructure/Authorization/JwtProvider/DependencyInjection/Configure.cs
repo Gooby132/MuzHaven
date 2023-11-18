@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using PermissionService.Infrastructure.Authorization.Abstracts;
 using PermissionService.Infrastructure.Authorization.JwtProvider.Core;
 using PermissionService.Infrastructure.Authorization.JwtProvider.Options;
@@ -25,12 +24,9 @@ public static class Configure
             .Bind(configuration.GetRequiredSection(JwtProviderOptions.OptionsKey))
             .ValidateDataAnnotations();
 
-        services.AddAuthentication(options =>
-        {
-            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-        }).AddJwtBearer(options =>
+        services
+            .AddAuthentication(IPermissionTokenProvider.PermissionSchemeName)
+            .AddJwtBearer(IPermissionTokenProvider.PermissionSchemeName, options =>
         {
             string key = configuration["Options:Key"];
             string issuer = configuration["Options:Issuer"];
@@ -49,7 +45,7 @@ public static class Configure
             };
         });
 
-        services.AddTransient<IAuthorizationTokenProvider, JwtTokenProvider>();
+        services.AddTransient<IPermissionTokenProvider, JwtTokenProvider>();
 
         return services;
     }

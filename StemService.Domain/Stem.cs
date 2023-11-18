@@ -31,4 +31,8 @@ public class Stem : Aggregate<Guid>
         return Result.Ok();
     }
 
+    public override DomainEvent? DequeueDomainEvent()
+    {
+        return null;
+    }
 }

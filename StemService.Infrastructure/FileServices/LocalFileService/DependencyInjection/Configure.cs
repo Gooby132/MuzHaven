@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using StemService.Domain.Services;
 using StemService.Infrastructure.FileServices.LocalFileService.Core;
 using StemService.Infrastructure.FileServices.LocalFileService.Options;
+using StemService.Domain.DependencyInjection;
 
 namespace StemService.Infrastructure.FileServices.LocalFileService.DependencyInjection;
 
@@ -16,6 +17,7 @@ public static class Configure
 
         configuration = configuration.GetRequiredSection(Key);
 
+        services.ConfigureStemDomain(configuration);
         services.AddTransient<IFileService, LocalFileSystemService>();
 
         services

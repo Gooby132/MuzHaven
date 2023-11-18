@@ -19,6 +19,7 @@
     <ProjectReference Include="..\ApiService.Contracts\ApiService.Contracts.csproj" />
     <ProjectReference Include="..\PermissionService.Contracts\PermissionService.Contracts.csproj" />
     <ProjectReference Include="..\ProjectService.Contracts\ProjectService.Contracts.csproj" />
+    <ProjectReference Include="..\StemService.Contacts\StemService.Contacts.csproj" />
     <ProjectReference Include="..\UserService.Contracts\UserService.Contracts.csproj" />
   </ItemGroup>
 

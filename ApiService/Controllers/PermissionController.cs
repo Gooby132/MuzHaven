@@ -16,14 +16,14 @@ namespace ApiService.Controllers
     public class PermissionController : ControllerBase
     {
         private readonly ILogger<PermissionController> _logger;
-        private readonly IAuthorizationTokenProvider _tokenProvider;
+        private readonly IPermissionTokenProvider _tokenProvider;
         private readonly IMediator _mediator;
 
         public string Name { get; set; } = nameof(PermissionController);
 
         public PermissionController(
             ILogger<PermissionController> logger,
-            IAuthorizationTokenProvider tokenProvider,
+            IPermissionTokenProvider tokenProvider,
             IMediator mediator)
         {
             _logger = logger;
@@ -67,9 +67,9 @@ namespace ApiService.Controllers
         {
 
             var type = User.Claims
-                .FirstOrDefault(claim => claim.Type == IAuthorizationTokenProvider.PermissionTypeClaim);
+                .FirstOrDefault(claim => claim.Type == IPermissionTokenProvider.PermissionTypeClaim);
             var userId = User.Claims
-                .FirstOrDefault(claim => claim.Type == IAuthorizationTokenProvider.UserIdClaim);
+                .FirstOrDefault(claim => claim.Type == IPermissionTokenProvider.UserIdClaim);
 
             if (type is null)
             {

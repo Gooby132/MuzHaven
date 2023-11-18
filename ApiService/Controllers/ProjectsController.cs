@@ -10,6 +10,7 @@ namespace ApiService.Controllers;
 [ApiController]
 public class ProjectsController : ControllerBase
 {
+
     #region Fields
 
     private readonly ILogger<ProjectsController> _logger;
@@ -59,7 +60,7 @@ public class ProjectsController : ControllerBase
     }
 
     [HttpGet("get-by-id")]
-    public async Task<IActionResult> GetById(GetProjectByIdRequest request, CancellationToken token = default)
+    public async Task<IActionResult> GetById([FromQuery] GetProjectByIdRequest request, CancellationToken token = default)
     {
 
         var res = await _mediator.Send(new GetProjectById.Query
@@ -85,6 +86,5 @@ public class ProjectsController : ControllerBase
     }
 
     #endregion
-
 
 }

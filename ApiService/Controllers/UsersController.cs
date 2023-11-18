@@ -19,7 +19,7 @@ public class UsersController : ControllerBase
 
     private readonly ILogger<UsersController> _logger;
     private readonly IMediator _mediator;
-    private readonly IAuthorizationTokenProvider _tokenProvider;
+    private readonly IPermissionTokenProvider _tokenProvider;
 
     #endregion
 
@@ -28,7 +28,7 @@ public class UsersController : ControllerBase
     public UsersController(
         ILogger<UsersController> logger,
         IMediator mediator,
-        IAuthorizationTokenProvider tokenProvider)
+        IPermissionTokenProvider tokenProvider)
     {
         _logger = logger;
         _mediator = mediator;

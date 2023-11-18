@@ -10,7 +10,7 @@ namespace PermissionService.Persistence.DependencyInjection;
 public static class Configure
 {
 
-    public static IServiceCollection ConfigurePermissionService(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection ConfigurePermissionPersistence(this IServiceCollection services, IConfiguration configuration)
     {
 
         services.AddDbContext<PermissionContext>();

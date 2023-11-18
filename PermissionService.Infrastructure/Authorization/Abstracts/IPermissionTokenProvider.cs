@@ -2,8 +2,10 @@
 
 namespace PermissionService.Infrastructure.Authorization.Abstracts;
 
-public interface IAuthorizationTokenProvider
+public interface IPermissionTokenProvider
 {
+
+    public const string PermissionSchemeName = "Permission";
 
     public const string PermissionTypeClaim = "type";
     public const string UserIdClaim = "userId";
