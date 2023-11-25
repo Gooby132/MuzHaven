@@ -21,10 +21,11 @@ public static class Configure
             .ConfigureUserPersistence(configuration)
             .ConfigurePermissionPersistence(configuration)
             .ConfigurePermissionInfrastructure(configuration)
+            .ConfigurePersistenceSwagger()
             .ConfigureStemPersistence(configuration)
             .ConfigureStemInfrastructure(configuration)
             .ConfigureStemSwagger()
-            .ConfigurePersistenceSwagger();
+            ;
 
         services.AddMediatR(conf => conf.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
 

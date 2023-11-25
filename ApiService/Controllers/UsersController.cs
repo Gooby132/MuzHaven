@@ -38,7 +38,7 @@ public class UsersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(RegisterResponse))]
     [HttpPost("register-user")]
     public async Task<IActionResult> Registration(
-        RegistrationRequest request,
+        [FromBody] RegistrationRequest request,
         CancellationToken token = default)
     {
 
