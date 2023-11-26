@@ -1,27 +1,20 @@
-﻿using FluentResults;
+﻿using DomainSeed;
+using FluentResults;
 
 namespace UserService.Domain.Errors;
 
-public class InvalidNameError : Error
+public class InvalidNameError : ErrorBase
 {
 
-    public ErrorCodes ErrorCode { get; }
+    public const int InvalidFirstNameGroupCode = 3;
+    public const int InvalidLastNameGroupCode = 4;
 
-    public InvalidNameError(ErrorCodes errorCode) : base("Invalid name") 
-    { 
-        ErrorCode = errorCode;
-    }
-    public InvalidNameError(string message, ErrorCodes errorCode) : 
-        base($"Invalid name - {message}") 
-    {
-        ErrorCode = errorCode;
-    }
+    private InvalidNameError(string message, int code, int group) : base(message, code, group) { }
 
-    public enum ErrorCodes
-    {
-        GeneralCode = 1,
-        NameTooShortCode = 2,
-        NameTooLongCode = 3,
-    }
+    public static ErrorBase FirstNameTooShort() => new InvalidNameError("First name is too short", 1, InvalidFirstNameGroupCode);
+    public static ErrorBase FirstNameTooLong() => new InvalidNameError("First name is too long", 2, InvalidFirstNameGroupCode);
+    public static ErrorBase LastNameTooShort() => new InvalidNameError("Last name is too short", 1, InvalidLastNameGroupCode);
+    public static ErrorBase LastNameTooLong() => new InvalidNameError("Last name is too long", 2, InvalidLastNameGroupCode);
+
 
 }

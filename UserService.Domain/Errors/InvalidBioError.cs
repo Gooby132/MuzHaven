@@ -1,26 +1,19 @@
-﻿using FluentResults;
+﻿using DomainSeed;
 
 namespace UserService.Domain.Errors;
 
-public class InvalidBioError : Error
+public class BioError : ErrorBase
 {
-    public ErrorCodes ErrorCode { get; }
-
-    public InvalidBioError(ErrorCodes errorCode) : base("Invalid bio") 
-    { 
-        ErrorCode = errorCode;
-    }
-    public InvalidBioError(string message, ErrorCodes errorCode) : 
-        base($"Invalid bio - {message}") 
-    {
-        ErrorCode = errorCode;
-    }
-
-    public enum ErrorCodes
-    {
-        GeneralCode = 1,
+    public const int 
+        BioGeneralCode = 1,
         BioTooShortCode = 2,
         BioTooLongCode = 3,
-    }
+        BioGroupError = 5;
+
+    private BioError(string message, int code) : base(message, code, BioGroupError) { }
+
+    public static ErrorBase GeneralError(string message) => new BioError(message, 1);
+    public static ErrorBase TooShortCode() => new BioError("Bio is too short", BioTooShortCode);
+    public static ErrorBase TooLongCode() => new BioError("Bio is too long", BioTooLongCode);
 
 }

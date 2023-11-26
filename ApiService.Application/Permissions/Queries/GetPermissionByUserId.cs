@@ -31,7 +31,7 @@ public static class GetPermissionByUserId
             _logger.LogTrace("{this} get permission for user with id - '{userId}' was requested",
                 this, request.UserId);
 
-            var permission = await _repository.GetUserPermission(request.UserId, cancellationToken);
+            var permission = await _repository.GetUserPermissionByEmail(request.UserId, cancellationToken);
 
             if (permission.IsFailed)
             {

@@ -1,6 +1,6 @@
 ﻿using ApiService.Application.Users.Commands;
 using ApiService.Application.Users.Queries;
-using ApiService.Contracts.Requests;
+using DomainSeed;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using PermissionService.Infrastructure.Authorization.Abstracts;
@@ -38,7 +38,7 @@ public class UsersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(RegisterResponse))]
     [HttpPost("register-user")]
     public async Task<IActionResult> Registration(
-        [FromBody] RegistrationRequest request,
+        [FromBody] RegisterRequest request,
         CancellationToken token = default)
     {
 
@@ -55,8 +55,16 @@ public class UsersController : ControllerBase
         if (res.IsFailed)
         {
             // defined errors
+        
+            if (res.HasError<ErrorBase>())
+                return BadRequest(res.Errors.Select(r => new
+                {
+                    r.Message,
+                    Code = (r as ErrorBase)?.ErrorCode,
+                    Group = (r as ErrorBase)?.GroupCode,
+                }));
 
-            _logger.LogTrace("{this} user failed to be registered. errors - '{errors}'",
+            _logger.LogError("{this} user failed to be registered. errors - '{errors}'",
                 this, string.Join(", ", res.Reasons.Select(r => r.Message)));
 
             return Problem(); // default undefined error

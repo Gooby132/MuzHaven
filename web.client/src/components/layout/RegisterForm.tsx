@@ -6,6 +6,7 @@ import {
 } from "../../services/user/userServiceClient";
 import { TextInput } from "../atoms/form/TextInput";
 import { SubmitInput } from "../atoms/form/SubmitInput";
+import { error } from "console";
 
 const Container = styled.form`
   display: flex;
@@ -13,15 +14,29 @@ const Container = styled.form`
 `;
 
 const Row = styled.div`
-  display:flex;
+  display: flex;
   flex-direction: row;
 `;
 
 type Props = {
   onSubmit: (args: RegisterData) => void;
+  emailError?: string;
+  stageNameError?: string;
+  firstNameError?: string;
+  lastNameError?: string;
+  bioError?: string;
+  passwordError?: string;
 };
 
-export const RegisterForm = ({ onSubmit }: Props) => {
+export const RegisterForm = ({
+  onSubmit,
+  emailError,
+  stageNameError,
+  firstNameError,
+  lastNameError,
+  bioError,
+  passwordError,
+}: Props) => {
   const [email, setEmail] = useState("");
   const [stageName, setStageName] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -46,11 +61,13 @@ export const RegisterForm = ({ onSubmit }: Props) => {
     >
       <Row>
         <TextInput
+          error={emailError}
           name="email"
           text="Email"
           onChange={(email) => setEmail(email)}
         />
         <TextInput
+          error={passwordError}
           name="password"
           text="Password"
           onChange={(password) => setPassword(password)}
@@ -58,6 +75,7 @@ export const RegisterForm = ({ onSubmit }: Props) => {
       </Row>
       <Row>
         <TextInput
+          error={stageNameError}
           name="stage-name"
           text="Stage Name"
           onChange={(stageName) => setStageName(stageName)}
@@ -65,18 +83,25 @@ export const RegisterForm = ({ onSubmit }: Props) => {
       </Row>
       <Row>
         <TextInput
+          error={firstNameError}
           name="first-name"
           text="First Name"
           onChange={(firstName) => setFirstName(firstName)}
         />
         <TextInput
-          name="last -name"
+          error={lastNameError}
+          name="last-name"
           text="Last Name"
           onChange={(lastName) => setLastName(lastName)}
         />
       </Row>
       <Row>
-        <TextInput name="bio" text="Bio" onChange={(bio) => setBio(bio)} />
+        <TextInput
+          error={bioError}
+          name="bio"
+          text="Bio"
+          onChange={(bio) => setBio(bio)}
+        />
       </Row>
       <Row>
         <SubmitInput text="Register" />

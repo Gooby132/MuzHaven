@@ -33,17 +33,22 @@ public class PersonMetaData : ValueObject
         string email)
     {
 
+        List<Error> errors = new List<Error>();
+
         if (firstName.Length < MinNameLength)
-            return new InvalidNameError(InvalidNameError.ErrorCodes.NameTooShortCode);
+            errors.Add(InvalidNameError.FirstNameTooShort());
 
         if (firstName.Length > MaxNameLength)
-            return new InvalidNameError(InvalidNameError.ErrorCodes.NameTooLongCode);
+            errors.Add(InvalidNameError.FirstNameTooLong());
         
         if (lastName.Length < MinNameLength)
-            return new InvalidNameError(InvalidNameError.ErrorCodes.NameTooShortCode);
+            errors.Add(InvalidNameError.LastNameTooShort());
 
         if (lastName.Length > MaxNameLength)
-            return new InvalidNameError(InvalidNameError.ErrorCodes.NameTooLongCode);
+            errors.Add(InvalidNameError.LastNameTooLong());
+
+        if (errors.Any())
+            return Result.Fail(errors);
 
         return new PersonMetaData(
             firstName, 

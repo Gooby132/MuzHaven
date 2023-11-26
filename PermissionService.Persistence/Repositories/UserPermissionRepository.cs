@@ -17,11 +17,11 @@ internal class UserPermissionRepository : IUserPermissionRepository
         _context = context;
     }
 
-    public async Task<Result<UserPermission>> GetUserPermission(string userId, CancellationToken token = default)
+    public async Task<Result<UserPermission>> GetUserPermissionByEmail(string email, CancellationToken token = default)
     {
         try
         {
-            var project = await _context.UserPermissions.FirstOrDefaultAsync(p => p.UserId == userId, token);
+            var project = await _context.UserPermissions.FirstOrDefaultAsync(p => p.Email == email, token);
 
             if (project is null)
                 return new NotFoundError();

@@ -96,20 +96,20 @@ public static class RegisterUser
                 request.StageName,
                 request.Bio);
 
-            if(person.IsFailed)
+            if(person.IsFailed || artists.IsFailed)
             {
-                _logger.LogTrace("{this} bad request creating person meta data. error(s) - '{errors}'",
-                    this, string.Join(", ", person.Reasons.Select(r => r.Message)));
+                if (artists.IsFailed)
+                    _logger.LogTrace("{this} bad request creating artists creation. error(s) - '{errors}'",
+                        this, string.Join(", ", person.Reasons.Select(r => r.Message)));
 
-                return Result.Fail(person.Errors);
-            }
 
-            if (artists.IsFailed)
-            {
-                _logger.LogTrace("{this} bad request creating artists creation. error(s) - '{errors}'",
-                    this, string.Join(", ", person.Reasons.Select(r => r.Message)));
+                if(person.IsFailed)
+                    _logger.LogTrace("{this} bad request creating person meta data. error(s) - '{errors}'",
+                        this, string.Join(", ", person.Reasons.Select(r => r.Message)));
 
-                return Result.Fail(person.Errors);
+                return Result
+                    .Fail(person.Errors)
+                    .WithErrors(artists.Errors);
             }
 
             var user = User.Create(person.Value, artists.Value);

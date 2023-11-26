@@ -7,19 +7,29 @@ namespace PermissionService.Domain.UserPermissions;
 public class UserPermission
 {
 
-    public string UserId { get; init; } // keeping this as a string for unique identifier including an email or something else
-    public string Password { get; init; }
+    public Email Email { get; init; } 
+    public Password Password { get; init; }
     public Permissions Permission { get; private set; }
 
     private UserPermission() { }
 
-    public static Result<UserPermission> Create(string userId, string password)
+    public static Result<UserPermission> Create(string emailText, string passwordText)
     {
+
+        var password = Password.Create(passwordText);
+        var email = Email.Create(emailText);
+
+        if (password.IsFailed ||
+            email.IsFailed)
+            return Result
+                .Fail(password.Errors)
+                .WithErrors(email.Errors);
+
         return new UserPermission()
         {
-            UserId = userId,
+            Email = email.Value,
+            Password = password.Value,
             Permission = Permissions.Guest,
-            Password = password
         };
     }
 

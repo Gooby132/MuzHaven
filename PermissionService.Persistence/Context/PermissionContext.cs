@@ -24,12 +24,20 @@ public class PermissionContext : DbContext
         modelBuilder
             .Entity<UserPermission>(builder =>
             {
-                builder.HasKey(p => p.UserId);
+                builder.HasKey(p => p.Email);
+
+                builder.Property(p => p.Email)
+                    .HasConversion(
+                    p => p.Raw,
+                    p => Domain.UserPermissions.ValueObjects.Email.Create(p).Value);
 
                 builder.Property(p => p.Permission)
                 .HasConversion(
                     p => p.Value,
                     p => Domain.UserPermissions.ValueObjects.Permissions.FromValue(p));
+
+                builder.OwnsOne(p => p.Password);
+
             });
 
         modelBuilder
