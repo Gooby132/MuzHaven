@@ -11,9 +11,10 @@ import {
   FIRST_NAME_GROUP_CODE,
   LAST_NAME_GROUP_CODE,
   BIO_GROUP_CODE,
-  Error,
   STAGE_NAME_GROUP_CODE,
 } from "../../services/user/userServiceClient";
+import { userActions } from "../../redux/features/user/userSlice";
+import { useDispatch } from "react-redux";
 
 const Container = styled.div``;
 
@@ -29,6 +30,7 @@ type FormErrors = {
 type Props = {};
 
 export const Register = (props: Props) => {
+  const dispatch = useDispatch()
   const [registerResponse, setRegisterResponse] = useState<RegisterResponse>({
     isError: false,
   });
@@ -47,7 +49,9 @@ export const Register = (props: Props) => {
     
     const res = await registerUser(args);
 
-    setRegisterResponse(res);
+    if(!res.isError){
+      dispatch(userActions.login(res.result!))
+    }
 
     if (res.isError) {
       res.errors?.forEach((error) => {

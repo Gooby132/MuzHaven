@@ -13,6 +13,7 @@ import { Login } from "../pages/Login";
 import { Register } from "../pages/Register";
 import { Error } from "../pages/Error";
 import { NotFound } from "../pages/NotFound";
+import { Profile } from "../pages/Profile";
 
 const Container = styled.div``;
 
@@ -29,6 +30,7 @@ function App() {
                 key={0}
                 header="user"
                 links={[
+                  <CoreLink key={0} text="profile" to="profile" />,
                   <CoreLink key={1} text="login" to="login" />,
                   <CoreLink key={2} text="register" to="register" />,
                 ]}
@@ -41,6 +43,7 @@ function App() {
             <Route path="/" Component={Home} />
             <Route path="/login" Component={Login} />
             <Route path="/register" Component={Register} />
+            <Route path="/profile" Component={Profile} />
             <Route path="/" 
             Component={Register} 
             errorElement={<Error />} />

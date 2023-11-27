@@ -36,12 +36,12 @@ export type Error = {
 };
 
 export type RegisterResponse = {
-  result?: ResponseResult;
+  result?: LoginResult;
   errors?: Error[];
   isError: boolean;
 };
 
-export type ResponseResult = {
+export type LoginResult = {
   user: User
   token: string
 }
