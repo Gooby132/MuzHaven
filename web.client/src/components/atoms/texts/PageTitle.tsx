@@ -7,7 +7,7 @@ const Container = styled.div`
 `;
 
 type Props = {
-  text: string;
+  text?: string;
 };
 
 export const PageTitle = ({ text }: Props) => {

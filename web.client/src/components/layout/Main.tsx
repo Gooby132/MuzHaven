@@ -1,42 +1,63 @@
 import React, { ReactNode } from "react";
 import styled from "styled-components";
-import { Home } from "../pages/Home";
+import { Sidebar } from "../organizem/Sidebar";
+import { CoreLink } from "../atoms/links/CoreLink";
+import { LinkGroup } from "../molecules/LinkGroup";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { Footer } from "../organizem/Footer";
+import { Outlet } from "react-router-dom";
+import { Header } from "../organizem/Header";
+import { WordMark } from "../atoms/texts/WordMark";
 
-type Props = {
-  sidebar: ReactNode;
-  main: ReactNode;
-  footer: ReactNode;
-};
+type Props = {};
 
 const Container = styled.div`
-  display: flex;
-
-  .sidebar-container {
-    min-width: 30%;
+  > header {
   }
-
   .main-container {
-    min-width: 70%;
-    
-    .content-container{
-      width: 100%;
+    display: flex;
+    > nav {
+      min-width: 30%;
     }
-    .footer-container{
-      width: 100%;
-      display: flex;
-      justify-content: center;
+    > .content-container {
+      display:flex;
+      flex-direction: column;
+      min-width: 70%;
     }
   }
 `;
 
 export const Main = (props: Props) => {
+  const isLoggedIn = useSelector((state: RootState) => state.user.loggedIn);
+
+  const loggedInRoutes = [<CoreLink key={0} text="profile" to="profile" />];
+
+  const logInRoutes = [
+    <CoreLink key={1} text="login" to="login" />,
+    <CoreLink key={2} text="register" to="register" />,
+  ];
+
   return (
     <Container>
-        <nav className="sidebar-container">{props.sidebar}</nav>
-        <section className="main-container">
-          <div className="content-container">{props.main}</div>
-          <div className="footer-container">{props.footer}</div>
-        </section>
+      <Header logo={<WordMark text="MuzHaven" />} />
+
+      <section className="main-container">
+        <Sidebar
+          links={[
+            <CoreLink key={3} text="home" to="/" />,
+            <LinkGroup
+              key={0}
+              header="user"
+              links={isLoggedIn ? loggedInRoutes : logInRoutes}
+            />,
+          ]}
+        />
+        <div className="content-container">
+          <Outlet />
+          <Footer />
+        </div>
+      </section>
     </Container>
   );
 };

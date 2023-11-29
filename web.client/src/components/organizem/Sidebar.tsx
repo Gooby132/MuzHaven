@@ -6,7 +6,7 @@ type Props = {
   links: React.ReactElement<typeof LinkGroup>[]
 }
 
-const Container = styled.div`
+const Container = styled.nav`
 
 `
 
