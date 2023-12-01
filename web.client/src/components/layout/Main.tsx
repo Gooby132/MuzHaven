@@ -9,6 +9,7 @@ import { Footer } from "../organizem/Footer";
 import { Outlet } from "react-router-dom";
 import { Header } from "../organizem/Header";
 import { WordMark } from "../atoms/texts/WordMark";
+import { HeaderLayout } from "./HeaderLayout";
 
 type Props = {};
 
@@ -40,8 +41,13 @@ export const Main = (props: Props) => {
 
   return (
     <Container>
-      <Header logo={<WordMark text="MuzHaven" />} />
-
+      <Header layout={
+        <HeaderLayout 
+          logo={<WordMark text="MuzHaven" />}
+          search={<div></div>}
+          userIcon={<div></div>}
+        />
+      } />
       <section className="main-container">
         <Sidebar
           links={[

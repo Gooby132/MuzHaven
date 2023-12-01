@@ -3,6 +3,7 @@ import { config } from "process";
 
 const USER_SERVICE_BASE = "http://localhost:8080/api/Users";
 const REGISTER_USER_ENDPOINT = "/register-user";
+const LOGIN_USER_ENDPOINT = "/login-user";
 
 export const PASSWORD_GROUP_CODE = 1
 export const EMAIL_GROUP_CODE = 2
@@ -20,6 +21,11 @@ export type RegisterData = {
   bio: string;
 };
 
+export type LoginData = {
+  email: string,
+  password: string,
+}
+
 export type User = {
   id: string,
   bio: string,
@@ -36,6 +42,12 @@ export type Error = {
 };
 
 export type RegisterResponse = {
+  result?: LoginResult;
+  errors?: Error[];
+  isError: boolean;
+};
+
+export type LoginResponse = {
   result?: LoginResult;
   errors?: Error[];
   isError: boolean;
@@ -92,6 +104,87 @@ export const registerUser = async ({
         firstName,
         lastName,
         bio,
+      }
+    );
+
+    return {
+      result: {
+        token: res.data.token,
+        user: {
+          id: res.data.user.id,
+          bio: res.data.user.bio,
+          email: res.data.user.email,
+          firstName: res.data.user.firstName,
+          lastName: res.data.user.lastName,
+          stageName: res.data.user.stageName,
+        }
+      },
+      isError: false,
+    };
+  } catch (e: any) {
+    switch (e.response.status) {
+      case 500:
+        return {
+          isError: true,
+          errors: [
+            {
+              code: 1,
+              group: 500,
+              message: "internal error",
+            },
+          ],
+        };
+      case 400:
+        return {
+          isError: true,
+          errors: 
+            e.response.data.map(
+              (error: { code: number; group: number; message?: string }) => {
+              return {
+                code: error.code, 
+                group: error.group,
+                message: error.message,
+              }}
+            ),
+        }
+    }
+
+    return {
+      isError:true
+    };
+  }
+};
+
+export const validateLoginData = ({
+  email,
+  password,
+}: LoginData): [boolean, Error[]] => {
+  let errors: Error[] = [];
+
+  return [true, errors];
+};
+
+export const loginUser = async ({
+  email,
+  password,
+}: LoginData): Promise<LoginResponse> => {
+  const validation = validateLoginData({
+    email,
+    password,
+  });
+
+  if (!validation[0])
+    return {
+      isError: true,
+      errors: validation[1],
+    };
+
+  try {
+    const res = await axios.post(
+      `${USER_SERVICE_BASE}${LOGIN_USER_ENDPOINT}`,
+      {
+        password,
+        email,
       }
     );
 

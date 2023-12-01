@@ -2,20 +2,11 @@ import { ReactNode } from "react";
 import styled from "styled-components";
 
 interface Props {
-  logo: ReactNode
+  layout: ReactNode;
 }
 
-const Container = styled.header`
-  display: flex;
-  justify-content: space-between;
-  min-height: 10vh;
-`;
+const Container = styled.header``;
 
-export const Header = (props: Props) => {
-
-  return (
-    <Container>
-      {props.logo}
-    </Container>
-  );
+export const Header = ({ layout }: Props) => {
+  return <Container>{layout}</Container>;
 };

@@ -6,7 +6,6 @@ import {
 } from "../../services/user/userServiceClient";
 import { TextInput } from "../atoms/form/TextInput";
 import { SubmitInput } from "../atoms/form/SubmitInput";
-import { error } from "console";
 
 const Container = styled.form`
   display: flex;

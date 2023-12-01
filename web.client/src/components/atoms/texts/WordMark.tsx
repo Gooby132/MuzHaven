@@ -6,14 +6,14 @@ type Props = {
 }
 
 const Container = styled.div`
-  font-size: 2em;
+  font-size: 1.2em;
   font-weight: bold;
 `
 
-export const WordMark = (props: Props) => {
+export const WordMark = ({text}: Props) => {
   return (
     <Container>
-      {props.text}
+      {text}
     </Container>
   )
 }
