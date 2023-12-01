@@ -1,4 +1,4 @@
-﻿namespace StemService.Infrastructure.Authorization.Core;
+﻿namespace DomainSeed.ValueObjects.Auth;
 
 public class Token
 {

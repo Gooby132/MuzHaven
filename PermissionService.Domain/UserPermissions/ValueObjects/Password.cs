@@ -9,6 +9,8 @@ public class Password : ValueObject
     public const int MinimumLength = 8;
 
     public string Text { get; init; }
+    
+    private Password() { }
 
     public static Result<Password> Create(string password)
     {
@@ -20,8 +22,6 @@ public class Password : ValueObject
             Text = password,
         };
     }
-
-    private Password() { }
 
     public static bool operator  ==(Password left, string right) => left.Text == right;
     public static bool operator  !=(Password left, string right) => left.Text != right;

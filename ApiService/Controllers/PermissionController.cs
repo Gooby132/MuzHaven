@@ -37,7 +37,7 @@ namespace ApiService.Controllers
 
             var res = await _mediator.Send(new GetPermissionByUserId.Query
             {
-                UserId = request.Email,
+                Email = request.Email,
                 Password = request.Password
             });
 
@@ -47,15 +47,6 @@ namespace ApiService.Controllers
                     return Unauthorized();
 
                 return Problem();
-            }
-
-            switch (res.Value.Permission.Name)
-            {
-                case nameof(Permissions.Guest):
-                    return Ok(new LoginResponse
-                    {
-                        Token = _tokenProvider.CreateGuestToken(request.Email).RawToken
-                    });
             }
 
             return Problem();

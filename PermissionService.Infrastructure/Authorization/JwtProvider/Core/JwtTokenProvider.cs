@@ -1,10 +1,10 @@
 ﻿// Ignore Spelling: Jwt
 
+using DomainSeed.ValueObjects.Auth;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using PermissionService.Infrastructure.Authorization.Abstracts;
-using PermissionService.Infrastructure.Authorization.Core;
 using PermissionService.Infrastructure.Authorization.JwtProvider.Options;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;

@@ -1,6 +1,7 @@
 ﻿using FluentResults;
 using PermissionService.Domain.UserPermissions.ValueObjects;
 using PermissionService.Domain.UserPermissions.Errors;
+using DomainSeed.ValueObjects.Internet;
 
 namespace PermissionService.Domain.UserPermissions;
 

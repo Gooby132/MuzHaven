@@ -1,4 +1,6 @@
-﻿using FluentResults;
+﻿using DomainSeed.ValueObjects.Auth;
+using DomainSeed.ValueObjects.Internet;
+using FluentResults;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using UserService.Domain;
@@ -61,6 +63,22 @@ internal class UserRepository : IUserRepository
         }
     }
 
-    public override string ToString() => Name;
+    public async Task<Result<User>> GetUserByEmail(Email email, CancellationToken token)
+    {
+        try
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(user => user.MetaData.Email.Raw == email.Raw, token);
 
+            if (user is null)
+                return new NotFoundError();
+
+            return Result.Ok(user);
+        }
+        catch (Exception e)
+        {
+            return Result.Fail(new DatabaseError(e));
+        }
+    }
+
+    public override string ToString() => Name;
 }
