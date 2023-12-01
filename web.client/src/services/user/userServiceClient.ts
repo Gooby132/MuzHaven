@@ -215,6 +215,15 @@ export const loginUser = async ({
             },
           ],
         };
+      case 404:
+        return {
+          isError: true,
+          errors: [{
+            group: EMAIL_GROUP_CODE,
+            code: 2,
+            message: "Email was not found"
+          }]
+        }
       case 400:
         return {
           isError: true,

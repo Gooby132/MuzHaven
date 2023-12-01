@@ -1,4 +1,5 @@
-﻿using DomainSeed.ValueObjects.Auth;
+﻿using DomainSeed.CommonErrors;
+using DomainSeed.ValueObjects.Auth;
 using DomainSeed.ValueObjects.Internet;
 using FluentResults;
 using Microsoft.EntityFrameworkCore;

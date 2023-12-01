@@ -1,6 +1,7 @@
 ﻿using ApiService.Application.Users.Commands;
 using ApiService.Application.Users.Queries;
 using DomainSeed;
+using DomainSeed.CommonErrors;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using PermissionService.Contracts.Requests;

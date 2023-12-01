@@ -1,6 +1,6 @@
-﻿using FluentResults;
+﻿using DomainSeed.CommonErrors;
+using FluentResults;
 using Microsoft.EntityFrameworkCore;
-using PermissionService.Domain.Errors;
 using PermissionService.Domain.UserPermissions;
 using PermissionService.Domain.UserPermissions.Repositories;
 using PermissionService.Persistence.Context;

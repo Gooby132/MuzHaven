@@ -1,6 +1,6 @@
 ﻿using FluentResults;
 
-namespace PermissionService.Domain.Errors;
+namespace DomainSeed.CommonErrors;
 
 public class NotFoundError : Error
 {
