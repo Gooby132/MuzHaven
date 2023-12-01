@@ -9,10 +9,7 @@ namespace ApiService.Application.Users.Queries;
 public static class GetUserById
 {
 
-	public class Query : IRequest<Result<User>>
-	{
-        public Guid Id { get; set; }
-    }
+	public record Query(Guid Id) : IRequest<Result<User>>;
 
     internal class Handler : IRequestHandler<Query, Result<User>>
     {

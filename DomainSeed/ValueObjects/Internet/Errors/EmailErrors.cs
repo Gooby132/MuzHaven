@@ -1,6 +1,4 @@
-﻿using DomainSeed;
-
-namespace PermissionService.Domain.UserPermissions.Errors;
+﻿namespace DomainSeed.ValueObjects.Internet.Errors;
 
 public class EmailErrors : ErrorBase
 {

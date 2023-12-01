@@ -1,4 +1,5 @@
 ﻿using DomainSeed;
+using DomainSeed.ValueObjects.Internet;
 using FluentResults;
 using UserService.Domain.Errors;
 
@@ -11,16 +12,16 @@ public class PersonMetaData : ValueObject
     public const int MinNameLength = 2;
     public const int MaxNameLength = 30;
 
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
-    public string Email { get; set; }
+    public string FirstName { get; private set; }
+    public string LastName { get; private set; }
+    public Email Email { get; private set; }
 
     private PersonMetaData() { }
 
     private PersonMetaData(
         string firstName,
         string lastName,
-        string email)
+        Email email)
     {
         FirstName = firstName;
         LastName = lastName;
@@ -33,7 +34,7 @@ public class PersonMetaData : ValueObject
         string email)
     {
 
-        List<Error> errors = new List<Error>();
+        List<IError> errors = new List<IError>();
 
         if (firstName.Length < MinNameLength)
             errors.Add(InvalidNameError.FirstNameTooShort());
@@ -47,13 +48,20 @@ public class PersonMetaData : ValueObject
         if (lastName.Length > MaxNameLength)
             errors.Add(InvalidNameError.LastNameTooLong());
 
+        var emailValueObject = Email.Create(email);
+
+        if (emailValueObject.IsFailed)
+        {
+            errors.AddRange(emailValueObject.Errors);
+        }
+
         if (errors.Any())
             return Result.Fail(errors);
 
         return new PersonMetaData(
             firstName, 
-            lastName, 
-            email);
+            lastName,
+            emailValueObject.Value);
     }
 
     protected override IEnumerable<object> GetEqualityComponents()

@@ -1,8 +1,8 @@
-﻿using FluentResults;
-using PermissionService.Domain.UserPermissions.Errors;
+﻿using DomainSeed.ValueObjects.Internet.Errors;
+using FluentResults;
 using System.ComponentModel.DataAnnotations;
 
-namespace PermissionService.Domain.UserPermissions.ValueObjects;
+namespace DomainSeed.ValueObjects.Internet;
 
 public class Email
 {
@@ -12,7 +12,7 @@ public class Email
 
     public static Result<Email> Create(string email)
     {
-        if (!(new EmailAddressAttribute().IsValid(email)))
+        if (!new EmailAddressAttribute().IsValid(email))
             return EmailErrors.EmailIsInvalid();
 
         return new Email

@@ -1,4 +1,4 @@
-﻿using PermissionService.Infrastructure.Authorization.Core;
+﻿using DomainSeed.ValueObjects.Auth;
 
 namespace PermissionService.Infrastructure.Authorization.Abstracts;
 

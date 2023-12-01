@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DomainSeed.ValueObjects.Internet;
+using Microsoft.EntityFrameworkCore;
 using PermissionService.Domain.ProjectPermissions;
 using PermissionService.Domain.UserPermissions;
+using PermissionService.Domain.UserPermissions.ValueObjects;
 
 namespace PermissionService.Persistence.Context;
 
@@ -29,15 +31,17 @@ public class PermissionContext : DbContext
                 builder.Property(p => p.Email)
                     .HasConversion(
                     p => p.Raw,
-                    p => Domain.UserPermissions.ValueObjects.Email.Create(p).Value);
+                    p => Email.Create(p).Value);
+
+                builder.Property(p => p.Password)
+                    .HasConversion(
+                    p => p.Text,
+                    p => Password.Create(p).Value);
 
                 builder.Property(p => p.Permission)
                 .HasConversion(
                     p => p.Value,
-                    p => Domain.UserPermissions.ValueObjects.Permissions.FromValue(p));
-
-                builder.OwnsOne(p => p.Password);
-
+                    p => Permissions.FromValue(p));
             });
 
         modelBuilder

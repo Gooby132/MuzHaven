@@ -3,6 +3,8 @@ using ApiService.Application.Users.Queries;
 using DomainSeed;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using PermissionService.Contracts.Requests;
+using PermissionService.Domain.UserPermissions.Errors;
 using PermissionService.Infrastructure.Authorization.Abstracts;
 using UserService.Contracts.Requests;
 using UserService.Contracts.Responses;
@@ -55,7 +57,7 @@ public class UsersController : ControllerBase
         if (res.IsFailed)
         {
             // defined errors
-        
+
             if (res.HasError<ErrorBase>())
                 return BadRequest(res.Errors.Select(r => new
                 {
@@ -82,10 +84,48 @@ public class UsersController : ControllerBase
                     Bio = res.Value.ArtistDescription.Bio,
                     FirstName = res.Value.MetaData.FirstName,
                     LastName = res.Value.MetaData.LastName,
-                    Email = res.Value.MetaData.Email,
+                    Email = res.Value.MetaData.Email.Raw,
                 },
                 Token = _tokenProvider.CreateGuestToken(request.Email).RawToken,
             });
+    }
+
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(LoginUserResponse))]
+    [HttpPost("login-user")]
+    public async Task<IActionResult> Login(
+        [FromBody] LoginRequest request,
+        CancellationToken token = default)
+    {
+
+        var login = await _mediator.Send(new LoginUserByEmail.Command(request.Email, request.Password), token);
+
+        if (login.IsFailed)
+        {
+            if (login.HasError<NotFoundError>())
+                return NotFound(request.Email);
+
+            if (login.HasError<Unauthorized>()) 
+                return Unauthorized(request.Email);
+
+            _logger.LogError("{this} failed to login user with email - '{email}'. error(s) - '{errors}'",
+                this, request.Email, string.Join(", ", login.Reasons.Select(r => r.Message)));
+
+            return Problem();
+        }
+
+        return Ok(new LoginUserResponse
+        {
+            Token = login.Value.Token.RawToken,
+            User = new UserService.Contracts.Dtos.UserDto
+            {
+                Id = login.Value.User.Id,
+                Email = login.Value.User.MetaData.Email.Raw,
+                FirstName = login.Value.User.MetaData.FirstName,
+                LastName = login.Value.User.MetaData.LastName,
+                Bio = login.Value.User.ArtistDescription.Bio,
+                StageName = login.Value.User.ArtistDescription.StageName
+            }
+        });
     }
 
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetUserResponse))]
@@ -96,10 +136,9 @@ public class UsersController : ControllerBase
         [FromQuery] GetUserByIdRequest request,
         CancellationToken token = default)
     {
-        var user = await _mediator.Send(new GetUserById.Query
-        {
-            Id = request.Id,
-        }, token);
+        var user = await _mediator.Send(new GetUserById.Query(
+            request.Id
+            ), token);
 
         if (user.IsFailed)
         {
@@ -118,7 +157,7 @@ public class UsersController : ControllerBase
                 Bio = user.Value.ArtistDescription.Bio,
                 FirstName = user.Value.MetaData.FirstName,
                 LastName = user.Value.MetaData.LastName,
-                Email = user.Value.MetaData.Email,
+                Email = user.Value.MetaData.Email.Raw,
             }
         });
     }

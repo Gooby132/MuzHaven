@@ -21,12 +21,13 @@ internal class UserPermissionRepository : IUserPermissionRepository
     {
         try
         {
-            var project = await _context.UserPermissions.FirstOrDefaultAsync(p => p.Email == email, token);
+            var user = await _context.UserPermissions
+                .FirstOrDefaultAsync(p => p.Email.Raw == email, token);
 
-            if (project is null)
+            if (user is null)
                 return new NotFoundError();
 
-            return project;
+            return user;
         }
         catch (Exception e)
         {

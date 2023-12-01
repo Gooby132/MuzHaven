@@ -21,4 +21,8 @@
     <ProjectReference Include="..\PermissionService.Domain\PermissionService.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Authorization\Core\" />
+  </ItemGroup>
+
 </Project>
