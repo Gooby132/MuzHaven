@@ -1,8 +1,8 @@
-﻿using FluentResults;
+﻿using DomainSeed.CommonErrors;
+using FluentResults;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ProjectService.Domain;
-using ProjectService.Domain.Errors;
 using ProjectService.Domain.Repositories;
 using ProjectService.Persistence.Context;
 using ProjectService.Persistence.Errors;

@@ -3,6 +3,9 @@ using ProjectService.Contracts.Requests;
 using ProjectService.Contracts.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using PermissionService.Infrastructure.Authorization.Abstracts;
+using DomainSeed;
 
 namespace ApiService.Controllers;
 
@@ -30,18 +33,35 @@ public class ProjectsController : ControllerBase
 
     #region Methods
 
+    [Authorize(IPermissionTokenProvider.PermissionSchemeName)]
     [HttpPost("create-project")]
     public async Task<IActionResult> Create(CreateProjectRequest request, CancellationToken token = default)
     {
-
         var res = await _mediator.Send(new Application.Projects.Commands.CreateProject.Command
-        {
-            Name = request.Name
-        });
+        (
+            request.Title,
+            request.Album,
+            request.Description,
+            request.ReleseInUtc,
+            request.BeatsPerMinute,
+            request.MusicalScale,
+            request.MusicalKey
+        ), token);
 
         if (res.IsFailed)
         {
-            // defined errors
+            if (res.HasError<ErrorBase>())
+            {
+                return BadRequest(res.Errors.Select(r => new
+                {
+                    r.Message,
+                    Code = (r as ErrorBase)?.ErrorCode,
+                    Group = (r as ErrorBase)?.GroupCode,
+                }));
+            }
+
+            _logger.LogError("{this} project creation failed. errors - '{errors}'",
+                this, string.Join(", ", res.Reasons.Select(r => r.Message)));
 
             return Problem(); // undefined errors
         }
@@ -54,7 +74,17 @@ public class ProjectsController : ControllerBase
                Project = new ProjectService.Contracts.Dtos.ProjectDto
                {
                    Id = res.Value.Id,
-                   Name = res.Value.MetaData.Name,
+                   Title = res.Value.Title.Text,
+                   Album = res.Value.Album,
+                   MusicalProfile = new ProjectService.Contracts.Dtos.MusicalProfileDto
+                   {
+                       Key = (int)res.Value.MusicalProfile.Key,
+                       Scale = (int)res.Value.MusicalProfile.Scale,
+                   },
+                   BeatsPerMinute = res.Value.BeatsPerMinute,
+                   CreatedInUtc = DateTime.UtcNow,
+                   Description = res.Value.Description.Text,
+                   ReleaseInUtc = DateTime.UtcNow,
                }
            });
     }
@@ -80,7 +110,17 @@ public class ProjectsController : ControllerBase
             Project = new ProjectService.Contracts.Dtos.ProjectDto
             {
                 Id = res.Value.Id,
-                Name = res.Value.MetaData.Name,
+                Title = res.Value.Title.Text,
+                Album = res.Value.Album,
+                BeatsPerMinute = res.Value.BeatsPerMinute,
+                CreatedInUtc = res.Value.CreatedInUtc,
+                Description = res.Value.Description.Text,
+                ReleaseInUtc = res.Value.ReleaseInUtc,
+                MusicalProfile = new ProjectService.Contracts.Dtos.MusicalProfileDto
+                {
+                    Scale = (int)res.Value.MusicalProfile.Scale,
+                    Key = (int)res.Value.MusicalProfile.Key,
+                },
             }
         });
     }

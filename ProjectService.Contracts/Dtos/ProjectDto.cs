@@ -3,7 +3,12 @@
 public class ProjectDto
 {
 
-    public Guid Id { get; set; }
-    public string Name { get; set; }
-
+    public Guid Id { get; init; }
+    public string Title { get; init; }
+    public string Album { get; init; }
+    public string Description { get; init; }
+    public DateTime CreatedInUtc { get; init; }
+    public DateTime ReleaseInUtc { get; init; }
+    public float BeatsPerMinute { get; init; }
+    public MusicalProfileDto MusicalProfile { get; init; }
 }

@@ -12,13 +12,19 @@ namespace ApiService.Application.Projects.Commands;
 public static class CreateProject
 {
 
-	public class Command : IRequest<Result<Project>>
-	{
-        public string Name { get; set; }
-    }
+    public record Command(
+        string Title,
+        string Album,
+        string Description,
+        DateTime ReleseInUtc,
+        float BeatsPerMinute,
+        int MusicalKey,
+        int MusicalScale
+        ) : IRequest<Result<Project>>;
 
     internal class Handler : IRequestHandler<Command, Result<Project>>
     {
+
         #region Fields
 
         private readonly ILogger<Handler> _logger;
@@ -47,20 +53,18 @@ public static class CreateProject
         public async Task<Result<Project>> Handle(Command request, CancellationToken cancellationToken)
         {
 
-            _logger.LogTrace("{this} create project was requested", 
+            _logger.LogTrace("{this} create project was requested",
                 this);
 
-            var metaData = MetaData.Create(request.Name);
-
-            if (metaData.IsFailed)
-            {
-                _logger.LogTrace("{this} bad request creating project meta data. error(s) - '{errors}'",
-                    this, string.Join(", ", metaData.Reasons.Select(r => r.Message)));
-
-                return Result.Fail(metaData.Errors);
-            }
-
-            var project = Project.Create(metaData.Value);
+            var project = Project.Create(
+                request.Title,
+                request.Album,
+                request.Description,
+                request.ReleseInUtc,
+                request.BeatsPerMinute,
+                request.MusicalKey,
+                request.MusicalScale
+                );
 
             if (project.IsFailed)
             {

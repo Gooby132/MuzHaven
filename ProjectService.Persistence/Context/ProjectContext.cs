@@ -25,7 +25,19 @@ internal class ProjectContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<Project>().OwnsOne(p => p.MetaData).WithOwner();
+        modelBuilder
+            .Entity<Project>()
+            .OwnsOne(p => p.Title)
+            .WithOwner();
 
+        modelBuilder
+            .Entity<Project>()
+            .OwnsOne(p => p.Description)
+            .WithOwner();
+
+        modelBuilder
+            .Entity<Project>()
+            .OwnsOne(p => p.MusicalProfile)
+            .WithOwner();
     }
 }
