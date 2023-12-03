@@ -89,6 +89,13 @@ public class ProjectsController : ControllerBase
            });
     }
 
+    [HttpGet("get-projects")]
+    public async Task<IActionResult> GetProjects([FromQuery] string token, CancellationToken cancellationToken = default)
+    {
+
+        return Ok();
+    }
+
     [HttpGet("get-by-id")]
     public async Task<IActionResult> GetById([FromQuery] GetProjectByIdRequest request, CancellationToken token = default)
     {

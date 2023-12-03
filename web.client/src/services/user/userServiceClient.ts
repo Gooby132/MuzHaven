@@ -1,5 +1,4 @@
-import axios, { AxiosError } from "axios";
-import { config } from "process";
+import axios from "axios";
 
 const USER_SERVICE_BASE = "http://localhost:8080/api/Users";
 const REGISTER_USER_ENDPOINT = "/register-user";

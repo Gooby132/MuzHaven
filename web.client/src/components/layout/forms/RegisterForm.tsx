@@ -3,9 +3,9 @@ import styled from "styled-components";
 import {
   RegisterData,
   validateRegisterData,
-} from "../../services/user/userServiceClient";
-import { TextInput } from "../atoms/form/TextInput";
-import { SubmitInput } from "../atoms/form/SubmitInput";
+} from "../../../services/user/userServiceClient";
+import { TextInput } from "../../atoms/form/TextInput";
+import { SubmitInput } from "../../atoms/form/SubmitInput";
 
 const Container = styled.form`
   display: flex;

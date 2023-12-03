@@ -22,7 +22,7 @@ const Container = styled.div`
       min-width: 30%;
     }
     > .content-container {
-      display:flex;
+      display: flex;
       flex-direction: column;
       min-width: 70%;
     }
@@ -32,7 +32,10 @@ const Container = styled.div`
 export const Main = (props: Props) => {
   const isLoggedIn = useSelector((state: RootState) => state.user.loggedIn);
 
-  const loggedInRoutes = [<CoreLink key={0} text="profile" to="profile" />];
+  const loggedInRoutes = [
+    <CoreLink key={0} text="profile" to="profile" />,
+    <CoreLink key={1} text="projects" to="projects" />,
+  ];
 
   const logInRoutes = [
     <CoreLink key={1} text="login" to="login" />,
@@ -41,25 +44,27 @@ export const Main = (props: Props) => {
 
   return (
     <Container>
-      <Header layout={
-        <HeaderLayout 
-          logo={<WordMark text="MuzHaven" />}
-          search={<div></div>}
-          userIcon={<div></div>}
-        />
-      } />
+      <Header
+        layout={
+          <HeaderLayout
+            logo={<WordMark text="MuzHaven" />}
+            search={<div></div>}
+            userIcon={<div></div>}
+          />
+        }
+      />
       <section className="main-container">
         <Sidebar
           links={[
             <CoreLink key={3} text="home" to="/" />,
             <LinkGroup
               key={0}
-              header="user"
+              header="User"
               links={isLoggedIn ? loggedInRoutes : logInRoutes}
             />,
           ]}
         />
-        <div className="content-container">
+        <div id="content-container" className="content-container">
           <Outlet />
           <Footer />
         </div>

@@ -6,7 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import { persistor, store } from "./redux/store";
 import { Provider } from "react-redux";
-import { KEY_PREFIX } from 'redux-persist';
+import { KEY_PREFIX } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 
 const root = ReactDOM.createRoot(
@@ -15,11 +15,13 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Provider store={store}>
+    <PersistGate persistor={persistor}>
+      <BrowserRouter>
+        <Provider store={store}>
           <App />
-      </Provider>
-    </BrowserRouter>
+        </Provider>
+      </BrowserRouter>
+    </PersistGate>
   </React.StrictMode>
 );
 

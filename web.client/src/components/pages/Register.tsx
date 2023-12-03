@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { PageTitle } from "../atoms/texts/PageTitle";
 import styled from "styled-components";
-import { RegisterForm } from "../layout/RegisterForm";
+import { RegisterForm } from "../layout/forms/RegisterForm";
 import {
   RegisterData,
   registerUser,

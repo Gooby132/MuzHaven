@@ -9,6 +9,9 @@ import { Profile } from "../pages/Profile";
 import { Home } from "../pages/Home";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import Projects from "../pages/Projects";
+// @ts-ignore
+import Modal from 'react-modal'
 
 const Container = styled.div``;
 
@@ -24,11 +27,14 @@ function App() {
           <Route path="/login" errorElement={<Error />} element={ isLoggedIn ? <Navigate to="/profile" replace /> : <Login />} />
           <Route path="/register" errorElement={<Error />} element={ isLoggedIn ? <Navigate to="/profile" replace /> : <Register />} />
           <Route path="/profile" errorElement={<Error />} element={ !isLoggedIn ? <Navigate to="/login" replace /> : <Profile />} />
+          <Route path="/projects" errorElement={<Error />} element={ !isLoggedIn ? <Navigate to="/login" replace /> : <Projects/>} />
           <Route path="/"  errorElement={<Error />} />
         </Route>
       </Routes>
     </Container>
   );
 }
+
+Modal.setAppElement("#root")
 
 export default App;

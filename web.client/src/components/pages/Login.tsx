@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { PageTitle } from "../atoms/texts/PageTitle";
-import { LoginForm, LoginFormErrors } from "../layout/LoginForm";
+import { LoginForm, LoginFormErrors } from "../layout/forms/LoginForm";
 import { EMAIL_GROUP_CODE, LoginData, PASSWORD_GROUP_CODE, loginUser } from "../../services/user/userServiceClient";
 import { userActions } from "../../redux/features/user/userSlice";
 import { useDispatch } from "react-redux";
