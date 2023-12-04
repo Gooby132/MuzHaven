@@ -17,24 +17,29 @@ public class MusicalProfile
         Scale = scale;
     }
 
-    public static Result<MusicalProfile> Create(int key, int scale)
+    public static Result<MusicalProfile> Create(int? key, int? scale)
     {
+
+        if (!key.HasValue && !scale.HasValue)
+            return new MusicalProfile(MusicalKey.None, MusicalScale.None);
+
         var errors = new List<Error>();
 
-        if (!Enum.IsDefined(typeof(MusicalKey), key))
+        if (!Enum.IsDefined(typeof(MusicalKey), key.Value))
             errors.Add(MusicalProfileError.KeyIsNotDefined());
 
-        if (!Enum.IsDefined(typeof(MusicalScale), scale))
+        if (!Enum.IsDefined(typeof(MusicalScale), scale.Value))
             errors.Add(MusicalProfileError.ScaleIsNotDefined());
 
         if (errors.Any())
             return Result.Fail(errors);
 
-        return new MusicalProfile((MusicalKey)key, (MusicalScale)scale);
+        return new MusicalProfile((MusicalKey)key.Value, (MusicalScale)scale.Value);
     }
 
     public enum MusicalKey
     {
+        None = -1,
         C,
         CSharp_DFlat,
         D,
@@ -51,6 +56,7 @@ public class MusicalProfile
 
     public enum MusicalScale
     {
+        None = -1,
         Major,
         NaturalMinor,
         HarmonicMinor,

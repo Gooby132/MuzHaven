@@ -16,10 +16,10 @@ public static class CreateProject
         string Title,
         string Album,
         string Description,
-        string ReleaseInUtc,
+        string? ReleaseInUtc,
         float BeatsPerMinute,
-        int MusicalKey,
-        int MusicalScale
+        int? MusicalKey,
+        int? MusicalScale
         ) : IRequest<Result<Project>>;
 
     internal class Handler : IRequestHandler<Command, Result<Project>>

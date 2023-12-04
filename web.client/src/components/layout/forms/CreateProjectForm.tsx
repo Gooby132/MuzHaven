@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ProjectDto } from "../../../services/project/Contracts";
+import { ProjectDto } from "@services/project/contracts";
 import styled from "styled-components";
 import { TextInput } from "../../atoms/form/TextInput";
 import { NumberInput } from "../../atoms/form/NumberInput";

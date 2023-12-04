@@ -14,11 +14,11 @@ public class Project : Aggregate<Guid>
     public string Album { get; private set; }
     public Description Description { get; private set; }
     public DateTime CreatedInUtc { get; init; }
-    public DateTime ReleaseInUtc { get; init; }
+    public DateTime? ReleaseInUtc { get; init; }
     public float BeatsPerMinute { get; private set; }
-    public MusicalProfile MusicalProfile { get; private set; }
+    public MusicalProfile? MusicalProfile { get; private set; }
 
-    public static Result<Project> Create(string title, string album, string description, string releaseInUtc, float beatsPerMinute, int musicalKey, int musicalScale)
+    public static Result<Project> Create(string title, string album, string description, string? releaseInUtc, float beatsPerMinute, int? musicalKey, int? musicalScale)
     {
 
         List<IError> errors = new List<IError>();
@@ -36,12 +36,18 @@ public class Project : Aggregate<Guid>
         if (musicalProfile.IsFailed)
             errors.AddRange(musicalProfile.Errors);
 
-        if (!DateTime.TryParse(releaseInUtc, out var releaseInUtcDateTime))
-            errors.Add(ReleaseDateErrors.CouldNotParseReleaseDate());
+        DateTime? releaseInUtcDateTime = null;
+        if (!string.IsNullOrEmpty(releaseInUtc))
+        {
+            if (!DateTime.TryParse(releaseInUtc, out var temp))
+                errors.Add(ReleaseDateErrors.CouldNotParseReleaseDate());
 
-        if (releaseInUtcDateTime <
-            DateTime.UtcNow.Subtract(TimeSpan.FromMinutes(1))) // compensation for traversal time
-            errors.Add(ReleaseDateErrors.ReleaseDateSetToPast());
+            if (temp <
+                DateTime.UtcNow.Subtract(TimeSpan.FromMinutes(1))) // compensation for traversal time
+                errors.Add(ReleaseDateErrors.ReleaseDateSetToPast());
+
+            releaseInUtcDateTime = temp;
+        }
 
         if (errors.Any())
             return Result.Fail(errors);

@@ -33,7 +33,7 @@ public class ProjectsController : ControllerBase
 
     #region Methods
 
-    [Authorize(IPermissionTokenProvider.PermissionSchemeName)]
+    [Authorize(AuthenticationSchemes = IPermissionTokenProvider.PermissionSchemeName)]
     [HttpPost("create-project")]
     public async Task<IActionResult> Create(CreateProjectRequest request, CancellationToken token = default)
     {
@@ -44,8 +44,8 @@ public class ProjectsController : ControllerBase
             request.Project.Description,
             request.Project.ReleaseInUtc,
             request.Project.BeatsPerMinute,
-            request.Project.MusicalProfile.Key,
-            request.Project.MusicalProfile.Scale
+            request.Project.MusicalProfile?.Key,
+            request.Project.MusicalProfile?.Scale
         ), token);
 
         if (res.IsFailed)
@@ -84,7 +84,7 @@ public class ProjectsController : ControllerBase
                    BeatsPerMinute = res.Value.BeatsPerMinute,
                    CreatedInUtc = res.Value.CreatedInUtc.ToString("O"),
                    Description = res.Value.Description.Text,
-                   ReleaseInUtc = res.Value.ReleaseInUtc.ToString("O"),
+                   ReleaseInUtc = res.Value.ReleaseInUtc?.ToString("O"),
                }
            });
     }
@@ -122,7 +122,7 @@ public class ProjectsController : ControllerBase
                 BeatsPerMinute = res.Value.BeatsPerMinute,
                 CreatedInUtc = res.Value.CreatedInUtc.ToString("O"),
                 Description = res.Value.Description.Text,
-                ReleaseInUtc = res.Value.ReleaseInUtc.ToString("O"),
+                ReleaseInUtc = res.Value.ReleaseInUtc?.ToString("O"),
                 MusicalProfile = new ProjectService.Contracts.Dtos.MusicalProfileDto
                 {
                     Scale = (int)res.Value.MusicalProfile.Scale,

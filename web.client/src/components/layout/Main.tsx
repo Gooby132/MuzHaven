@@ -1,4 +1,3 @@
-import React, { ReactNode } from "react";
 import styled from "styled-components";
 import { Sidebar } from "../organizem/Sidebar";
 import { CoreLink } from "../atoms/links/CoreLink";

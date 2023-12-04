@@ -1,5 +1,5 @@
 export type CreateProjectRequest = {
-  token: string
+  token?: string
   project: ProjectDto
 }
 
@@ -10,13 +10,11 @@ export type CreateProjectResponse = {
 }
 
 // dtos
-
 export type ErrorBaseDto = {
   code: number;
   group: number;
   message?: string;
 };
-
 
 export type MusicalProfileDto  = {
   key?: number

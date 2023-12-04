@@ -9,8 +9,11 @@ import { BasicButton } from "../atoms/buttons/BasicButton";
 import { BasicModalLayout } from "../layout/modals/BasicModalLayout";
 import { ModalTitle } from "../atoms/texts/ModalTitle";
 import { TextInput } from "../atoms/form/TextInput";
-import { ProjectDto } from "../../services/project/Contracts";
+import { ProjectDto } from "../../services/project/contracts";
 import { CreateProjectForm } from "../layout/forms/CreateProjectForm";
+import { createProject } from "../../services/project/projectServiceClient";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "redux/store";
 
 const Container = styled.div`
   position: relative;
@@ -19,9 +22,16 @@ const Container = styled.div`
 type Props = {};
 
 export const Projects = ({}: Props) => {
+  const dispatcher = useDispatch()
+  const user = useSelector((state: RootState) => state.user)
   const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
 
-  const onSubmit = (project: ProjectDto) => {}
+  const onSubmit = async (project: ProjectDto) => {
+    const result = await createProject({
+      token: user.token,
+      project: project
+    })
+  }
 
   return (
     <Container>
@@ -34,10 +44,10 @@ export const Projects = ({}: Props) => {
       <Modal isOpen={showCreateModal}>
         <BasicModalLayout
             headerChildren={[
-              <ModalTitle text="Create Project" />
+              <ModalTitle key={0} text="Create Project" />
             ]}
           footerChildren={[
-            <BasicButton onClick={() => setShowCreateModal((prev) => !prev)} >
+            <BasicButton key={1} onClick={() => setShowCreateModal((prev) => !prev)} >
               Close
             </BasicButton>,
           ]}

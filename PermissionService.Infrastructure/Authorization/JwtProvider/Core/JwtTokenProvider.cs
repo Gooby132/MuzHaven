@@ -43,7 +43,7 @@ internal class JwtTokenProvider : IPermissionTokenProvider
                 new Claim(IPermissionTokenProvider.ProjectIdClaim, project.ToString()),
                 new Claim(ClaimTypes.Role, Domain.ProjectPermissions.ValueObjects.Permissions.Commenter.Name),
             }),
-            Expires = DateTime.UtcNow.AddMinutes(15),
+            Expires = DateTime.UtcNow.AddDays(15),
             Issuer = issuer,
             Audience = audience,
             SigningCredentials = new SigningCredentials(
@@ -70,7 +70,7 @@ internal class JwtTokenProvider : IPermissionTokenProvider
                 new Claim(IPermissionTokenProvider.ProjectIdClaim, project.ToString()),
                 new Claim(ClaimTypes.Role, Domain.ProjectPermissions.ValueObjects.Permissions.Contributer.Name),
             }),
-            Expires = DateTime.UtcNow.AddMinutes(15),
+            Expires = DateTime.UtcNow.AddDays(15),
             Issuer = issuer,
             Audience = audience,
             SigningCredentials = new SigningCredentials(
@@ -97,7 +97,7 @@ internal class JwtTokenProvider : IPermissionTokenProvider
                 new Claim(IPermissionTokenProvider.ProjectIdClaim, project.ToString()),
                 new Claim(ClaimTypes.Role, Domain.ProjectPermissions.ValueObjects.Permissions.Reader.Name),
             }),
-            Expires = DateTime.UtcNow.AddMinutes(15),
+            Expires = DateTime.UtcNow.AddDays(15),
             Issuer = issuer,
             Audience = audience,
             SigningCredentials = new SigningCredentials(
@@ -123,7 +123,7 @@ internal class JwtTokenProvider : IPermissionTokenProvider
                 new Claim(IPermissionTokenProvider.UserIdClaim, userId.ToString()),
                 new Claim(ClaimTypes.Role, Domain.UserPermissions.ValueObjects.Permissions.Guest.Name)
             }),
-            Expires = DateTime.UtcNow.AddMinutes(15),
+            Expires = DateTime.UtcNow.AddDays(15),
             Issuer = issuer,
             Audience = audience,
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
