@@ -16,7 +16,7 @@ public static class CreateProject
         string Title,
         string Album,
         string Description,
-        DateTime ReleseInUtc,
+        string ReleaseInUtc,
         float BeatsPerMinute,
         int MusicalKey,
         int MusicalScale
@@ -60,7 +60,7 @@ public static class CreateProject
                 request.Title,
                 request.Album,
                 request.Description,
-                request.ReleseInUtc,
+                request.ReleaseInUtc,
                 request.BeatsPerMinute,
                 request.MusicalKey,
                 request.MusicalScale

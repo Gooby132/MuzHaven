@@ -39,13 +39,13 @@ public class ProjectsController : ControllerBase
     {
         var res = await _mediator.Send(new Application.Projects.Commands.CreateProject.Command
         (
-            request.Title,
-            request.Album,
-            request.Description,
-            request.ReleseInUtc,
-            request.BeatsPerMinute,
-            request.MusicalScale,
-            request.MusicalKey
+            request.Project.Title,
+            request.Project.Album,
+            request.Project.Description,
+            request.Project.ReleaseInUtc,
+            request.Project.BeatsPerMinute,
+            request.Project.MusicalProfile.Key,
+            request.Project.MusicalProfile.Scale
         ), token);
 
         if (res.IsFailed)
@@ -71,7 +71,7 @@ public class ProjectsController : ControllerBase
            new { res.Value.Id },
            new CreateProjectResponse
            {
-               Project = new ProjectService.Contracts.Dtos.ProjectDto
+               Project = new ProjectService.Contracts.Dtos.CompleteProjectDto
                {
                    Id = res.Value.Id,
                    Title = res.Value.Title.Text,
@@ -82,9 +82,9 @@ public class ProjectsController : ControllerBase
                        Scale = (int)res.Value.MusicalProfile.Scale,
                    },
                    BeatsPerMinute = res.Value.BeatsPerMinute,
-                   CreatedInUtc = DateTime.UtcNow,
+                   CreatedInUtc = res.Value.CreatedInUtc.ToString("O"),
                    Description = res.Value.Description.Text,
-                   ReleaseInUtc = DateTime.UtcNow,
+                   ReleaseInUtc = res.Value.ReleaseInUtc.ToString("O"),
                }
            });
     }
@@ -114,15 +114,15 @@ public class ProjectsController : ControllerBase
 
         return Ok(new GetProjectResponse
         {
-            Project = new ProjectService.Contracts.Dtos.ProjectDto
+            Project = new ProjectService.Contracts.Dtos.CompleteProjectDto
             {
                 Id = res.Value.Id,
                 Title = res.Value.Title.Text,
                 Album = res.Value.Album,
                 BeatsPerMinute = res.Value.BeatsPerMinute,
-                CreatedInUtc = res.Value.CreatedInUtc,
+                CreatedInUtc = res.Value.CreatedInUtc.ToString("O"),
                 Description = res.Value.Description.Text,
-                ReleaseInUtc = res.Value.ReleaseInUtc,
+                ReleaseInUtc = res.Value.ReleaseInUtc.ToString("O"),
                 MusicalProfile = new ProjectService.Contracts.Dtos.MusicalProfileDto
                 {
                     Scale = (int)res.Value.MusicalProfile.Scale,

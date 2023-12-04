@@ -1,5 +1,6 @@
 ﻿using DomainSeed;
 using FluentResults;
+using ProjectService.Domain.Errors;
 using ProjectService.Domain.ValueObjects;
 
 namespace ProjectService.Domain;
@@ -17,7 +18,7 @@ public class Project : Aggregate<Guid>
     public float BeatsPerMinute { get; private set; }
     public MusicalProfile MusicalProfile { get; private set; }
 
-    public static Result<Project> Create(string title, string album, string description, DateTime releaseInUtc, float beatsPerMinute, int musicalKey, int musicalScale)
+    public static Result<Project> Create(string title, string album, string description, string releaseInUtc, float beatsPerMinute, int musicalKey, int musicalScale)
     {
 
         List<IError> errors = new List<IError>();
@@ -28,12 +29,19 @@ public class Project : Aggregate<Guid>
 
         if (titleValueObject.IsFailed)
             errors.AddRange(titleValueObject.Errors);
-        
+
         if (descriptionValueObject.IsFailed)
             errors.AddRange(descriptionValueObject.Errors);
 
-        if(musicalProfile.IsFailed)
+        if (musicalProfile.IsFailed)
             errors.AddRange(musicalProfile.Errors);
+
+        if (!DateTime.TryParse(releaseInUtc, out var releaseInUtcDateTime))
+            errors.Add(ReleaseDateErrors.CouldNotParseReleaseDate());
+
+        if (releaseInUtcDateTime <
+            DateTime.UtcNow.Subtract(TimeSpan.FromMinutes(1))) // compensation for traversal time
+            errors.Add(ReleaseDateErrors.ReleaseDateSetToPast());
 
         if (errors.Any())
             return Result.Fail(errors);
@@ -43,7 +51,7 @@ public class Project : Aggregate<Guid>
             Title = titleValueObject.Value,
             Album = album,
             Description = descriptionValueObject.Value,
-            ReleaseInUtc = releaseInUtc,
+            ReleaseInUtc = releaseInUtcDateTime,
             CreatedInUtc = DateTime.UtcNow,
             BeatsPerMinute = beatsPerMinute,
             MusicalProfile = musicalProfile.Value,
