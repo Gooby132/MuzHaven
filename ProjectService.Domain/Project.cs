@@ -10,6 +10,7 @@ public class Project : Aggregate<Guid>
 
     private readonly Queue<DomainEvent> _domainEvents = new Queue<DomainEvent>();
 
+    public string CreatorId { get; init; }
     public Title Title { get; private set; }
     public string Album { get; private set; }
     public Description Description { get; private set; }
@@ -18,7 +19,7 @@ public class Project : Aggregate<Guid>
     public float BeatsPerMinute { get; private set; }
     public MusicalProfile? MusicalProfile { get; private set; }
 
-    public static Result<Project> Create(string title, string album, string description, string? releaseInUtc, float beatsPerMinute, int? musicalKey, int? musicalScale)
+    public static Result<Project> Create(string creatorId, string title, string album, string description, string? releaseInUtc, float beatsPerMinute, int? musicalKey, int? musicalScale)
     {
 
         List<IError> errors = new List<IError>();
@@ -54,6 +55,7 @@ public class Project : Aggregate<Guid>
 
         return new Project
         {
+            CreatorId = creatorId,
             Title = titleValueObject.Value,
             Album = album,
             Description = descriptionValueObject.Value,

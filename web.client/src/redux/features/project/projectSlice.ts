@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { CreateProjectResponse, ProjectDto } from '@services/project/contracts'
+import { CreateProjectResponse, ProjectDto } from 'services/project/contracts'
 
 export type ProjectState = {
   projects: ProjectDto[]

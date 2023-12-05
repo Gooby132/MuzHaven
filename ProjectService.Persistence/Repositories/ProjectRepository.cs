@@ -1,4 +1,5 @@
 ﻿using DomainSeed.CommonErrors;
+using DomainSeed.ValueObjects.Auth;
 using FluentResults;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -61,6 +62,22 @@ internal class ProjectRepository : IProjectRepository
                 return new NotFoundError();
 
             return project;
+        }
+        catch (Exception e)
+        {
+            return Result.Fail(new DatabaseError(e));
+        }
+    }
+
+    public async Task<Result<IEnumerable<Project>>> GetProjectsByCreatorId(string creatorId, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var projects = await _context.Projects
+                .Where(project => project.CreatorId == creatorId)
+                .ToListAsync(cancellationToken);
+
+            return Result.Ok<IEnumerable<Project>>(projects);
         }
         catch (Exception e)
         {

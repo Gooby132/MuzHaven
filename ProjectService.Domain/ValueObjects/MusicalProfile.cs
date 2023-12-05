@@ -17,11 +17,11 @@ public class MusicalProfile
         Scale = scale;
     }
 
-    public static Result<MusicalProfile> Create(int? key, int? scale)
+    public static Result<MusicalProfile?> Create(int? key, int? scale)
     {
 
         if (!key.HasValue && !scale.HasValue)
-            return new MusicalProfile(MusicalKey.None, MusicalScale.None);
+            return Result.Ok<MusicalProfile?>(null);
 
         var errors = new List<Error>();
 

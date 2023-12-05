@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using PermissionService.Infrastructure.Authorization.Abstracts;
 using DomainSeed;
+using System.Linq;
+using ProjectService.Domain;
 
 namespace ApiService.Controllers;
 
@@ -18,15 +20,17 @@ public class ProjectsController : ControllerBase
 
     private readonly ILogger<ProjectsController> _logger;
     private readonly IMediator _mediator;
+    private readonly IPermissionTokenProvider _tokenProvider;
 
     #endregion
 
     #region Constructor
 
-    public ProjectsController(ILogger<ProjectsController> logger, IMediator mediator)
+    public ProjectsController(ILogger<ProjectsController> logger, IMediator mediator, IPermissionTokenProvider tokenProvider)
     {
         _logger = logger;
         _mediator = mediator;
+        _tokenProvider = tokenProvider;
     }
 
     #endregion
@@ -37,8 +41,15 @@ public class ProjectsController : ControllerBase
     [HttpPost("create-project")]
     public async Task<IActionResult> Create(CreateProjectRequest request, CancellationToken token = default)
     {
+
+        var id = HttpContext.User.Claims.FirstOrDefault(claim => claim.Type == IPermissionTokenProvider.UserIdClaim);
+
+        if (id?.Value is null)
+            return Unauthorized();
+
         var res = await _mediator.Send(new Application.Projects.Commands.CreateProject.Command
         (
+            id.Value,
             request.Project.Title,
             request.Project.Album,
             request.Project.Description,
@@ -76,24 +87,56 @@ public class ProjectsController : ControllerBase
                    Id = res.Value.Id,
                    Title = res.Value.Title.Text,
                    Album = res.Value.Album,
-                   MusicalProfile = new ProjectService.Contracts.Dtos.MusicalProfileDto
-                   {
-                       Key = (int)res.Value.MusicalProfile.Key,
-                       Scale = (int)res.Value.MusicalProfile.Scale,
-                   },
                    BeatsPerMinute = res.Value.BeatsPerMinute,
                    CreatedInUtc = res.Value.CreatedInUtc.ToString("O"),
                    Description = res.Value.Description.Text,
                    ReleaseInUtc = res.Value.ReleaseInUtc?.ToString("O"),
+                   MusicalProfile = res.Value.MusicalProfile is not null ? new ProjectService.Contracts.Dtos.MusicalProfileDto
+                   {
+                       Scale = (int)res.Value.MusicalProfile.Scale,
+                       Key = (int)res.Value.MusicalProfile.Key,
+                   } : null,
                }
            });
     }
 
     [HttpGet("get-projects")]
-    public async Task<IActionResult> GetProjects([FromQuery] string token, CancellationToken cancellationToken = default)
+    [Authorize(AuthenticationSchemes = IPermissionTokenProvider.PermissionSchemeName)]
+    public async Task<IActionResult> GetProjects(CancellationToken cancellationToken = default)
     {
 
-        return Ok();
+        var id = HttpContext.User.Claims.FirstOrDefault(claim => claim.Type == IPermissionTokenProvider.UserIdClaim);
+
+        if(id?.Value is null)
+            return Unauthorized();
+
+        var res = await _mediator.Send(new GetProjectsByCreatorId.Query(id.Value), cancellationToken);
+
+        if(res.IsFailed)
+        {
+            // defined errors
+
+            return Problem();
+        }
+
+        return Ok(new GetProjectsResponse
+        {
+            Projects = res.Value.Select(project => new ProjectService.Contracts.Dtos.CompleteProjectDto
+            {
+                Id = project.Id,
+                Title = project.Title.Text,
+                Album = project.Album,
+                BeatsPerMinute = project.BeatsPerMinute,
+                CreatedInUtc = project.CreatedInUtc.ToString("O"),
+                Description = project.Description.Text,
+                ReleaseInUtc = project.ReleaseInUtc?.ToString("O"),
+                MusicalProfile = project.MusicalProfile is not null ? new ProjectService.Contracts.Dtos.MusicalProfileDto
+                {
+                    Scale = (int)project.MusicalProfile.Scale,
+                    Key = (int)project.MusicalProfile.Key,
+                } : null,
+            })
+        });
     }
 
     [HttpGet("get-by-id")]
@@ -123,11 +166,11 @@ public class ProjectsController : ControllerBase
                 CreatedInUtc = res.Value.CreatedInUtc.ToString("O"),
                 Description = res.Value.Description.Text,
                 ReleaseInUtc = res.Value.ReleaseInUtc?.ToString("O"),
-                MusicalProfile = new ProjectService.Contracts.Dtos.MusicalProfileDto
+                MusicalProfile = res.Value.MusicalProfile is not null ? new ProjectService.Contracts.Dtos.MusicalProfileDto
                 {
                     Scale = (int)res.Value.MusicalProfile.Scale,
                     Key = (int)res.Value.MusicalProfile.Key,
-                },
+                } : null,
             }
         });
     }

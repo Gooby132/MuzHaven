@@ -1,19 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { PageTitle } from "../atoms/texts/PageTitle";
 import { SprededRow } from "../layout/rows/SprededRow";
 import { PageSizeButton } from "../atoms/buttons/PageSizeButton";
-// @ts-ignore
-import Modal from "react-modal";
 import { BasicButton } from "../atoms/buttons/BasicButton";
 import { BasicModalLayout } from "../layout/modals/BasicModalLayout";
 import { ModalTitle } from "../atoms/texts/ModalTitle";
 import { TextInput } from "../atoms/form/TextInput";
-import { ProjectDto } from "../../services/project/contracts";
+import {
+  CompleteProjectDto,
+  ProjectDto,
+} from "../../services/project/contracts";
 import { CreateProjectForm } from "../layout/forms/CreateProjectForm";
-import { createProject } from "../../services/project/projectServiceClient";
-import { useDispatch, useSelector } from "react-redux";
+import {
+  createProject,
+  fetchProjects,
+} from "../../services/project/projectServiceClient";
+import { useSelector } from "react-redux";
 import { RootState } from "redux/store";
+import { ProjectRow } from "../molecules/projects/ProjectRow";
+import { CreateProjectModal } from "components/organizem/modals/CreateProjectModal";
+import Seperator from "components/atoms/layouts/Seperator";
 
 const Container = styled.div`
   position: relative;
@@ -22,16 +29,30 @@ const Container = styled.div`
 type Props = {};
 
 export const Projects = ({}: Props) => {
-  const dispatcher = useDispatch()
-  const user = useSelector((state: RootState) => state.user)
+  const user = useSelector((state: RootState) => state.user);
   const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
+  const [createdProjects, setCreatedProjects] =
+    useState<CompleteProjectDto[]>();
 
   const onSubmit = async (project: ProjectDto) => {
     const result = await createProject({
       token: user.token,
-      project: project
-    })
-  }
+      project: project,
+    });
+  };
+
+  useEffect(() => {
+    const fetchCreatorProjects = async () => {
+      if (user.token === undefined) return;
+
+      const projects = await fetchProjects({
+        token: user.token,
+      });
+
+      if (!projects.isError) setCreatedProjects(projects.result!.projects);
+    };
+    fetchCreatorProjects();
+  }, []);
 
   return (
     <Container>
@@ -41,20 +62,21 @@ export const Projects = ({}: Props) => {
           Create Project
         </PageSizeButton>
       </SprededRow>
-      <Modal isOpen={showCreateModal}>
-        <BasicModalLayout
-            headerChildren={[
-              <ModalTitle key={0} text="Create Project" />
-            ]}
-          footerChildren={[
-            <BasicButton key={1} onClick={() => setShowCreateModal((prev) => !prev)} >
-              Close
-            </BasicButton>,
-          ]}
-        >
-          <CreateProjectForm onSubmit={onSubmit} />
-        </BasicModalLayout>
-      </Modal>
+
+      <div className="projects">
+        {createdProjects?.map((project) => (
+          <>
+          <Seperator />
+          <ProjectRow key={project.id} project={project} />
+          </>
+        ))}
+      </div>
+
+      <CreateProjectModal
+        showCreateModal={showCreateModal}
+        closeModalClicked={() => setShowCreateModal((prev) => !prev)}
+        onSubmit={onSubmit}
+      />
     </Container>
   );
 };

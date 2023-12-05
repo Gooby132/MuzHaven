@@ -13,6 +13,7 @@ public static class CreateProject
 {
 
     public record Command(
+        string CreatorId,
         string Title,
         string Album,
         string Description,
@@ -57,6 +58,7 @@ public static class CreateProject
                 this);
 
             var project = Project.Create(
+                request.CreatorId,
                 request.Title,
                 request.Album,
                 request.Description,

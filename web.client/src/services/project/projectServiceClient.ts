@@ -1,5 +1,6 @@
 import axios from "axios";
 import {
+  CompleteProjectDto,
   CreateProjectRequest,
   CreateProjectResponse,
   ErrorBaseDto,
@@ -23,10 +24,10 @@ export type FetchProjectsResponse = {
 };
 
 export type FetchProjectResult = {
-  projects: ProjectDto;
+  projects: CompleteProjectDto[];
 };
 
-export const fetchClientsProjects = async ({
+export const fetchProjects = async ({
   token,
 }: FetchClientProjectsRequest): Promise<FetchProjectsResponse> => {
   try {
@@ -39,7 +40,7 @@ export const fetchClientsProjects = async ({
     return {
       isError: false,
       result: {
-        projects: res.data,
+        projects: res.data.projects,
       },
     };
   } catch (e: any) {
