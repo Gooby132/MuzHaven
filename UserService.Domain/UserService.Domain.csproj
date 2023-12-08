@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DomainSeed\DomainSeed.csproj" />
+    <ProjectReference Include="..\ProjectService.Domain\ProjectService.Domain.csproj" />
   </ItemGroup>
 
 </Project>

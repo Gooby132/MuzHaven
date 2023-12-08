@@ -29,10 +29,13 @@ public class PersonMetaData : ValueObject
     }
 
     public static Result<PersonMetaData> Create(
-        string firstName,
-        string lastName,
-        string email)
+        string? firstName,
+        string? lastName,
+        string? email)
     {
+
+        if (string.IsNullOrEmpty(firstName)) return InvalidNameError.FirstNameWasEmpty();
+        if (string.IsNullOrEmpty(lastName)) return InvalidNameError.LastNameWasEmpty();
 
         List<IError> errors = new List<IError>();
 
@@ -41,7 +44,7 @@ public class PersonMetaData : ValueObject
 
         if (firstName.Length > MaxNameLength)
             errors.Add(InvalidNameError.FirstNameTooLong());
-        
+
         if (lastName.Length < MinNameLength)
             errors.Add(InvalidNameError.LastNameTooShort());
 
@@ -59,7 +62,7 @@ public class PersonMetaData : ValueObject
             return Result.Fail(errors);
 
         return new PersonMetaData(
-            firstName, 
+            firstName,
             lastName,
             emailValueObject.Value);
     }

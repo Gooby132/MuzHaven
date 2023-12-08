@@ -4,7 +4,6 @@ import styled from "styled-components";
 import { RegisterForm } from "../layout/forms/RegisterForm";
 import {
   RegisterRequest,
-  registerUser,
   RegisterResponse,
   PASSWORD_GROUP_CODE,
   EMAIL_GROUP_CODE,
@@ -12,9 +11,10 @@ import {
   LAST_NAME_GROUP_CODE,
   BIO_GROUP_CODE,
   STAGE_NAME_GROUP_CODE,
-} from "../../services/user/userServiceClient";
+} from "../../services/user/contracts";
 import { userActions } from "../../redux/features/user/userSlice";
 import { useDispatch } from "react-redux";
+import { registerUser } from "services/user/userServiceClient";
 
 const Container = styled.div``;
 

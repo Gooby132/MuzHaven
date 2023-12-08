@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import {
-  LoginRequest,
-  validateLoginData,
+  validateLoginRequest,
 } from "../../../services/user/userServiceClient";
 import { SubmitInput } from "../../atoms/form/SubmitInput";
 import { TextInput } from "../../atoms/form/TextInput";
+import { LoginRequest } from "services/user/contracts";
 
 const Container = styled.form`
   display: flex;

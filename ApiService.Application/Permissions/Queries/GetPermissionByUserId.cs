@@ -11,13 +11,13 @@ namespace ApiService.Application.Permissions.Queries;
 public static class GetPermissionByUserId
 {
 
-    public class Query : IRequest<Result<(UserPermission UserPermission, Token Token)>>
+    public class Query : IRequest<Result<UserPermission>>
     {
         public string Email { get; init; }
         public string Password { get; init; }
     }
 
-    internal class Handler : IRequestHandler<Query, Result<(UserPermission UserPermission, Token Token)>>
+    internal class Handler : IRequestHandler<Query, Result<UserPermission>>
     {
         private readonly ILogger<Handler> _logger;
         private readonly IUserPermissionRepository _repository;
@@ -35,7 +35,7 @@ public static class GetPermissionByUserId
             _tokenProvider = tokenProvider;
         }
 
-        public async Task<Result<(UserPermission UserPermission, Token Token)>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<Result<UserPermission>> Handle(Query request, CancellationToken cancellationToken)
         {
             _logger.LogTrace("{this} get permission for user with id - '{userId}' was requested",
                 this, request.Email);
@@ -51,6 +51,7 @@ public static class GetPermissionByUserId
             }
 
             var verified = permission.Value.Authorize(request.Password);
+
             if (verified.IsFailed)
             {
                 _logger.LogTrace("{this} user id - '{userId}' is not authorize",
@@ -65,14 +66,12 @@ public static class GetPermissionByUserId
             switch (permission.Value.Permission.Name)
             {
                 case nameof(PermissionService.Domain.UserPermissions.ValueObjects.Permissions.Guest):
-                    return Result.Ok<(UserPermission UserPermission, Token Token)>(
-                        new(permission.Value, _tokenProvider.CreateGuestToken(permission.Value.Email.Raw)));
+                    return Result.Ok(
+                        permission.Value);
                 case nameof(PermissionService.Domain.UserPermissions.ValueObjects.Permissions.Normal):
-                    return Result.Ok<(UserPermission UserPermission, Token Token)>(
-                        new(permission.Value, _tokenProvider.CreateGuestToken(permission.Value.Email.Raw)));
+                    return Result.Ok(permission.Value);
                 case nameof(PermissionService.Domain.UserPermissions.ValueObjects.Permissions.Verified):
-                    return Result.Ok<(UserPermission UserPermission, Token Token)>(
-                        new(permission.Value, _tokenProvider.CreateGuestToken(permission.Value.Email.Raw)));
+                    return Result.Ok(permission.Value);
                 default:
                     break;
             }

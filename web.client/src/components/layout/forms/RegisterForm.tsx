@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import {
-  RegisterRequest,
   validateRegisterData,
 } from "../../../services/user/userServiceClient";
 import { TextInput } from "../../atoms/form/TextInput";
 import { SubmitInput } from "../../atoms/form/SubmitInput";
+import { RegisterRequest } from "services/user/contracts";
 
 const Container = styled.form`
   display: flex;

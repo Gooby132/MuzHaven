@@ -10,5 +10,6 @@ public class StageNameError : ErrorBase
 
     public static ErrorBase StageNameTooShort() => new StageNameError("Stage name too short", 1);
     public static ErrorBase StageNameTooLong() => new StageNameError("Stage name too long", 2);
+    public static ErrorBase StageNameWasEmpty() => new StageNameError("Stage name was empty", 3);
 
 }

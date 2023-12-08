@@ -1,12 +1,17 @@
-﻿using ApiService.Application.Users.Commands;
+﻿using ApiService.Application.Projects.Commands;
+using ApiService.Application.Users.Commands;
 using ApiService.Application.Users.Queries;
 using DomainSeed;
 using DomainSeed.CommonErrors;
+using DomainSeed.ValueObjects.Auth;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PermissionService.Contracts.Requests;
 using PermissionService.Domain.UserPermissions.Errors;
 using PermissionService.Infrastructure.Authorization.Abstracts;
+using ProjectService.Contracts.Requests;
+using ProjectService.Contracts.Responses;
 using UserService.Contracts.Requests;
 using UserService.Contracts.Responses;
 using UserService.Domain.Errors;
@@ -36,6 +41,76 @@ public class UsersController : ControllerBase
         _logger = logger;
         _mediator = mediator;
         _tokenProvider = tokenProvider;
+    }
+
+    [Authorize(AuthenticationSchemes = IPermissionTokenProvider.PermissionSchemeName)]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CreateProjectResponse))]
+    [HttpPost("create-project")]
+    public async Task<IActionResult> CreateProject([FromBody] CreateProjectRequest request, CancellationToken token = default)
+    {
+        var id = User.Claims.FirstOrDefault(claim => claim.Type == IPermissionTokenProvider.UserIdClaim)?.Value;
+        var firstName = User.Claims.FirstOrDefault(claim => claim.Type == IPermissionTokenProvider.FirstNameClaim)?.Value;
+        var lastName = User.Claims.FirstOrDefault(claim => claim.Type == IPermissionTokenProvider.LastNameClaim)?.Value;
+        var email = User.Claims.FirstOrDefault(claim => claim.Type == IPermissionTokenProvider.EmailClaim)?.Value;
+        var stageName = User.Claims.FirstOrDefault(claim => claim.Type == IPermissionTokenProvider.StageClaim)?.Value;
+
+        var person = UserService.Domain.ValueObjects.PersonMetaData.Create(firstName, lastName, email);
+        var artist = UserService.Domain.ValueObjects.ArtistDescription.Create(stageName, null);
+
+        var user = UserService.Domain.User.Login(id, person.Value, artist.Value);
+
+        if (user.IsFailed)
+        {
+            _logger.LogError("{this} failed to create project as user cannot be constructed. errors(s) - '{errors}'",
+                this, string.Join(", ", user.Errors.Select(e => e.Message)));
+
+            return Problem();
+        }
+
+        var project = user.Value.CreateNewProject(
+                request.Project.Title,
+                request.Project.Album,
+                request.Project.Description,
+                request.Project.ReleaseInUtc,
+                request.Project.BeatsPerMinute,
+                request.Project.MusicalProfile?.Key,
+                request.Project.MusicalProfile?.Scale);
+
+        if (project.IsFailed)
+        {
+            if (project.HasError<ErrorBase>())
+                return BadRequest(project.Errors.Select(r => new
+                {
+                    r.Message,
+                    Code = (r as ErrorBase)?.ErrorCode,
+                    Group = (r as ErrorBase)?.GroupCode,
+                }));
+        }
+
+        var result = await _mediator.Send(new CreateProject.Command(project.Value), token);
+
+        return CreatedAtAction(
+          nameof(ProjectsController.GetById),
+          nameof(ProjectsController),
+          new { result.Value.Id },
+          new CreateProjectResponse
+          {
+              Project = new ProjectService.Contracts.Dtos.CompleteProjectDto
+              {
+                  Id = result.Value.Id,
+                  Title = result.Value.Title.Text,
+                  Album = result.Value.Album,
+                  BeatsPerMinute = result.Value.BeatsPerMinute,
+                  CreatedInUtc = result.Value.CreatedInUtc.ToString("O"),
+                  Description = result.Value.Description.Text,
+                  ReleaseInUtc = result.Value.ReleaseInUtc?.ToString("O"),
+                  MusicalProfile = result.Value.MusicalProfile is not null ? new ProjectService.Contracts.Dtos.MusicalProfileDto
+                  {
+                      Scale = (int)result.Value.MusicalProfile.Scale,
+                      Key = (int)result.Value.MusicalProfile.Key,
+                  } : null,
+              }
+          });
     }
 
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(RegisterResponse))]
@@ -87,7 +162,13 @@ public class UsersController : ControllerBase
                     LastName = res.Value.MetaData.LastName,
                     Email = res.Value.MetaData.Email.Raw,
                 },
-                Token = _tokenProvider.CreateGuestToken(request.Email).RawToken,
+                Token = _tokenProvider.CreateGuestToken(
+                    res.Value.Id.ToString(),
+                    res.Value.MetaData.FirstName,
+                    res.Value.MetaData.LastName,
+                    res.Value.MetaData.Email.Raw,
+                    res.Value.ArtistDescription.StageName
+                    ).RawToken,
             });
     }
 
@@ -105,7 +186,7 @@ public class UsersController : ControllerBase
             if (login.HasError<NotFoundError>())
                 return NotFound(request.Email);
 
-            if (login.HasError<Unauthorized>()) 
+            if (login.HasError<Unauthorized>())
                 return Unauthorized(request.Email);
 
             _logger.LogError("{this} failed to login user with email - '{email}'. error(s) - '{errors}'",
@@ -116,7 +197,6 @@ public class UsersController : ControllerBase
 
         return Ok(new LoginUserResponse
         {
-            Token = login.Value.Token.RawToken,
             User = new UserService.Contracts.Dtos.UserDto
             {
                 Id = login.Value.User.Id,
@@ -125,7 +205,14 @@ public class UsersController : ControllerBase
                 LastName = login.Value.User.MetaData.LastName,
                 Bio = login.Value.User.ArtistDescription.Bio,
                 StageName = login.Value.User.ArtistDescription.StageName
-            }
+            },
+            Token = _tokenProvider.CreateGuestToken(
+                    request.Email,
+                    login.Value.User.MetaData.FirstName,
+                    login.Value.User.MetaData.LastName,
+                    login.Value.User.MetaData.Email.Raw,
+                    login.Value.User.ArtistDescription.StageName
+                    ).RawToken
         });
     }
 

@@ -1,30 +1,23 @@
-import React, { useEffect, useState } from "react";
-import styled, { useTheme } from "styled-components";
-import { PageTitle } from "../atoms/texts/PageTitle";
-import { SprededRow } from "../layout/rows/SprededRow";
-import { PageSizeButton } from "../atoms/buttons/PageSizeButton";
-import { BasicButton } from "../atoms/buttons/BasicButton";
-import { BasicModalLayout } from "../layout/modals/BasicModalLayout";
-import { ModalTitle } from "../atoms/texts/ModalTitle";
-import { TextInput } from "../atoms/form/TextInput";
+import { useEffect, useState } from "react";
+import styled from "styled-components";
+import { PageTitle } from "components/atoms/texts/PageTitle";
+import { SprededRow } from "components/layout/rows/SprededRow";
+import { PageSizeButton } from "components/atoms/buttons/PageSizeButton";
 import {
   CompleteProjectDto,
   ProjectDto,
-} from "../../services/project/contracts";
-import { CreateProjectForm } from "../layout/forms/CreateProjectForm";
-import {
-  createProject,
-  fetchProjects,
-} from "../../services/project/projectServiceClient";
+} from "services/project/contracts";
+import { fetchProjects } from "services/project/projectServiceClient";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/store";
-import { ProjectRow } from "../molecules/projects/ProjectRow";
+import { ProjectRow } from "components/molecules/projects/ProjectRow";
 import { CreateProjectModal } from "components/organizem/modals/CreateProjectModal";
 import Seperator from "components/atoms/layouts/Seperator";
+import { createProject } from "services/user/userServiceClient";
 
 const Container = styled.div`
   position: relative;
-  color: ${({theme}) => theme.text};
+  color: ${({ theme }) => theme.text};
 `;
 
 type Props = {};
@@ -67,8 +60,8 @@ export const Projects = ({}: Props) => {
       <div className="projects">
         {createdProjects?.map((project) => (
           <>
-          <Seperator />
-          <ProjectRow key={project.id} project={project} />
+            <Seperator />
+            <ProjectRow key={project.id} project={project} />
           </>
         ))}
       </div>

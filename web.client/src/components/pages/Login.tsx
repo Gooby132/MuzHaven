@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { PageTitle } from "../atoms/texts/PageTitle";
 import { LoginForm, LoginFormErrors } from "../layout/forms/LoginForm";
-import { EMAIL_GROUP_CODE, LoginRequest, PASSWORD_GROUP_CODE, loginUser } from "../../services/user/userServiceClient";
+import { EMAIL_GROUP_CODE, LoginRequest, PASSWORD_GROUP_CODE } from "../../services/user/contracts";
 import { userActions } from "../../redux/features/user/userSlice";
 import { useDispatch } from "react-redux";
+import { loginUser } from "services/user/userServiceClient";
 
 const Container = styled.div``;
 

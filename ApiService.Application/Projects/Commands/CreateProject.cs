@@ -13,14 +13,7 @@ public static class CreateProject
 {
 
     public record Command(
-        string CreatorId,
-        string Title,
-        string Album,
-        string Description,
-        string? ReleaseInUtc,
-        float BeatsPerMinute,
-        int? MusicalKey,
-        int? MusicalScale
+        Project Project
         ) : IRequest<Result<Project>>;
 
     internal class Handler : IRequestHandler<Command, Result<Project>>
@@ -57,26 +50,7 @@ public static class CreateProject
             _logger.LogTrace("{this} create project was requested",
                 this);
 
-            var project = Project.Create(
-                request.CreatorId,
-                request.Title,
-                request.Album,
-                request.Description,
-                request.ReleaseInUtc,
-                request.BeatsPerMinute,
-                request.MusicalKey,
-                request.MusicalScale
-                );
-
-            if (project.IsFailed)
-            {
-                _logger.LogTrace("{this} bad request creating project. error(s) - '{errors}'",
-                    this, string.Join(", ", project.Reasons.Select(r => r.Message)));
-
-                return Result.Fail(project.Errors);
-            }
-
-            var create = await _repository.CreateProject(project.Value, cancellationToken);
+            var create = await _repository.CreateProject(request.Project, cancellationToken);
 
             if (create.IsFailed)
             {
@@ -99,9 +73,9 @@ public static class CreateProject
             _logger.LogDebug("{this} register project was successful",
                 this);
 
-            await _mediator.DispatchDomainEvents(project.Value, cancellationToken);
+            await _mediator.DispatchDomainEvents(create.Value, cancellationToken);
 
-            return Result.Ok(project.Value);
+            return Result.Ok(create.Value);
         }
     }
 

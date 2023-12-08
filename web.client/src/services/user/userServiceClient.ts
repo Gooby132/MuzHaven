@@ -1,64 +1,12 @@
 import axios from "axios";
+import { EMAIL_GROUP_CODE, LoginRequest, LoginResponse, RegisterRequest, RegisterResponse, CreateProjectRequest, CreateProjectResponse } from "./contracts";
+import { ErrorDto } from "services/commons/contracts";
 
 const USER_SERVICE_BASE = "http://localhost:8080/api/Users";
 const REGISTER_USER_ENDPOINT = "/register-user";
 const LOGIN_USER_ENDPOINT = "/login-user";
-
-export const PASSWORD_GROUP_CODE = 1;
-export const EMAIL_GROUP_CODE = 2;
-export const FIRST_NAME_GROUP_CODE = 3;
-export const LAST_NAME_GROUP_CODE = 4;
-export const BIO_GROUP_CODE = 5;
-export const STAGE_NAME_GROUP_CODE = 6;
-
-export type RegisterResponse = {
-  result?: AuthorizedUserDto;
-  errors?: ErrorDto[];
-  isError: boolean;
-};
-
-export type LoginResponse = {
-  result?: AuthorizedUserDto;
-  errors?: ErrorDto[];
-  isError: boolean;
-};
-
-export type RegisterRequest = {
-  email: string;
-  password: string;
-  stageName: string;
-  firstName: string;
-  lastName: string;
-  bio: string;
-};
-
-export type LoginRequest = {
-  email: string;
-  password: string;
-};
-
-// dtos
-
-export type AuthorizedUserDto = {
-  user: UserDto;
-  token: string;
-}
-
-export type UserDto = {
-  id: string;
-  bio: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  stageName: string;
-};
-
-export type ErrorDto = {
-  code: number;
-  group: number;
-  message?: string;
-};
-
+const CREATE_PROJECT_ENDPOINT = "/create-project";
+export const CLIENT_INTERNAL_ERROR = 999;
 
 export const validateRegisterData = ({
   email,
@@ -157,7 +105,7 @@ export const registerUser = async ({
   }
 };
 
-export const validateLoginData = ({
+export const validateLoginRequest = ({
   email,
   password,
 }: LoginRequest): [boolean, ErrorDto[]] => {
@@ -170,7 +118,7 @@ export const loginUser = async ({
   email,
   password,
 }: LoginRequest): Promise<LoginResponse> => {
-  const validation = validateLoginData({
+  const validation = validateLoginRequest({
     email,
     password,
   });
@@ -257,3 +205,72 @@ export const loginUser = async ({
     };
   }
 };
+
+export const createProject = async ({project, token}: CreateProjectRequest): Promise<CreateProjectResponse> => {
+  try {
+    if (token === undefined) {
+      return {
+        isError: true,
+        errors: [
+          {
+            group: CLIENT_INTERNAL_ERROR,
+            code: 0,
+            message: "token was not provided",
+          },
+        ],
+      };
+    }
+
+    const res = await axios.post(
+      `${USER_SERVICE_BASE}${CREATE_PROJECT_ENDPOINT}`,
+      {
+        project,
+        token,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return {
+      isError: false,
+      project: {
+        id: res.data.id,
+        title: res.data.title,
+        album: res.data.album,
+        createdInUtc: res.data.createdInUtc,
+        beatsPerMinute: res.data.beatsPerMinute,
+        description: res.data.description,
+        releaseInUtc: res.data.releaseInUtc,
+        musicalProfile:
+          res.data.musicalProfile !== undefined
+            ? {
+                key: res.data.musicalProfile.key,
+                scale: res.data.musicalProfile.scale,
+              }
+            : undefined,
+      },
+    };
+  } catch (e: any) {
+    switch (e.response?.status || 0) {
+      case 400:
+        return {
+          isError: true,
+          errors: e.response.data.map((error: ErrorDto) => {
+            return {
+              code: error.code,
+              group: error.group,
+              message: error.message,
+            };
+          }),
+        };
+      default:
+        console.log(e);
+        return {
+          isError: true,
+        };
+    }
+  }
+}

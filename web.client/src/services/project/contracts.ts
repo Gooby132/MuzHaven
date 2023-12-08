@@ -1,3 +1,5 @@
+import { ErrorDto } from "services/commons/contracts"
+
 export type CreateProjectRequest = {
   token?: string
   project: ProjectDto
@@ -6,16 +8,10 @@ export type CreateProjectRequest = {
 export type CreateProjectResponse = {
   isError: boolean,
   project?: CompleteProjectDto
-  errors?: ErrorBaseDto[]
+  errors?: ErrorDto[]
 }
 
 // dtos
-export type ErrorBaseDto = {
-  code: number;
-  group: number;
-  message?: string;
-};
-
 export type MusicalProfileDto  = {
   key?: number
   scale?: number

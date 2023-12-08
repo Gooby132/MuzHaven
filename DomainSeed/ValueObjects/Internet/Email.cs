@@ -10,8 +10,11 @@ public class Email
 
     private Email() { }
 
-    public static Result<Email> Create(string email)
+    public static Result<Email> Create(string? email)
     {
+        if(string.IsNullOrEmpty(email))
+            return EmailErrors.EmailIsInvalid();
+
         if (!new EmailAddressAttribute().IsValid(email))
             return EmailErrors.EmailIsInvalid();
 

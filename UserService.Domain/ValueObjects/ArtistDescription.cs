@@ -14,19 +14,25 @@ public class ArtistDescription : ValueObject
     public const int MaxStageNameLength = 20;
 
     public string StageName { get; init; }
-    public string Bio { get; init; }
+    public string? Bio { get; init; }
 
     private ArtistDescription() { }
 
-    public static Result<ArtistDescription> Create(string stageName, string bio)
+    public static Result<ArtistDescription> Create(string? stageName, string? bio)
     {
         List<Error> errors = new List<Error>();
 
-        if (bio.Length < MinBioLength)
-            errors.Add(BioError.TooShortCode());
+        if (!string.IsNullOrEmpty(bio))
+        {
+            if (bio.Length < MinBioLength)
+                errors.Add(BioError.TooShortCode());
 
-        if (bio.Length > MaxBioLength)
-            errors.Add(BioError.TooLongCode());
+            if (bio.Length > MaxBioLength)
+                errors.Add(BioError.TooLongCode());
+        }
+
+        if (string.IsNullOrEmpty(stageName))
+            return StageNameError.StageNameWasEmpty();
 
         if (stageName.Length < MinStageNameLength)
             errors.Add(StageNameError.StageNameTooShort());

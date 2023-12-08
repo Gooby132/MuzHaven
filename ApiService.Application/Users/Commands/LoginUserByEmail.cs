@@ -6,15 +6,17 @@ using UserService.Domain;
 using ApiService.Application.Permissions.Queries;
 using ApiService.Application.Users.Queries;
 using DomainSeed.ValueObjects.Auth;
+using PermissionService.Domain.UserPermissions.ValueObjects;
+using PermissionService.Domain.UserPermissions;
 
 namespace ApiService.Application.Users.Commands;
 
 public static class LoginUserByEmail
 {
 
-    public record Command(string Email, string Password) : IRequest<Result<(User User, Token Token)>>;
+    public record Command(string Email, string Password) : IRequest<Result<(User User, UserPermission Permission)>>;
 
-    internal class Handler : IRequestHandler<Command, Result<(User User, Token Token)>>
+    internal class Handler : IRequestHandler<Command, Result<(User User, UserPermission Permission)>>
     {
         private readonly ILogger<Handler> _logger;
         private readonly IMediator _mediator;
@@ -27,34 +29,43 @@ public static class LoginUserByEmail
             _mediator = mediator;
         }
 
-        public async Task<Result<(User User, Token Token)>> Handle(Command request, CancellationToken cancellationToken)
+        public async Task<Result<(User User, UserPermission Permission)>> Handle(Command request, CancellationToken cancellationToken)
         {
-
             _logger.LogTrace("{this} register user was requested",
                 this);
 
-            var permission = await _mediator.Send(new GetPermissionByUserId.Query
+            var user = _mediator.Send(new GetUserByEmail.Query(request.Email), cancellationToken);
+
+            var permission = _mediator.Send(new GetPermissionByUserId.Query
             {
                 Email = request.Email,
                 Password = request.Password
             });
 
-            if (permission.IsFailed)
+            Task.WaitAll(permission, user);
+
+            if (permission.Result.IsFailed)
             {
                 _logger.LogWarning("{this} failed to fetch for userId permission - '{permission}'",
                     this, request.Email);
 
-                return Result.Fail(permission.Errors);
+                return Result.Fail(permission.Result.Errors);
             }
 
-            var user = await _mediator.Send(new GetUserByEmail.Query(request.Email), cancellationToken);
+            if (user.Result.IsFailed)
+            {
+                _logger.LogWarning("{this} failed to fetch user by userId - '{id}'",
+                    this, request.Email);
 
+                return Result.Fail(user.Result.Errors);
+            }
+          
             _logger.LogDebug("{this} register user was successful",
                 this);
 
-            await _mediator.DispatchDomainEvents(user.Value, cancellationToken);
+            await _mediator.DispatchDomainEvents(user.Result.Value, cancellationToken);
 
-            return Result.Ok<(User User, Token Token)>(new (user.Value, permission.Value.Token));
+            return Result.Ok<(User User, UserPermission Permission)>(new(user.Result.Value, permission.Result.Value));
         }
     }
 }

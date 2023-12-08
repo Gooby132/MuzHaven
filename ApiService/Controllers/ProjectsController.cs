@@ -8,6 +8,7 @@ using PermissionService.Infrastructure.Authorization.Abstracts;
 using DomainSeed;
 using System.Linq;
 using ProjectService.Domain;
+using FluentResults;
 
 namespace ApiService.Controllers;
 
@@ -37,40 +38,44 @@ public class ProjectsController : ControllerBase
 
     #region Methods
 
-    [Authorize(AuthenticationSchemes = IPermissionTokenProvider.PermissionSchemeName)]
     [HttpPost("create-project")]
     public async Task<IActionResult> Create(CreateProjectRequest request, CancellationToken token = default)
     {
 
-        var id = HttpContext.User.Claims.FirstOrDefault(claim => claim.Type == IPermissionTokenProvider.UserIdClaim);
+        var project = Project.Create(
+             string.Empty,
+             request.Project.Title,
+             request.Project.Album,
+             request.Project.Description,
+             request.Project.ReleaseInUtc,
+             request.Project.BeatsPerMinute,
+             request.Project.MusicalProfile?.Key,
+             request.Project.MusicalProfile?.Scale
+             );
 
-        if (id?.Value is null)
-            return Unauthorized();
-
-        var res = await _mediator.Send(new Application.Projects.Commands.CreateProject.Command
-        (
-            id.Value,
-            request.Project.Title,
-            request.Project.Album,
-            request.Project.Description,
-            request.Project.ReleaseInUtc,
-            request.Project.BeatsPerMinute,
-            request.Project.MusicalProfile?.Key,
-            request.Project.MusicalProfile?.Scale
-        ), token);
-
-        if (res.IsFailed)
+        if (project.IsFailed)
         {
-            if (res.HasError<ErrorBase>())
+            _logger.LogTrace("{this} bad request creating project. error(s) - '{errors}'",
+                this, string.Join(", ", project.Reasons.Select(r => r.Message)));
+
+            if (project.HasError<ErrorBase>())
             {
-                return BadRequest(res.Errors.Select(r => new
+                return BadRequest(project.Errors.Select(r => new
                 {
                     r.Message,
                     Code = (r as ErrorBase)?.ErrorCode,
                     Group = (r as ErrorBase)?.GroupCode,
                 }));
             }
+        }
 
+        var res = await _mediator.Send(new Application.Projects.Commands.CreateProject.Command
+        (
+            project.Value
+        ), token);
+
+        if (res.IsFailed)
+        {
             _logger.LogError("{this} project creation failed. errors - '{errors}'",
                 this, string.Join(", ", res.Reasons.Select(r => r.Message)));
 
@@ -107,12 +112,12 @@ public class ProjectsController : ControllerBase
 
         var id = HttpContext.User.Claims.FirstOrDefault(claim => claim.Type == IPermissionTokenProvider.UserIdClaim);
 
-        if(id?.Value is null)
+        if (id?.Value is null)
             return Unauthorized();
 
         var res = await _mediator.Send(new GetProjectsByCreatorId.Query(id.Value), cancellationToken);
 
-        if(res.IsFailed)
+        if (res.IsFailed)
         {
             // defined errors
 

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { LoginResponse  } from "../../../services/user/userServiceClient";
+import { LoginResponse  } from "../../../services/user/contracts";
 
 export interface UserState {
   loggedIn: boolean,

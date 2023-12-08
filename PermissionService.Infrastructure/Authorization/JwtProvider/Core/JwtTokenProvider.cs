@@ -109,7 +109,12 @@ internal class JwtTokenProvider : IPermissionTokenProvider
         return new Token(tokenHandler.WriteToken(token));
     }
 
-    public Token CreateGuestToken(string userId)
+    public Token CreateGuestToken(
+        string userId,
+        string firstName,
+        string lastName,
+        string email,
+        string stageName)
     {
         var issuer = _config.Issuer;
         var audience = _config.Audience;
@@ -120,7 +125,11 @@ internal class JwtTokenProvider : IPermissionTokenProvider
             Subject = new ClaimsIdentity(new[]
             {
                 new Claim(IPermissionTokenProvider.PermissionTypeClaim, Domain.UserPermissions.ValueObjects.Permissions.Guest.Name),
-                new Claim(IPermissionTokenProvider.UserIdClaim, userId.ToString()),
+                new Claim(IPermissionTokenProvider.UserIdClaim, userId),
+                new Claim(IPermissionTokenProvider.FirstNameClaim, firstName),
+                new Claim(IPermissionTokenProvider.LastNameClaim, lastName),
+                new Claim(IPermissionTokenProvider.EmailClaim, email),
+                new Claim(IPermissionTokenProvider.StageClaim, stageName),
                 new Claim(ClaimTypes.Role, Domain.UserPermissions.ValueObjects.Permissions.Guest.Name)
             }),
             Expires = DateTime.UtcNow.AddDays(15),

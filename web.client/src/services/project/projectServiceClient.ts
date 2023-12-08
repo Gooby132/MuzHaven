@@ -3,9 +3,8 @@ import {
   CompleteProjectDto,
   CreateProjectRequest,
   CreateProjectResponse,
-  ErrorBaseDto,
-  ProjectDto,
 } from "./contracts";
+import { ErrorDto } from "services/commons/contracts";
 
 const PROJECT_SERVICE_BASE = "http://localhost:8080/api/Projects";
 const FETCH_PROJECTS = "/get-projects";
@@ -122,7 +121,7 @@ export const createProject = async ({
       case 400:
         return {
           isError: true,
-          errors: e.response.data.map((error: ErrorBaseDto) => {
+          errors: e.response.data.map((error: ErrorDto) => {
             return {
               code: error.code,
               group: error.group,
