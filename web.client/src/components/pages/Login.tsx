@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { PageTitle } from "../atoms/texts/PageTitle";
 import { LoginForm, LoginFormErrors } from "../layout/forms/LoginForm";
-import { EMAIL_GROUP_CODE, LoginData, PASSWORD_GROUP_CODE, loginUser } from "../../services/user/userServiceClient";
+import { EMAIL_GROUP_CODE, LoginRequest, PASSWORD_GROUP_CODE, loginUser } from "../../services/user/userServiceClient";
 import { userActions } from "../../redux/features/user/userSlice";
 import { useDispatch } from "react-redux";
 
@@ -17,7 +17,7 @@ export const Login = (props: Props) => {
     passwordError: undefined,
   });
 
-  const onSubmit = async (args: LoginData) => {
+  const onSubmit = async (args: LoginRequest) => {
     const errors: LoginFormErrors = {
       emailError: undefined,
       passwordError: undefined,
@@ -26,7 +26,7 @@ export const Login = (props: Props) => {
     const res = await loginUser(args);
 
     if (!res.isError) {
-      dispatch(userActions.login(res.result!));
+      dispatch(userActions.login(res));
     }
 
     if (res.isError) {

@@ -15,7 +15,8 @@ import { MainVer2 } from "components/layout/app/MainVer2";
 import { MuzHavenTheme } from "themes/theme";
 import { darkTheme } from "themes/darkTheme";
 
-const Container = styled.div``;
+const Container = styled.div`
+`;
 
 function App() {
   const isLoggedIn = useSelector((state: RootState) => state.user.token);

@@ -3,7 +3,7 @@ import { PageTitle } from "../atoms/texts/PageTitle";
 import styled from "styled-components";
 import { RegisterForm } from "../layout/forms/RegisterForm";
 import {
-  RegisterData,
+  RegisterRequest,
   registerUser,
   RegisterResponse,
   PASSWORD_GROUP_CODE,
@@ -37,7 +37,7 @@ export const Register = (props: Props) => {
 
   const [formErrors, setFormErrors] = useState<FormErrors | null>(null);
 
-  const onSubmit = async (args: RegisterData) => {
+  const onSubmit = async (args: RegisterRequest) => {
     const errors : FormErrors = {
       email: undefined, 
       password: undefined,
@@ -50,7 +50,7 @@ export const Register = (props: Props) => {
     const res = await registerUser(args);
 
     if(!res.isError){
-      dispatch(userActions.login(res.result!))
+      dispatch(userActions.login(res))
     }
 
     if (res.isError) {

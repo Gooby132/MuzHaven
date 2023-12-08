@@ -11,7 +11,19 @@ export const LAST_NAME_GROUP_CODE = 4;
 export const BIO_GROUP_CODE = 5;
 export const STAGE_NAME_GROUP_CODE = 6;
 
-export type RegisterData = {
+export type RegisterResponse = {
+  result?: AuthorizedUserDto;
+  errors?: ErrorDto[];
+  isError: boolean;
+};
+
+export type LoginResponse = {
+  result?: AuthorizedUserDto;
+  errors?: ErrorDto[];
+  isError: boolean;
+};
+
+export type RegisterRequest = {
   email: string;
   password: string;
   stageName: string;
@@ -20,12 +32,19 @@ export type RegisterData = {
   bio: string;
 };
 
-export type LoginData = {
+export type LoginRequest = {
   email: string;
   password: string;
 };
 
-export type User = {
+// dtos
+
+export type AuthorizedUserDto = {
+  user: UserDto;
+  token: string;
+}
+
+export type UserDto = {
   id: string;
   bio: string;
   email: string;
@@ -34,28 +53,12 @@ export type User = {
   stageName: string;
 };
 
-export type Error = {
+export type ErrorDto = {
   code: number;
   group: number;
   message?: string;
 };
 
-export type RegisterResponse = {
-  result?: LoginResult;
-  errors?: Error[];
-  isError: boolean;
-};
-
-export type LoginResponse = {
-  result?: LoginResult;
-  errors?: Error[];
-  isError: boolean;
-};
-
-export type LoginResult = {
-  user: User;
-  token: string;
-};
 
 export const validateRegisterData = ({
   email,
@@ -64,8 +67,8 @@ export const validateRegisterData = ({
   firstName,
   lastName,
   bio,
-}: RegisterData): [boolean, Error[]] => {
-  let errors: Error[] = [];
+}: RegisterRequest): [boolean, ErrorDto[]] => {
+  let errors: ErrorDto[] = [];
 
   return [true, errors];
 };
@@ -77,7 +80,7 @@ export const registerUser = async ({
   firstName,
   lastName,
   bio,
-}: RegisterData): Promise<RegisterResponse> => {
+}: RegisterRequest): Promise<RegisterResponse> => {
   const validation = validateRegisterData({
     email,
     password,
@@ -157,8 +160,8 @@ export const registerUser = async ({
 export const validateLoginData = ({
   email,
   password,
-}: LoginData): [boolean, Error[]] => {
-  let errors: Error[] = [];
+}: LoginRequest): [boolean, ErrorDto[]] => {
+  let errors: ErrorDto[] = [];
 
   return [true, errors];
 };
@@ -166,7 +169,7 @@ export const validateLoginData = ({
 export const loginUser = async ({
   email,
   password,
-}: LoginData): Promise<LoginResponse> => {
+}: LoginRequest): Promise<LoginResponse> => {
   const validation = validateLoginData({
     email,
     password,

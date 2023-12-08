@@ -21,7 +21,7 @@ export type MusicalProfileDto  = {
   scale?: number
 }
 
-export type ProjectDto = {
+export interface ProjectDto {
   title: string;
   album: string;
   description?: string;

@@ -1,5 +1,5 @@
-import { ReactNode } from 'react'
-import styled from 'styled-components';
+import { ReactNode } from "react";
+import styled, { useTheme } from "styled-components";
 
 const Container = styled.div`
   display: grid;
@@ -19,9 +19,11 @@ type Props = {
 };
 
 export function HeaderLayout({ search, userIcon }: Props) {
+
   return (
     <Container>
       <>{search}</>
       <>{userIcon}</>
-    </Container>  )
+    </Container>
+  );
 }

@@ -4,7 +4,7 @@ import { ProjectLink } from 'components/molecules/projects/ProjectLink'
 import React, { ReactElement } from 'react'
 
 type Props = {
-  projects: ReactElement<typeof ProjectLink>[]
+  projects?: ReactElement<typeof ProjectLink>[]
 }
 
 const ProjectsLinkGroup = ({ projects }: Props) => {

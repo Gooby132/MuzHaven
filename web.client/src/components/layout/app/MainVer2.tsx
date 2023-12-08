@@ -10,25 +10,24 @@ import { Header } from "../../organizem/Header";
 import { WordMark } from "../../atoms/texts/WordMark";
 import { HeaderLayout } from "../headers/HeaderLayout";
 import { Searchbar } from "components/atoms/form/Searchbar";
+import ProjectsLinkGroup from "components/organizem/projects/ProjectsLinkGroup";
 
 type Props = {};
 
 const Container = styled.div`
   background-color: ${({ theme }) => theme.primary};
   display: flex;
-
+  min-height: 100vh;
   > nav {
     min-width: 20%;
   }
-
   > .main-container {
     min-width: 80%;
   }
 `;
 
-export const MainVer2 = (props: Props) => {
-  const theme = useTheme();
-  const isLoggedIn = useSelector((state: RootState) => state.user.loggedIn);
+export const MainVer2 = ({}: Props) => {
+  const user = useSelector((state: RootState) => state.user);
 
   const loggedInRoutes = [
     <CoreLink key={0} text="profile" to="profile" />,
@@ -41,18 +40,20 @@ export const MainVer2 = (props: Props) => {
   ];
 
   return (
-    <Container theme={theme} className="app-layout">
+    <Container className="app-layout">
       <Sidebar
         header={<WordMark text="MuzHaven" />}
         links={[
-          <CoreLink key={3} text="home" to="/" />,
           <LinkGroup
             key={0}
             header="User"
-            links={isLoggedIn ? loggedInRoutes : logInRoutes}
+            links={user.loggedIn ? loggedInRoutes : logInRoutes}
           />,
         ]}
-        footer={[]}
+        footer={[
+          <ProjectsLinkGroup
+          />
+        ]}
       />
       <section className="main-container">
         <Header

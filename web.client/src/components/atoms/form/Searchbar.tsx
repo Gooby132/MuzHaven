@@ -1,5 +1,5 @@
-import React from 'react'
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const Container = styled.div`
   display: flex;
@@ -7,21 +7,25 @@ const Container = styled.div`
   align-items: center;
   width: 100%;
 
-  >input{
+  > input {
     width: 80%;
+    color: ${({ theme }) => theme.text};
+    background-color: ${({ theme }) => theme.secondary};
+    border: none;
     border-radius: 15px;
-    min-height: 2em;
+    height: 2em;
+    padding: 0 .5em;
   }
-`
+`;
 
 type Props = {
   onChange: (text: string) => void;
-}
+};
 
-export function Searchbar({onChange}: Props) {
+export function Searchbar({ onChange }: Props) {
   return (
-    <Container >
-      <input type='text' onChange={e => onChange(e.target.value)} />
+    <Container>
+      <input type="text" onChange={(e) => onChange(e.target.value)} />
     </Container>
-  )
+  );
 }

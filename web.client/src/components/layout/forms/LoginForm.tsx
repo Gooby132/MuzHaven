@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import {
-  LoginData,
+  LoginRequest,
   validateLoginData,
 } from "../../../services/user/userServiceClient";
 import { SubmitInput } from "../../atoms/form/SubmitInput";
@@ -18,7 +18,7 @@ const Row = styled.div`
 `;
 
 type Props = {
-  onSubmit: (args: LoginData) => void;
+  onSubmit: (args: LoginRequest) => void;
   formErrors?: LoginFormErrors;
 };
 

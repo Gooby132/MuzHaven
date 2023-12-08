@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import {
-  RegisterData,
+  RegisterRequest,
   validateRegisterData,
 } from "../../../services/user/userServiceClient";
 import { TextInput } from "../../atoms/form/TextInput";
@@ -18,7 +18,7 @@ const Row = styled.div`
 `;
 
 type Props = {
-  onSubmit: (args: RegisterData) => void;
+  onSubmit: (args: RegisterRequest) => void;
   emailError?: string;
   stageNameError?: string;
   firstNameError?: string;

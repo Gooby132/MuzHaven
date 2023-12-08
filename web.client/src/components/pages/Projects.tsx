@@ -30,7 +30,6 @@ const Container = styled.div`
 type Props = {};
 
 export const Projects = ({}: Props) => {
-  const theme = useTheme();
   const user = useSelector((state: RootState) => state.user);
   const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
   const [createdProjects, setCreatedProjects] =
@@ -57,7 +56,7 @@ export const Projects = ({}: Props) => {
   }, []);
 
   return (
-    <Container theme={theme}>
+    <Container>
       <PageTitle text="Projects" />
       <SprededRow>
         <PageSizeButton onClick={() => setShowCreateModal((prev) => !prev)}>
