@@ -6,11 +6,10 @@ const Container = styled.div`
   row-gap: 0.5em;
   column-gap: 0.5em;
   grid-template-columns: 7em 200px auto 40px;
-  
-  >* {
+
+  > * {
     overflow: hidden;
   }
-
 `;
 
 type Props = {
@@ -19,7 +18,7 @@ type Props = {
   userIcon: ReactNode;
 };
 
-export const HeaderLayout = ({ logo, search, userIcon }: Props) => {
+export const LoggoedHeaderLayout = ({ logo, search, userIcon }: Props) => {
   return (
     <Container>
       <>{logo}</>

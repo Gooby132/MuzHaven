@@ -8,5 +8,9 @@ interface Props {
 const Container = styled.header``;
 
 export const Header = ({ layout }: Props) => {
-  return <Container>{layout}</Container>;
+  return (
+  <Container>
+    {layout}
+    </Container>
+    );
 };

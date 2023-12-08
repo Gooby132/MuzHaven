@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import { PageTitle } from "../atoms/texts/PageTitle";
 import { SprededRow } from "../layout/rows/SprededRow";
 import { PageSizeButton } from "../atoms/buttons/PageSizeButton";
@@ -24,11 +24,13 @@ import Seperator from "components/atoms/layouts/Seperator";
 
 const Container = styled.div`
   position: relative;
+  color: ${({theme}) => theme.text};
 `;
 
 type Props = {};
 
 export const Projects = ({}: Props) => {
+  const theme = useTheme();
   const user = useSelector((state: RootState) => state.user);
   const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
   const [createdProjects, setCreatedProjects] =
@@ -55,7 +57,7 @@ export const Projects = ({}: Props) => {
   }, []);
 
   return (
-    <Container>
+    <Container theme={theme}>
       <PageTitle text="Projects" />
       <SprededRow>
         <PageSizeButton onClick={() => setShowCreateModal((prev) => !prev)}>

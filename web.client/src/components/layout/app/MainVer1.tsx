@@ -1,14 +1,14 @@
 import styled from "styled-components";
-import { Sidebar } from "../organizem/Sidebar";
-import { CoreLink } from "../atoms/links/CoreLink";
-import { LinkGroup } from "../molecules/LinkGroup";
+import { Sidebar } from "../../organizem/Sidebar";
+import { CoreLink } from "../../atoms/links/CoreLink";
+import { LinkGroup } from "../../molecules/LinkGroup";
 import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
-import { Footer } from "../organizem/Footer";
+import { RootState } from "../../../redux/store";
+import { Footer } from "../../organizem/Footer";
 import { Outlet } from "react-router-dom";
-import { Header } from "../organizem/Header";
-import { WordMark } from "../atoms/texts/WordMark";
-import { HeaderLayout } from "./HeaderLayout";
+import { Header } from "../../organizem/Header";
+import { WordMark } from "../../atoms/texts/WordMark";
+import { LoggoedHeaderLayout } from "../headers/LoggoedHeaderLayout";
 
 type Props = {};
 
@@ -28,7 +28,7 @@ const Container = styled.div`
   }
 `;
 
-export const Main = (props: Props) => {
+export const MainVer1 = (props: Props) => {
   const isLoggedIn = useSelector((state: RootState) => state.user.loggedIn);
 
   const loggedInRoutes = [
@@ -45,7 +45,7 @@ export const Main = (props: Props) => {
     <Container>
       <Header
         layout={
-          <HeaderLayout
+          <LoggoedHeaderLayout
             logo={<WordMark text="MuzHaven" />}
             search={<div></div>}
             userIcon={<div></div>}
@@ -54,6 +54,7 @@ export const Main = (props: Props) => {
       />
       <section className="main-container">
         <Sidebar
+          header={<WordMark text="MuzHaven" />}
           links={[
             <CoreLink key={3} text="home" to="/" />,
             <LinkGroup
@@ -62,6 +63,7 @@ export const Main = (props: Props) => {
               links={isLoggedIn ? loggedInRoutes : logInRoutes}
             />,
           ]}
+          footer={[]}
         />
         <div id="content-container" className="content-container">
           <Outlet />
