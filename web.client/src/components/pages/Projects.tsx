@@ -8,12 +8,13 @@ import {
   ProjectDto,
 } from "services/project/contracts";
 import { fetchProjects } from "services/project/projectServiceClient";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "redux/store";
 import { ProjectRow } from "components/molecules/projects/ProjectRow";
 import { CreateProjectModal } from "components/organizem/modals/CreateProjectModal";
 import Seperator from "components/atoms/layouts/Seperator";
 import { createProject } from "services/user/userServiceClient";
+import { projectActions } from "redux/features/project/projectSlice";
 
 const Container = styled.div`
   position: relative;
@@ -23,10 +24,10 @@ const Container = styled.div`
 type Props = {};
 
 export const Projects = ({}: Props) => {
+  const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.user);
+  const projects = useSelector((state: RootState) => state.project)
   const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
-  const [createdProjects, setCreatedProjects] =
-    useState<CompleteProjectDto[]>();
 
   const onSubmit = async (project: ProjectDto) => {
     const result = await createProject({
@@ -43,7 +44,9 @@ export const Projects = ({}: Props) => {
         token: user.token,
       });
 
-      if (!projects.isError) setCreatedProjects(projects.result!.projects);
+      if (!projects.isError) {
+        dispatch(projectActions.fetchProjects(projects))
+      };
     };
     fetchCreatorProjects();
   }, []);
@@ -58,7 +61,7 @@ export const Projects = ({}: Props) => {
       </SprededRow>
 
       <div className="projects">
-        {createdProjects?.map((project) => (
+        {projects.projects?.map((project) => (
           <>
             <Seperator />
             <ProjectRow key={project.id} project={project} />

@@ -9,16 +9,17 @@ const persistConfig = {
   storage,
 }
 
+
+const persistedReducer = persistReducer(persistConfig, userReducers)
+
 const reducers = combineReducers({
-  user: userReducers,
+  user: persistedReducer,
   project: projectReducers
 })
-
-const persistedReducer = persistReducer(persistConfig, reducers)
 // const persistedReducer = reducers
 
 export const store = configureStore({
-  reducer: persistedReducer
+  reducer: reducers
 })
 
 export const persistor = persistStore(store)

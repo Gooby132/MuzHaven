@@ -1,20 +1,27 @@
 import { Searchbar } from 'components/atoms/form/Searchbar'
 import { GroupTitle } from 'components/atoms/texts/GroupTitle'
-import { ProjectLink } from 'components/molecules/projects/ProjectLink'
-import React, { ReactElement } from 'react'
+import { SidebarLink } from 'components/atoms/links/SidebarLink'
+import { ReactElement } from 'react'
+import styled from 'styled-components'
+
+const Container = styled.div`
+  color: ${({theme}) => theme.text};
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 1rem;
+`
 
 type Props = {
-  projects?: ReactElement<typeof ProjectLink>[]
+  projects?: ReactElement<typeof SidebarLink>[]
 }
 
-const ProjectsLinkGroup = ({ projects }: Props) => {
+export const ProjectsLinkGroup = ({ projects }: Props) => {
   return (
-    <div>
+    <Container>
       <GroupTitle text='Projects' />
       <Searchbar onChange={e => {}} />
       {projects}
-    </div>
+    </Container>
   )
 }
-
-export default ProjectsLinkGroup

@@ -1,14 +1,17 @@
 import axios from "axios";
 import {
-  CompleteProjectDto,
+  FetchProjectByIdResponse,
+  FetchProjectByIdRequest,
   CreateProjectRequest,
   CreateProjectResponse,
+  FetchProjectsResponse,
 } from "./contracts";
 import { ErrorDto } from "services/commons/contracts";
 
 const PROJECT_SERVICE_BASE = "http://localhost:8080/api/Projects";
 const FETCH_PROJECTS = "/get-projects";
 const CREATE_PROJECT = "/create-project";
+const FETCH_BY_ID = "/get-by-id";
 
 export const CLIENT_INTERNAL_ERROR = 999;
 
@@ -16,14 +19,46 @@ export type FetchClientProjectsRequest = {
   token: string;
 };
 
-export type FetchProjectsResponse = {
-  result?: FetchProjectResult;
-  errors?: Error[];
-  isError: boolean;
-};
+export const fetchProjectById = async ({
+  id,
+  token,
+}: FetchProjectByIdRequest): Promise<FetchProjectByIdResponse> => {
+  try {
+    const res = await axios.get(`${PROJECT_SERVICE_BASE}${FETCH_BY_ID}`, {
+      params: {
+        id,
+      },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-export type FetchProjectResult = {
-  projects: CompleteProjectDto[];
+    return {
+      isError: false,
+      result: res.data.project,
+    };
+  } catch (e: any) {
+    switch (e.response?.status) {
+      case 400:
+        return {
+          isError: true,
+          errors: e.response.data.map(
+            (error: { code: number; group: number; message?: string }) => {
+              return {
+                code: error.code,
+                group: error.group,
+                message: error.message,
+              };
+            }
+          ),
+        };
+      default:
+        console.log(e);
+        return {
+          isError: true,
+        };
+    }
+  }
 };
 
 export const fetchProjects = async ({
@@ -43,7 +78,7 @@ export const fetchProjects = async ({
       },
     };
   } catch (e: any) {
-    switch (e.response.status) {
+    switch (e.response?.status) {
       case 400:
         return {
           isError: true,

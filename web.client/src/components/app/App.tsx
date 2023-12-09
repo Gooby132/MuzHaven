@@ -1,6 +1,10 @@
 import React, { useState } from "react";
-import styled, { ThemeProvider } from "styled-components";
-import { Routes, Route, Outlet, Navigate } from "react-router-dom";
+import {
+  Navigate,
+  createBrowserRouter,
+  RouterProvider,
+  defer,
+} from "react-router-dom";
 import { Login } from "../pages/Login";
 import { Register } from "../pages/Register";
 import { Error } from "../pages/Error";
@@ -13,55 +17,69 @@ import Projects from "../pages/Projects";
 import Modal from "react-modal";
 import { MainVer2 } from "components/layout/app/MainVer2";
 import { MuzHavenTheme } from "themes/theme";
-import { darkTheme } from "themes/darkTheme";
-
-const Container = styled.div`
-`;
+import { Project } from "components/pages/Project";
+import { fetchProjectById } from "services/project/projectServiceClient";
 
 function App() {
-  const isLoggedIn = useSelector((state: RootState) => state.user.token);
-  const [theme, setTheme] = useState<MuzHavenTheme>(darkTheme);
+  const user = useSelector((state: RootState) => state.user);
 
-  return (
-    <Container>
-      <ThemeProvider theme={theme}>
-        <Routes>
-          <Route path="/" element={<MainVer2 />}>
-            <Route index Component={Home} />
-            <Route
-              path="/login"
-              errorElement={<Error />}
-              element={
-                isLoggedIn ? <Navigate to="/profile" replace /> : <Login />
-              }
-            />
-            <Route
-              path="/register"
-              errorElement={<Error />}
-              element={
-                isLoggedIn ? <Navigate to="/profile" replace /> : <Register />
-              }
-            />
-            <Route
-              path="/profile"
-              errorElement={<Error />}
-              element={
-                !isLoggedIn ? <Navigate to="/login" replace /> : <Profile />
-              }
-            />
-            <Route
-              path="/projects"
-              errorElement={<Error />}
-              element={
-                !isLoggedIn ? <Navigate to="/login" replace /> : <Projects />
-              }
-            />
-            <Route path="/" errorElement={<Error />} />
-          </Route>
-        </Routes>
-      </ThemeProvider>
-    </Container>
-  );
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <MainVer2 />,
+      children: [
+        {
+          path: "/login",
+          errorElement: <Error />,
+          element: user.loggedIn ? <Navigate to="/login" replace /> : <Login />,
+        },
+        {
+          path: "/register",
+          errorElement: <Error />,
+          element: user.loggedIn ? (
+            <Navigate to="/register" replace />
+          ) : (
+            <Register />
+          ),
+        },
+        {
+          path: "/profile",
+          errorElement: <Error />,
+          element: !user.loggedIn ? (
+            <Navigate to="/login" replace />
+          ) : (
+            <Profile />
+          ),
+        },
+        {
+          path: "/projects",
+          errorElement: <Error />,
+          element: !user.loggedIn ? (
+            <Navigate to="/projects" replace />
+          ) : (
+            <Projects />
+          ),
+        },
+        {
+          path: "/project/:id",
+          element: <Project />,
+          loader: async ({ params }) => {
+            if (params.id === undefined) throw new Response("No id give");
+            const res = await fetchProjectById({
+              id: params.id,
+              token: user.token!,
+            })
+
+            if(res.isError) throw new Response("failure")
+
+            return res.result;
+          },
+        },
+      ],
+    },
+  ]);
+
+  return <RouterProvider router={router} fallbackElement={<Error />} />;
 }
 
 Modal.setAppElement("#root");

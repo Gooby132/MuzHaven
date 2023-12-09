@@ -1,5 +1,26 @@
 import { ErrorDto } from "services/commons/contracts"
 
+export type FetchProjectByIdRequest = {
+  id: string,
+  token: string
+}
+
+export type FetchProjectByIdResponse = {
+  isError: boolean,
+  errors?: ErrorDto[];
+  result?: CompleteProjectDto; 
+}
+
+export type FetchProjectsResponse = {
+  result?: FetchProjectResult;
+  errors?: ErrorDto[];
+  isError: boolean;
+};
+
+export type FetchProjectResult = {
+  projects: CompleteProjectDto[];
+};
+
 export type CreateProjectRequest = {
   token?: string
   project: ProjectDto

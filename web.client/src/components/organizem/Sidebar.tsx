@@ -10,14 +10,27 @@ type Props = {
 const Container = styled.nav`
   display: flex;
   flex-direction: column;
+  max-height: 100vh;
 
-  > .header{
+  > .header {
     color: ${({ theme }) => theme.text};
   }
 
   > .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     height: 100%;
+    overflow-y: scroll;
     background-color: ${({ theme }) => theme.accent};
+    > .footer {
+      margin-top: 2rem;
+      padding-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      gap: 1rem;
+    }
   }
 `;
 

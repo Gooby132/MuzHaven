@@ -1,8 +1,9 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { CreateProjectResponse, ProjectDto } from 'services/project/contracts'
+import { FetchProjectsResponse } from 'services/project/contracts'
+import { CompleteProjectDto } from 'services/user/contracts'
 
 export type ProjectState = {
-  projects: ProjectDto[]
+  projects: CompleteProjectDto[]
 }
 
 export type MusicalProfile  = {
@@ -10,7 +11,7 @@ export type MusicalProfile  = {
   scale: number
 }
 
-const initialState: ProjectState ={
+const initialState: ProjectState = {
   projects: []
 }
 
@@ -18,10 +19,11 @@ export const projectSlice = createSlice({
   name: "project",
   initialState,
   reducers: {
-    create: (state, payload: PayloadAction<CreateProjectResponse>) => {
-        
+    fetchProjects: (state, payload: PayloadAction<FetchProjectsResponse>) => {
+        state.projects = payload.payload.result!.projects
     }
   }
 })
 
 export const projectReducers = projectSlice.reducer
+export const projectActions = projectSlice.actions

@@ -91,7 +91,7 @@ public class UsersController : ControllerBase
 
         return CreatedAtAction(
           nameof(ProjectsController.GetById),
-          nameof(ProjectsController),
+          "Projects",
           new { result.Value.Id },
           new CreateProjectResponse
           {
