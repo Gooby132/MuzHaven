@@ -15,7 +15,7 @@ const Container = styled.div`
 
     > label {
       white-space: nowrap;
-      min-width:5em;
+      min-width: 5em;
     }
   }
   > p {
@@ -27,11 +27,11 @@ type Props = {
   name: string;
   text: string;
   initialValue?: string;
-  onChange: (value: string) => void;
+  onChange: (value?: FileList) => void;
   error?: string;
 };
 
-export const TextInput = ({
+export const FileInput = ({
   text,
   onChange,
   name,
@@ -44,9 +44,11 @@ export const TextInput = ({
         <label htmlFor={name}>{text}</label>
         <input
           id={name}
-          type="text"
+          type="file"
           value={initialValue}
-          onChange={(e) => onChange(e.target.value)}
+          onChange={(e) =>
+            onChange(e.target.files === null ? undefined : e.target.files)
+          }
         />
       </div>
       {error && <p>{error}</p>}

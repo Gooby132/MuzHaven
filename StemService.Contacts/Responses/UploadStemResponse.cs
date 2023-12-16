@@ -2,7 +2,7 @@
 
 namespace StemService.Contacts.Responses;
 
-public class CreateStemResponse
+public class UploadStemResponse
 {
-    public StemDto Stem { get; set; }
+    public CompleteStemDto Stem { get; set; }
 }

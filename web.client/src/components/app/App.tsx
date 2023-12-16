@@ -3,20 +3,17 @@ import {
   Navigate,
   createBrowserRouter,
   RouterProvider,
-  defer,
 } from "react-router-dom";
 import { Login } from "../pages/Login";
 import { Register } from "../pages/Register";
 import { Error } from "../pages/Error";
 import { Profile } from "../pages/Profile";
-import { Home } from "../pages/Home";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import Projects from "../pages/Projects";
 // @ts-ignore
 import Modal from "react-modal";
 import { MainVer2 } from "components/layout/app/MainVer2";
-import { MuzHavenTheme } from "themes/theme";
 import { Project } from "components/pages/Project";
 import { fetchProjectById } from "services/project/projectServiceClient";
 
@@ -31,7 +28,7 @@ function App() {
         {
           path: "/login",
           errorElement: <Error />,
-          element: user.loggedIn ? <Navigate to="/login" replace /> : <Login />,
+          element: <Login />,
         },
         {
           path: "/register",
@@ -62,15 +59,19 @@ function App() {
         },
         {
           path: "/project/:id",
-          element: <Project />,
+          element: !user.loggedIn ? (
+            <Navigate to="/login" replace />
+          ) : (
+            <Project />
+          ),
           loader: async ({ params }) => {
             if (params.id === undefined) throw new Response("No id give");
             const res = await fetchProjectById({
               id: params.id,
               token: user.token!,
-            })
+            });
 
-            if(res.isError) throw new Response("failure")
+            if (res.isError) throw new Response("failure");
 
             return res.result;
           },

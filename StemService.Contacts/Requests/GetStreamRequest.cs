@@ -1,6 +1,6 @@
 ﻿namespace StemService.Contacts.Requests;
 
-public class OpenStemStreamRequest
+public class GetStreamRequest
 {
 
     public Guid StemId { get; set; }

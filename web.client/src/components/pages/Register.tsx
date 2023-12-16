@@ -15,22 +15,23 @@ import {
 import { userActions } from "../../redux/features/user/userSlice";
 import { useDispatch } from "react-redux";
 import { registerUser } from "services/user/userServiceClient";
+import { PageBase } from "components/layout/pages/PageBase";
 
 const Container = styled.div``;
 
 type FormErrors = {
-  email: string | undefined, 
-  password: string | undefined,
-  stageError: string | undefined,
-  firstName: string | undefined,
-  lastName: string | undefined,
-  bio: string | undefined,
-}
+  email: string | undefined;
+  password: string | undefined;
+  stageError: string | undefined;
+  firstName: string | undefined;
+  lastName: string | undefined;
+  bio: string | undefined;
+};
 
 type Props = {};
 
 export const Register = (props: Props) => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [registerResponse, setRegisterResponse] = useState<RegisterResponse>({
     isError: false,
   });
@@ -38,19 +39,19 @@ export const Register = (props: Props) => {
   const [formErrors, setFormErrors] = useState<FormErrors | null>(null);
 
   const onSubmit = async (args: RegisterRequest) => {
-    const errors : FormErrors = {
-      email: undefined, 
+    const errors: FormErrors = {
+      email: undefined,
       password: undefined,
       stageError: undefined,
       firstName: undefined,
       lastName: undefined,
       bio: undefined,
-    }
-    
+    };
+
     const res = await registerUser(args);
 
-    if(!res.isError){
-      dispatch(userActions.login(res))
+    if (!res.isError) {
+      dispatch(userActions.login(res));
     }
 
     if (res.isError) {
@@ -62,16 +63,16 @@ export const Register = (props: Props) => {
           case EMAIL_GROUP_CODE:
             errors.email = error.message;
             return;
-            case FIRST_NAME_GROUP_CODE:
-            errors.firstName= error.message;
+          case FIRST_NAME_GROUP_CODE:
+            errors.firstName = error.message;
             return;
-            case LAST_NAME_GROUP_CODE:
-            errors.lastName= error.message;
+          case LAST_NAME_GROUP_CODE:
+            errors.lastName = error.message;
             return;
-            case BIO_GROUP_CODE:
+          case BIO_GROUP_CODE:
             errors.bio = error.message;
             return;
-            case STAGE_NAME_GROUP_CODE:
+          case STAGE_NAME_GROUP_CODE:
             errors.stageError = error.message;
             return;
           default:
@@ -80,21 +81,23 @@ export const Register = (props: Props) => {
       });
     }
 
-    setFormErrors(errors)
+    setFormErrors(errors);
   };
 
   return (
-    <Container>
-      <PageTitle text="Register" />
-      <RegisterForm
-        passwordError={formErrors?.password}
-        emailError={formErrors?.email}
-        firstNameError={formErrors?.firstName}
-        lastNameError={formErrors?.lastName}
-        stageNameError={formErrors?.stageError}
-        bioError={formErrors?.bio}
-        onSubmit={onSubmit}
-      />
-    </Container>
+    <PageBase>
+      <Container>
+        <PageTitle text="Register" />
+        <RegisterForm
+          passwordError={formErrors?.password}
+          emailError={formErrors?.email}
+          firstNameError={formErrors?.firstName}
+          lastNameError={formErrors?.lastName}
+          stageNameError={formErrors?.stageError}
+          bioError={formErrors?.bio}
+          onSubmit={onSubmit}
+        />
+      </Container>
+    </PageBase>
   );
 };

@@ -3,5 +3,6 @@ export interface MuzHavenTheme {
   secondary: string,
   accent: string,
   lightAccent: string,
-  text: string
+  text: string,
+  light: string
 }

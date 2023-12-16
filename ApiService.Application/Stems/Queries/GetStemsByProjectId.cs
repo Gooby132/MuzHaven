@@ -9,12 +9,7 @@ namespace ApiService.Application.Stems.Queries;
 public static class GetStemsByProjectId
 {
 
-	public class Query : IRequest<Result<IEnumerable<Stem>>>
-	{
-
-        public Guid ProjectId { get; set; }
-
-    }
+	public record Query(Guid ProjectId) : IRequest<Result<IEnumerable<Stem>>>;
 
     public class Handler : IRequestHandler<Query, Result<IEnumerable<Stem>>>
     {

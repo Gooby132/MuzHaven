@@ -5,20 +5,20 @@ namespace StemService.Domain.Entities;
 
 public class Comment : Entity<Guid>
 {
-
-    public Guid UserId { get; init; }
+    public Guid StemId { get; set; }
+    public Guid CommenterId { get; init; }
     public string Text { get; init; }
+    public int? Time { get; set; }
 
-    private Comment()
-    {
-    }
+    private Comment() { }
 
-    public static Result<Comment> Create(Guid userId, string text)
+    public static Result<Comment> Create(Guid userId, string text, int? time)
     {
         return new Comment
         {
-            UserId = userId,
+            CommenterId = userId,
             Text = text,
+            Time = time
         };
     }
 

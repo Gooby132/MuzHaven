@@ -6,8 +6,11 @@ import { PageBase } from "components/layout/pages/PageBase";
 import { PageTitle } from "components/atoms/texts/PageTitle";
 import { ChangesTab } from "components/organizem/project/ChangesTab";
 import { DetailsTab } from "components/organizem/project/DetailsTab";
-import { StemsTab } from "components/organizem/project/StemsTab";
+import { StemsTab } from "components/organizem/stem/StemsTab";
 import { ContributersTab } from "components/organizem/project/ContributersTab";
+import { CompleteProjectDto, ProjectDto } from "services/user/contracts";
+import { useSelector } from "react-redux";
+import { RootState } from "redux/store";
 
 const Container = styled.div`
   color: ${({ theme }) => theme.text};
@@ -35,8 +38,8 @@ const Container = styled.div`
 type Props = {};
 
 export const Project = ({}: Props) => {
-  const project = useLoaderData() as any;
-  console.log(project);
+  const user = useSelector((state: RootState) => state.user)
+  const project = useLoaderData() as CompleteProjectDto;
 
   return (
     <PageBase>
@@ -54,10 +57,10 @@ export const Project = ({}: Props) => {
             <ChangesTab />
           </TabPanel>
           <TabPanel>
-            <DetailsTab />
+            <DetailsTab project={project} />
           </TabPanel>
           <TabPanel>
-            <StemsTab />
+            <StemsTab projectId={project.id} creatorId={user.id!} />
           </TabPanel>
           <TabPanel>
             <ContributersTab />

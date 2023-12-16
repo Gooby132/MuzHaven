@@ -2,6 +2,7 @@
 using StemService.Domain.Errors;
 using StemService.Domain.Repositories;
 using StemService.Domain.Services;
+using StemService.Domain.ValueObjects;
 using System.Security.Claims;
 
 namespace StemService.Domain.Factories;
@@ -23,6 +24,7 @@ public class StemPersistenceService
         Guid projectId,
         Guid userId,
         Stream stream,
+        Description description,
         string name,
         string instrument,
         CancellationToken token = default)
@@ -36,15 +38,19 @@ public class StemPersistenceService
         {
             ProjectId = projectId,
             UserId = userId,
-            MediaFile = stem.Value,
             Name = name,
+            Desciption = description,
+            MusicFile = stem.Value,
             Instrument = instrument,
         };
     }
 
     public async Task<Result> RemoveStem(Stem stem)
     {
-        return await _fileService.RemoveMediaFile(stem.MediaFile);
+        if (stem.MusicFile is null)
+            return InvalidOperationErrors.MusicFileWasNotInitialized();
+
+        return await _fileService.RemoveMediaFile(stem.MusicFile.Path);
     }
 
     public async Task<Result<(Stem Stem,Stream Stream)>> OpenStemStream(ClaimsPrincipal claims, Guid stemId, CancellationToken token = default)
@@ -54,6 +60,9 @@ public class StemPersistenceService
         if (stem.IsFailed)
             return Result.Fail(stem.Errors);
 
+        if (stem.Value.MusicFile is null)
+            return InvalidOperationErrors.MusicFileWasNotInitialized();
+
         var isAuthed = await _authorizer.ParseAuthorizedKey(claims);
 
         if (isAuthed.IsFailed)
@@ -62,7 +71,7 @@ public class StemPersistenceService
         if (!isAuthed.Value.Contains(stem.Value.Id))
             return new NotAuthorizedError();
 
-        var stream = await _fileService.GetStem(stem.Value.MediaFile, token);
+        var stream = await _fileService.GetStem(stem.Value.MusicFile.Path, token);
 
         if (stream.IsFailed)
             return Result.Fail(stream.Errors);

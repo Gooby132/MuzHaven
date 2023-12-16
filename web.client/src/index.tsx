@@ -1,9 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import App from "./components/app/App";
+import App from "components/app/App";
 import reportWebVitals from "./reportWebVitals";
-import { BrowserRouter } from "react-router-dom";
 import { persistor, store } from "./redux/store";
 import { Provider } from "react-redux";
 import { KEY_PREFIX } from "redux-persist";
@@ -14,13 +13,13 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-  // <React.StrictMode>
+  <React.StrictMode>
     <PersistGate persistor={persistor}>
         <Provider store={store}>
           <App />
         </Provider>
     </PersistGate>
-  // </React.StrictMode>
+  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

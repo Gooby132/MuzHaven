@@ -20,6 +20,8 @@ public static class GetProjectById
         private readonly ILogger<Handler> _logger;
         private readonly IProjectRepository _repository;
 
+        public string Name { get; set; } = nameof(GetProjectById);
+
         public Handler(ILogger<Handler> logger, IProjectRepository repository)
         {
             _logger = logger;
@@ -43,6 +45,8 @@ public static class GetProjectById
 
             return Result.Ok(project.Value);
         }
-    }
 
+        public override string ToString() => Name;
+ 
+    }
 }

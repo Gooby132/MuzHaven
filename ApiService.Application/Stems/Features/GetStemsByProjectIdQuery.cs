@@ -5,21 +5,21 @@ using StemService.Domain.Factories;
 
 namespace ApiService.Application.Stems.Features;
 
-public static class GetStemsAuthorizationByProjectIdFeature
+public static class GetStemsByProjectIdQuery
 {
 
-	public class Request : IRequest<Result<string>>
+	public class Query : IRequest<Result<string>>
 	{
 
         public Guid ProjectId { get; }
 
-        public Request(Guid projectId)
+        public Query(Guid projectId)
         {
             ProjectId = projectId;
         }
     }
 
-    class Handler : IRequestHandler<Request, Result<string>>
+    class Handler : IRequestHandler<Query, Result<string>>
     {
         private readonly ILogger<Handler> _logger;
         private readonly StemPersistenceService _persistenceService;
@@ -29,7 +29,7 @@ public static class GetStemsAuthorizationByProjectIdFeature
             _logger = logger;
             _persistenceService = persistenceService;
         }
-        public async Task<Result<string>> Handle(Request request, CancellationToken cancellationToken)
+        public async Task<Result<string>> Handle(Query request, CancellationToken cancellationToken)
         {
             _logger.LogTrace("{this} stems authorization by project id - '{projectId}' requested",
                 this, request.ProjectId);

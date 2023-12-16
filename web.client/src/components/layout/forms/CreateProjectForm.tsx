@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { ProjectDto } from "services/project/contracts";
 import styled from "styled-components";
 import { TextInput } from "../../atoms/form/TextInput";

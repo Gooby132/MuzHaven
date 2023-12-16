@@ -1,6 +1,7 @@
 ﻿using FluentResults;
 using Microsoft.Extensions.Options;
 using StemService.Domain.Services;
+using StemService.Domain.ValueObjects;
 using StemService.Infrastructure.FileServices.Core.Errors;
 using StemService.Infrastructure.FileServices.LocalFileService.Errors;
 using StemService.Infrastructure.FileServices.LocalFileService.Options;
@@ -21,7 +22,7 @@ public class LocalFileSystemService : IFileService
         LocalFileDirectory = Directory.CreateDirectory(Path.Combine(_config.BaseDirectory, StemDirectoryName));
     }
 
-    public async Task<Result<string>> SaveMediaFile(Stream stream, CancellationToken token = default)
+    public async Task<Result<MusicFile>> SaveMediaFile(Stream stream, CancellationToken token = default)
     {
         try
         {
@@ -36,7 +37,15 @@ public class LocalFileSystemService : IFileService
             if (token.IsCancellationRequested)
                 return Result.Fail(new CanceledError());
 
-            return Result.Ok(fileName);
+            var musicFile = MusicFile.Create
+            (
+                fileName,
+                0,
+                "",
+                ""
+            );
+
+            return Result.Ok();
         }
         catch (Exception e)
         {

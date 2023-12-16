@@ -2,12 +2,20 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { PageTitle } from "../atoms/texts/PageTitle";
 import { LoginForm, LoginFormErrors } from "../layout/forms/LoginForm";
-import { EMAIL_GROUP_CODE, LoginRequest, PASSWORD_GROUP_CODE } from "../../services/user/contracts";
+import {
+  EMAIL_GROUP_CODE,
+  LoginRequest,
+  PASSWORD_GROUP_CODE,
+} from "../../services/user/contracts";
 import { userActions } from "../../redux/features/user/userSlice";
 import { useDispatch } from "react-redux";
 import { loginUser } from "services/user/userServiceClient";
+import { PageBase } from "components/layout/pages/PageBase";
+import { Link } from "react-router-dom";
 
-const Container = styled.div``;
+const Container = styled.div`
+  color: ${({ theme }) => theme.text};
+`;
 
 type Props = {};
 
@@ -49,9 +57,12 @@ export const Login = (props: Props) => {
   };
 
   return (
-    <Container>
-      <PageTitle text="Login" />
-      <LoginForm formErrors={formErrors} onSubmit={onSubmit} />
-    </Container>
+    <PageBase>
+      <Container>
+        <PageTitle text="Login" />
+        <LoginForm formErrors={formErrors} onSubmit={onSubmit} />
+        <Link to="/register" >register</Link>
+      </Container>
+    </PageBase>
   );
 };

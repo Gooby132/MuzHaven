@@ -1,12 +1,11 @@
-﻿using ApiService.Application.Stems.Features;
-using ApiService.Application.Stems.Queries;
+﻿using ApiService.Application.Stems.Queries;
+using DomainSeed;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ProjectService.Domain;
 using StemService.Contacts.Dtos;
 using StemService.Contacts.Requests;
 using StemService.Contacts.Responses;
-using StemService.Domain.Services;
 
 namespace ApiService.Controllers;
 
@@ -49,20 +48,21 @@ public class StemController : ControllerBase
 
         return Ok(new GetAllStemsResponse
         {
-            Stems = res.Value.Select(r => new StemDto { 
+            Stems = res.Value.Select(r => new CompleteStemDto { 
                 Id = r.Id, 
                 Name = r.Name,
                 Instrument = r.Instrument,
                 ProjectId = r.ProjectId,
-                UserId = r.UserId
+                CreatorId = r.UserId
             })
         });
     }
 
-    [HttpGet("get-stems-authorization-by-project-id")]
-    public async Task<IActionResult> StemsAuthorizationByProjectId([FromQuery] GetStemsAuthorizationByProjectIdRequest request, CancellationToken token = default)
+
+    [HttpGet("get-stems")]
+    public async Task<IActionResult> GetStems([FromQuery] GetStemsByProjectIdRequest request, CancellationToken token = default)
     {
-        var res = await _mediator.Send(new GetStemsAuthorizationByProjectIdFeature.Request(request.ProjectId), token);
+        var res = await _mediator.Send(new GetStemsByProjectId.Query(request.ProjectId), token);
 
         if (res.IsFailed)
         {
@@ -71,29 +71,41 @@ public class StemController : ControllerBase
             return Problem(); // undefined errors
         }
 
-        Response.Headers.Remove(IFileAuthorizer.StemHeaderName);
-        Response.Headers.Add(IFileAuthorizer.StemHeaderName, res.Value);
-
-        return Ok(new GetStemsAuthorizationByProjectIdResponse
+        return Ok(new GetStemsResponse
         {
-            Token = res.Value
+            Stems = res.Value.Select(stem => new CompleteStemDto
+            {
+                Id = stem.Id,
+                Name = stem.Name,
+                Instrument = stem.Instrument,
+                ProjectId = stem.ProjectId,
+                CreatorId = stem.UserId
+            })
         });
     }
 
     [HttpPost("upload-stem")]
-    public async Task<IActionResult> Upload([FromForm] UploadStemRequest request, CancellationToken token = default)
+    public async Task<IActionResult> UploadStem([FromForm] UploadStemRequest request, CancellationToken token = default)
     {
-
         var res = await _mediator.Send(new Application.Stems.Commands.UploadStem.Command(
             request.ProjectId,
-            request.UserId,
-            request.StemStream.OpenReadStream(),
+            request.CreatorId,
+            request.File.OpenReadStream(),
+            request.Description,
             request.Name,
             request.Instrument
             ), token);
 
         if (res.IsFailed)
         {
+            if (res.HasError<ErrorBase>())
+                return BadRequest(res.Errors.Select(r => new
+                {
+                    r.Message,
+                    Code = (r as ErrorBase)?.ErrorCode,
+                    Group = (r as ErrorBase)?.GroupCode,
+                }));
+
             // defined errors
 
             return Problem(); // undefined errors
@@ -102,22 +114,21 @@ public class StemController : ControllerBase
         return CreatedAtAction(
            nameof(GetById),
            new { res.Value.Id },
-           new CreateStemResponse
+           new UploadStemResponse
            {
-               Stem = new StemDto
+               Stem = new CompleteStemDto
                {
                    Id = res.Value.Id,
                    ProjectId = res.Value.ProjectId,
-                   UserId = res.Value.UserId,
+                   CreatorId = res.Value.UserId,
                    Name = res.Value.Name,
                    Instrument = res.Value.Instrument,
                }
            });
     }
 
-    [Authorize(AuthenticationSchemes = IFileAuthorizer.StemSchemeName)]
-    [HttpGet("get-stream-by-id")]
-    public async Task<IActionResult> GetStreamById([FromQuery] OpenStemStreamRequest request, CancellationToken token = default)
+    [HttpGet("get-stream")]
+    public async Task<IActionResult> GetStreamById([FromQuery] GetStreamRequest request, CancellationToken token = default)
     {
 
         var res = await _mediator.Send(new OpenStemStreamById.Query(User, request.StemId));
@@ -132,8 +143,8 @@ public class StemController : ControllerBase
         return File(res.Value.Stream, "audio/wav");
     }
 
-    [HttpGet("get-stem-by-id")]
-    public async Task<IActionResult> GetById([FromQuery] OpenStemStreamRequest request, CancellationToken token = default)
+    [HttpGet("get-stem")]
+    public async Task<IActionResult> GetById([FromQuery] GetStreamRequest request, CancellationToken token = default)
     {
 
         var res = await _mediator.Send(new GetStemById.Query(request.StemId));
@@ -150,7 +161,7 @@ public class StemController : ControllerBase
             Stem = new StemDto
             {
                 ProjectId = res.Value.ProjectId,
-                UserId = res.Value.UserId,
+                CreatorId = res.Value.UserId,
                 Name = res.Value.Name,
                 Instrument = res.Value.Instrument,
             }

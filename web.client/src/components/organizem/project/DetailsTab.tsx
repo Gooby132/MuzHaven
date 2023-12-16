@@ -1,9 +1,39 @@
-import React from 'react'
+import { TextInput } from "components/atoms/form/TextInput";
+import React from "react";
+import { ProjectDto } from "services/user/contracts";
+import styled from "styled-components";
 
-type Props = {}
+const Container = styled.div`
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+`;
 
-export const DetailsTab = (props: Props) => {
+type Props = {
+  project: ProjectDto;
+};
+
+export const DetailsTab = ({ project }: Props) => {
   return (
-    <div>DetailsTab</div>
-  )
-}
+    <Container>
+      <TextInput
+        name="title"
+        text={"Title"}
+        initialValue={project.title}
+        onChange={() => {}}
+      />
+      <TextInput
+        name="album"
+        text={"Album"}
+        initialValue={project.album}
+        onChange={() => {}}
+      />
+      <TextInput
+        name="description"
+        text={"Description"}
+        initialValue={project.description}
+        onChange={() => {}}
+      />
+      
+    </Container>
+  );
+};

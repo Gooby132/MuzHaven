@@ -5,8 +5,6 @@ using Microsoft.Extensions.Logging;
 using UserService.Domain;
 using ApiService.Application.Permissions.Queries;
 using ApiService.Application.Users.Queries;
-using DomainSeed.ValueObjects.Auth;
-using PermissionService.Domain.UserPermissions.ValueObjects;
 using PermissionService.Domain.UserPermissions;
 
 namespace ApiService.Application.Users.Commands;
@@ -20,6 +18,8 @@ public static class LoginUserByEmail
     {
         private readonly ILogger<Handler> _logger;
         private readonly IMediator _mediator;
+
+        public string Name { get; set; } = nameof(LoginUserByEmail);
 
         public Handler(
             ILogger<Handler> logger,
@@ -67,5 +67,8 @@ public static class LoginUserByEmail
 
             return Result.Ok<(User User, UserPermission Permission)>(new(user.Result.Value, permission.Result.Value));
         }
+
+        public override string ToString() => Name;
+
     }
 }
