@@ -23,10 +23,23 @@ public class Stem : Aggregate<Guid>
         var comment = Comment.Create(
             userId,
             text,
+            null,
             time
         );
 
         Comments.Add(comment.Value);
+
+        return Result.Ok();
+    }
+
+    public Result ReplyToComment(Comment comment,Guid replierId, string text)
+    {
+        var reply = comment.BeReplyed(replierId, text);
+
+        if (reply.IsFailed)
+            return Result.Fail(reply.Errors);
+
+        Comments.Add(reply.Value);
 
         return Result.Ok();
     }

@@ -69,7 +69,7 @@ public class ProjectsController : ControllerBase
             }
         }
 
-        var res = await _mediator.Send(new Application.Projects.Commands.CreateProject.Command
+        var res = await _mediator.Send(new Application.Projects.Commands.CreateProjectCommand.Command
         (
             project.Value
         ), token);
@@ -115,7 +115,7 @@ public class ProjectsController : ControllerBase
         if (id?.Value is null)
             return Unauthorized();
 
-        var res = await _mediator.Send(new GetProjectsByCreatorId.Query(id.Value), cancellationToken);
+        var res = await _mediator.Send(new GetProjectsByCreatorIdQuery.Query(id.Value), cancellationToken);
 
         if (res.IsFailed)
         {
@@ -148,7 +148,7 @@ public class ProjectsController : ControllerBase
     public async Task<IActionResult> GetById([FromQuery] GetProjectByIdRequest request, CancellationToken token = default)
     {
 
-        var res = await _mediator.Send(new GetProjectById.Query
+        var res = await _mediator.Send(new GetProjectByIdQuery.Query
         {
             Id = request.Id,
         });

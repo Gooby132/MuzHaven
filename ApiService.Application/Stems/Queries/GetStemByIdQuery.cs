@@ -6,7 +6,7 @@ using StemService.Domain.Repositories;
 
 namespace ApiService.Application.Stems.Queries;
 
-public static class GetStemById
+public static class GetStemByIdQuery
 {
 
 	public class Query : IRequest<Result<Stem>>

@@ -8,7 +8,7 @@ using StemService.Persistence.Context;
 
 namespace ApiService.Application.Stems.Commands;
 
-public static class CreateComment
+public static class CreateCommentCommand
 {
 
     public record Request(Guid StemId, Guid CommenterId, string Text, int? Time) : IRequest<Result>;
@@ -38,7 +38,7 @@ public static class CreateComment
 
         public async Task<Result> Handle(Request request, CancellationToken cancellationToken)
         {
-            var stem = await _mediator.Send(new GetStemById.Query(request.StemId));
+            var stem = await _mediator.Send(new GetStemByIdQuery.Query(request.StemId));
 
             if (stem.IsFailed)
             {

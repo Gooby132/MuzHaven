@@ -1,5 +1,7 @@
 import axios from "axios";
 import {
+  CreateCommentRequest,
+  CreateCommentResponse,
   GetStemRequest,
   GetStemResponse,
   GetStemsRequest,
@@ -16,16 +18,16 @@ const GET_STEMS = "/get-stems";
 const UPLOAD_STEMS = "/upload-stem";
 const GET_STREAM = "/get-stream";
 const GET_STEM = "/get-stem";
+const CREATE_COMMENT = "/create-comment";
 
 export const getStems = async (
   request: GetStemsRequest
 ): Promise<ResponseDto<GetStemsResponse>> => {
   try {
-    const response = await axios.get(`${STEM_SERVICE_BASE}${GET_STEMS}`,
-    {
+    const response = await axios.get(`${STEM_SERVICE_BASE}${GET_STEMS}`, {
       params: {
-        projectId: request.projectId
-      }
+        projectId: request.projectId,
+      },
     });
 
     return {
@@ -60,15 +62,18 @@ export const uploadStem = async (
   request: UploadStemRequest
 ): Promise<ResponseDto<UploadStemResponse>> => {
   try {
-    const form = new FormData()
-    form.append("projectId", request.stem.projectId)
-    form.append("creatorId", request.stem.creatorId)
-    form.append("name", request.stem.name)
-    form.append("description", request.stem.description)
-    form.append("instrument", request.stem.instrument)
-    form.append("file", request.file[0])
+    const form = new FormData();
+    form.append("projectId", request.stem.projectId);
+    form.append("creatorId", request.stem.creatorId);
+    form.append("name", request.stem.name);
+    form.append("description", request.stem.description);
+    form.append("instrument", request.stem.instrument);
+    form.append("file", request.file[0]);
 
-    const response = await axios.post(`${STEM_SERVICE_BASE}${UPLOAD_STEMS}`, form);
+    const response = await axios.post(
+      `${STEM_SERVICE_BASE}${UPLOAD_STEMS}`,
+      form
+    );
 
     return {
       isError: false,
@@ -142,6 +147,41 @@ export const getStem = async (
       isError: false,
       result: response.data,
     };
+  } catch (error: any) {
+    switch (error.response?.status) {
+      case 400:
+        return {
+          isError: true,
+          errors: error.response.data.map(
+            (error: { code: number; group: number; message?: string }) => {
+              return {
+                code: error.code,
+                group: error.group,
+                message: error.message,
+              };
+            }
+          ),
+        };
+      default:
+        console.log(error);
+        return {
+          isError: true,
+        };
+    }
+  }
+};
+
+export const createComment = async (
+  request: CreateCommentRequest
+): Promise<ResponseDto<CreateCommentResponse>> => {
+  try {
+    const response = await axios.post(`${STEM_SERVICE_BASE}${CREATE_COMMENT}`,
+    request)
+
+    return {
+      isError: false,
+      result: response
+    }
   } catch (error: any) {
     switch (error.response?.status) {
       case 400:

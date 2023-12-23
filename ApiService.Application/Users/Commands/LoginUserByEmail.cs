@@ -36,7 +36,7 @@ public static class LoginUserByEmail
 
             var user = _mediator.Send(new GetUserByEmail.Query(request.Email), cancellationToken);
 
-            var permission = _mediator.Send(new GetPermissionByUserId.Query
+            var permission = _mediator.Send(new GetPermissionByUserIdQuery.Query
             {
                 Email = request.Email,
                 Password = request.Password

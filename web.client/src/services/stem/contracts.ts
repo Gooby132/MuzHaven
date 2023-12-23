@@ -26,10 +26,26 @@ export interface GetStemRequest {
 }
 
 export interface GetStemResponse {
-  stem: CompleteStemDto
+  stem: CompleteStemDto;
 }
 
+export interface CreateCommentRequest {
+  commenterId: string,
+  stemId: string,
+  text: string,
+  time?: number
+}
+
+export interface CreateCommentResponse {}
+
 //dtos
+
+export interface CommentDto {
+  commenterId: string,
+  createdOnUtc: string,
+  text: string,
+  time?: number
+}
 
 export interface CompleteStemDto extends StemDto {
   id: string;
@@ -41,5 +57,6 @@ export interface StemDto {
   name: string;
   instrument: string;
   description: string;
-  file?: FileList
+  comments: CommentDto[];
+  file?: FileList;
 }

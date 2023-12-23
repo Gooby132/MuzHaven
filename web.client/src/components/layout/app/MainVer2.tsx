@@ -10,13 +10,12 @@ import { Header } from "../../organizem/Header";
 import { WordMark } from "../../atoms/texts/WordMark";
 import { HeaderLayout } from "../headers/HeaderLayout";
 import { Searchbar } from "components/atoms/form/Searchbar";
-import { ProjectsLinkGroup }from "components/organizem/projects/ProjectsLinkGroup";
+import { ProjectsLinkGroup } from "components/organizem/projects/ProjectsLinkGroup";
 import { SidebarLink } from "components/atoms/links/SidebarLink";
 import { SlimSidebarLink } from "components/atoms/links/SlimSidebarLink";
 import { useState } from "react";
 import { MuzHavenTheme } from "themes/theme";
 import { darkTheme } from "themes/darkTheme";
-import { PageBase } from "../pages/PageBase";
 
 type Props = {};
 
@@ -47,26 +46,27 @@ export const MainVer2 = ({}: Props) => {
           header={<WordMark text="MuzHaven" />}
           links={[
             <ProjectsLinkGroup
-              projects={projects.map((project) => (
+              key={"projectLinkGroup"}
+              projects={projects.map((project, i) => (
                 <SidebarLink
-                  key={project.id}
+                  key={i}
+                  projectId={project.id}
                   to={`/project/${project.id}`}
                   isActive={false}
-                  itemId={project.id}
                 />
               ))}
             />,
           ]}
           footer={[
             <SlimSidebarLink
+              key="create-project"
               to="/projects"
-              itemId="create-project"
               text="Create Project"
               isActive={true}
             />,
             <SlimSidebarLink
+              key="profile"
               to="/profile"
-              itemId="profile"
               text="Profile"
               isActive={false}
             />,
@@ -81,7 +81,7 @@ export const MainVer2 = ({}: Props) => {
               />
             }
           />
-            <Outlet />
+          <Outlet />
           <Footer />
         </section>
       </Container>

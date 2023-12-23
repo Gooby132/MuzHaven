@@ -1,4 +1,5 @@
-﻿using ApiService.Application.Stems.Queries;
+﻿using ApiService.Application.Stems.Commands;
+using ApiService.Application.Stems.Queries;
 using DomainSeed;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -6,6 +7,7 @@ using ProjectService.Domain;
 using StemService.Contacts.Dtos;
 using StemService.Contacts.Requests;
 using StemService.Contacts.Responses;
+using StemService.Domain.Entities;
 
 namespace ApiService.Controllers;
 
@@ -48,8 +50,9 @@ public class StemController : ControllerBase
 
         return Ok(new GetAllStemsResponse
         {
-            Stems = res.Value.Select(r => new CompleteStemDto { 
-                Id = r.Id, 
+            Stems = res.Value.Select(r => new CompleteStemDto
+            {
+                Id = r.Id,
                 Name = r.Name,
                 Instrument = r.Instrument,
                 ProjectId = r.ProjectId,
@@ -62,7 +65,7 @@ public class StemController : ControllerBase
     [HttpGet("get-stems")]
     public async Task<IActionResult> GetStems([FromQuery] GetStemsByProjectIdRequest request, CancellationToken token = default)
     {
-        var res = await _mediator.Send(new GetStemsByProjectId.Query(request.ProjectId), token);
+        var res = await _mediator.Send(new GetStemsByProjectIdQuery.Query(request.ProjectId), token);
 
         if (res.IsFailed)
         {
@@ -79,7 +82,14 @@ public class StemController : ControllerBase
                 Name = stem.Name,
                 Instrument = stem.Instrument,
                 ProjectId = stem.ProjectId,
-                CreatorId = stem.UserId
+                CreatorId = stem.UserId,
+                Comments = stem.Comments.Select(comment => new CommentDto
+                {
+                    CommenterId = comment.CommenterId,
+                    CreatedOnUtc = comment.CreatedOnUtc,
+                    Text = comment.Text,
+                    Time = comment.Time,
+                })
             })
         });
     }
@@ -87,7 +97,7 @@ public class StemController : ControllerBase
     [HttpPost("upload-stem")]
     public async Task<IActionResult> UploadStem([FromForm] UploadStemRequest request, CancellationToken token = default)
     {
-        var res = await _mediator.Send(new Application.Stems.Commands.UploadStem.Command(
+        var res = await _mediator.Send(new Application.Stems.Commands.UploadStemCommand.Command(
             request.ProjectId,
             request.CreatorId,
             request.File.OpenReadStream(),
@@ -131,7 +141,7 @@ public class StemController : ControllerBase
     public async Task<IActionResult> GetStreamById([FromQuery] GetStreamRequest request, CancellationToken token = default)
     {
 
-        var res = await _mediator.Send(new OpenStemStreamById.Query(User, request.StemId));
+        var res = await _mediator.Send(new OpenStemStreamByIdQuery.Query(User, request.StemId));
 
         if (res.IsFailed)
         {
@@ -147,7 +157,7 @@ public class StemController : ControllerBase
     public async Task<IActionResult> GetById([FromQuery] GetStreamRequest request, CancellationToken token = default)
     {
 
-        var res = await _mediator.Send(new GetStemById.Query(request.StemId));
+        var res = await _mediator.Send(new GetStemByIdQuery.Query(request.StemId));
 
         if (res.IsFailed)
         {
@@ -162,9 +172,27 @@ public class StemController : ControllerBase
             {
                 ProjectId = res.Value.ProjectId,
                 CreatorId = res.Value.UserId,
-                Name = res.Value.Name,
                 Instrument = res.Value.Instrument,
+                Name = res.Value.Name,
             }
+        });
+    }
+
+    [HttpPost("create-comment")]
+    public async Task<IActionResult> CreateComment([FromBody] CreateCommentRequest request)
+    {
+        var res = await _mediator.Send(new CreateCommentCommand.Request(request.StemId, request.CommenterId, request.Text, request.Time));
+
+        if (res.IsFailed)
+        {
+            // defined errors
+
+            return Problem(); // undefined errors
+        }
+
+        return Ok(new CreateCommentResponse
+        {
+
         });
     }
 

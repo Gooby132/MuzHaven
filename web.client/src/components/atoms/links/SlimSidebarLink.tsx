@@ -15,15 +15,14 @@ const Container = styled(NavLink)<{ isActive: boolean }>`
 `;
 
 type Props = {
-  itemId: string;
   text: string;
   to: string;
   isActive: boolean;
 };
 
-export const SlimSidebarLink = ({ itemId, to, text, isActive }: Props) => {
+export const SlimSidebarLink = ({ to, text, isActive }: Props) => {
   return (
-    <Container to={to} isActive={isActive} key={itemId}>
+    <Container to={to} isActive={isActive}>
       {text}
     </Container>
   );

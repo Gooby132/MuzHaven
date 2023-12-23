@@ -5,21 +5,35 @@ namespace StemService.Domain.Entities;
 
 public class Comment : Entity<Guid>
 {
-    public Guid StemId { get; set; }
+    public Guid? Parent { get; init; }
     public Guid CommenterId { get; init; }
     public string Text { get; init; }
-    public int? Time { get; set; }
+    public string CreatedOnUtc { get; init; }
+    public int? Time { get; init; }
 
     private Comment() { }
 
-    public static Result<Comment> Create(Guid userId, string text, int? time)
+    public static Result<Comment> Create(Guid commenterId, string text, Guid? parent = null, int? time = null)
     {
         return new Comment
         {
-            CommenterId = userId,
+            Parent = parent,
+            CommenterId = commenterId,
+            CreatedOnUtc = DateTime.UtcNow.ToString("O"),
             Text = text,
             Time = time
         };
     }
 
+    internal Result<Comment> BeReplyed(Guid replierId, string text)
+    {
+        return new Comment
+        {
+            Parent = Id,
+            CommenterId = replierId,
+            Text = text,
+            CreatedOnUtc = DateTime.UtcNow.ToString("O"),
+            Time = null
+        };
+    }
 }

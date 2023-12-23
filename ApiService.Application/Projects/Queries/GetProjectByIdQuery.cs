@@ -7,7 +7,7 @@ using UserService.Domain.Repositories;
 
 namespace ApiService.Application.Projects.Queries;
 
-public static class GetProjectById
+public static class GetProjectByIdQuery
 {
 
     public class Query : IRequest<Result<Project>>
@@ -20,7 +20,7 @@ public static class GetProjectById
         private readonly ILogger<Handler> _logger;
         private readonly IProjectRepository _repository;
 
-        public string Name { get; set; } = nameof(GetProjectById);
+        public string Name { get; set; } = nameof(GetProjectByIdQuery);
 
         public Handler(ILogger<Handler> logger, IProjectRepository repository)
         {

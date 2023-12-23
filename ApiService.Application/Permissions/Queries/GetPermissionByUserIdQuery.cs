@@ -8,7 +8,7 @@ using PermissionService.Infrastructure.Authorization.Abstracts;
 
 namespace ApiService.Application.Permissions.Queries;
 
-public static class GetPermissionByUserId
+public static class GetPermissionByUserIdQuery
 {
 
     public class Query : IRequest<Result<UserPermission>>
@@ -23,7 +23,7 @@ public static class GetPermissionByUserId
         private readonly IUserPermissionRepository _repository;
         private readonly IPermissionTokenProvider _tokenProvider;
 
-        public string Name { get; set; } = nameof(GetPermissionByUserId);
+        public string Name { get; set; } = nameof(GetPermissionByUserIdQuery);
 
         public Handler(
             ILogger<Handler> logger,

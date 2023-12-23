@@ -6,7 +6,7 @@ using ProjectService.Domain.Repositories;
 
 namespace ApiService.Application.Projects.Queries;
 
-public static class GetProjectsByCreatorId
+public static class GetProjectsByCreatorIdQuery
 {
 
     public record Query(string CreatorId) : IRequest<Result<IEnumerable<Project>>>;
@@ -22,7 +22,7 @@ public static class GetProjectsByCreatorId
 
         #region Properties
 
-        public string Name { get; set; } = nameof(GetProjectsByCreatorId);
+        public string Name { get; set; } = nameof(GetProjectsByCreatorIdQuery);
 
         #endregion
 

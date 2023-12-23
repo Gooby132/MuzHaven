@@ -35,7 +35,7 @@ namespace ApiService.Controllers
         public async Task<IActionResult> Login(LoginRequest request, CancellationToken token = default)
         {
 
-            var res = await _mediator.Send(new GetPermissionByUserId.Query
+            var res = await _mediator.Send(new GetPermissionByUserIdQuery.Query
             {
                 Email = request.Email,
                 Password = request.Password

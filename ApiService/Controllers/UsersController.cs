@@ -87,7 +87,7 @@ public class UsersController : ControllerBase
                 }));
         }
 
-        var result = await _mediator.Send(new CreateProject.Command(project.Value), token);
+        var result = await _mediator.Send(new CreateProjectCommand.Command(project.Value), token);
 
         return CreatedAtAction(
           nameof(ProjectsController.GetById),

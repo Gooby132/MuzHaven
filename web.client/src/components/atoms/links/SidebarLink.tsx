@@ -15,23 +15,21 @@ const Container = styled(NavLink)<{ isActive: boolean }>`
 `;
 
 type Props = {
-  key: string;
-  itemId: string;
+  projectId: string;
   to: string;
   isActive: boolean;
 };
 
 export const SidebarLink = ({
-  itemId,
+  projectId,
   to,
-  key,
   isActive,
   children,
 }: PropsWithChildren<Props>) => {
   const matches = useMatches()
 console.log(matches)
   return (
-    <Container to={to} isActive={isActive} key={key}>
+    <Container to={to} isActive={isActive} key={projectId}>
       {children}
     </Container>
   );

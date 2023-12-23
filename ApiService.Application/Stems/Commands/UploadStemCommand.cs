@@ -11,7 +11,7 @@ using StemService.Persistence.Context;
 
 namespace ApiService.Application.Stems.Commands;
 
-public static class UploadStem
+public static class UploadStemCommand
 {
 
     public class Command : IRequest<Result<Stem>>

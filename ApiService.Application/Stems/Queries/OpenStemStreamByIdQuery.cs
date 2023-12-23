@@ -7,7 +7,7 @@ using System.Security.Claims;
 
 namespace ApiService.Application.Stems.Queries;
 
-public static class OpenStemStreamById
+public static class OpenStemStreamByIdQuery
 {
 
     public class Query : IRequest<Result<(Stem Stem, Stream Stream)>>

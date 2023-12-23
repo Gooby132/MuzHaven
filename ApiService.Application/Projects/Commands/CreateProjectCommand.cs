@@ -9,7 +9,7 @@ using ProjectService.Domain.ValueObjects;
 
 namespace ApiService.Application.Projects.Commands;
 
-public static class CreateProject
+public static class CreateProjectCommand
 {
 
     public record Command(

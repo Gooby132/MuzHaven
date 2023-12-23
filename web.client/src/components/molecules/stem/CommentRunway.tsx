@@ -28,13 +28,16 @@ const Container = styled.div`
   }
 `;
 
-type Props = {};
+type Props = {
+  onChange: (val: string) => void;
+  onSubmit: () => void;
+};
 
 export const CommentRunway = (props: Props) => {
   return (
   <Container>
-    <input></input>
-    <Send />
+    <input type="text" onChange={e => props.onChange(e.target.value)} />
+    <Send onClick={props.onSubmit} />
   </Container>
   );
 };

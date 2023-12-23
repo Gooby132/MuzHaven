@@ -21,10 +21,9 @@ export const UploadStemForm = ({ onSubmit, projectId, creatorId }: Props) => {
     instrument: "",
     file: undefined,
     description: "",
+    comments: []
   });
 
-  console.log(creatorId);
-  
   return (
     <Container
       onSubmit={(e) => {
@@ -40,6 +39,7 @@ export const UploadStemForm = ({ onSubmit, projectId, creatorId }: Props) => {
             name: stem.name,
             file: stem.file,
             description: stem.description,
+            comments: []
           },
           stem.file
         );
