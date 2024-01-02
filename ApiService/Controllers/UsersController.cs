@@ -3,7 +3,6 @@ using ApiService.Application.Users.Commands;
 using ApiService.Application.Users.Queries;
 using DomainSeed;
 using DomainSeed.CommonErrors;
-using DomainSeed.ValueObjects.Auth;
 using HashidsNet;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -15,7 +14,6 @@ using ProjectService.Contracts.Requests;
 using ProjectService.Contracts.Responses;
 using UserService.Contracts.Requests;
 using UserService.Contracts.Responses;
-using UserService.Domain.Errors;
 
 namespace ApiService.Controllers;
 
