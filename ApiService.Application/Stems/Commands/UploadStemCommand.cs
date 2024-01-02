@@ -14,34 +14,29 @@ namespace ApiService.Application.Stems.Commands;
 public static class UploadStemCommand
 {
 
-    public class Command : IRequest<Result<Stem>>
-    {
-        public Guid ProjectId { get; }
-        public Guid UserId { get; }
-        public Stream StemFile { get; }
-        public string Name { get; }
-        public string Instrument { get; }
-        public string? Description { get; }
-
-        public Command(Guid projectId, Guid userId, Stream stemFile, string? description, string name, string instrument)
-        {
-            ProjectId = projectId;
-            UserId = userId;
-            StemFile = stemFile;
-            Name = name;
-            Instrument = instrument;
-            Description = description;
-        }
-    }
+    public record Command(
+        int ProjectId,
+        Guid UserId,
+        Stream StemFile,
+        string Name,
+        string Instrument,
+        string? Description
+        ) : IRequest<Result<Stem>>;
 
     public class Handler : IRequestHandler<Command, Result<Stem>>
     {
+
+        #region Fields
+
         private readonly ILogger<Handler> _logger;
         private readonly StemPersistenceService _stemFactory;
         private readonly IStemRepository _stemRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMediator _mediator;
 
+        #endregion
+
+        #region Constructor
         public Handler(ILogger<Handler> logger, StemPersistenceService stemFactory, IStemRepository stemRepository, IStemUnitOfWork unitOfWork, IMediator mediator)
         {
             _logger = logger;
@@ -51,6 +46,9 @@ public static class UploadStemCommand
             _mediator = mediator;
         }
 
+        #endregion
+
+        #region Properties
         public async Task<Result<Stem>> Handle(Command request, CancellationToken cancellationToken)
         {
             _logger.LogTrace("{this} stem upload was requested for project - '{project}' by user - '{user}'",
@@ -109,6 +107,11 @@ public static class UploadStemCommand
 
             return Result.Ok(stem.Value);
         }
+
+        public override string ToString() => nameof(UploadStemCommand);
+
+        #endregion
+
     }
 
 }

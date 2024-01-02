@@ -21,7 +21,7 @@ public class StemPersistenceService
     }
 
     public async Task<Result<Stem>> CreateStem(
-        Guid projectId,
+        int projectId,
         Guid userId,
         Stream stream,
         Description description,
@@ -79,7 +79,7 @@ public class StemPersistenceService
         return (stem.Value, stream.Value);
     }
 
-    public async Task<Result<string>> GenerateKeyForStemsByProjectId(Guid projectId, CancellationToken token = default)
+    public async Task<Result<string>> GenerateKeyForStemsByProjectId(int projectId, CancellationToken token = default)
     {
         var stems = await _stemRepository.GetStemsByProjectId(projectId, token);
 

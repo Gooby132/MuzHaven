@@ -11,9 +11,9 @@ public static class GetStemsByProjectIdQuery
 	public class Query : IRequest<Result<string>>
 	{
 
-        public Guid ProjectId { get; }
+        public int ProjectId { get; }
 
-        public Query(Guid projectId)
+        public Query(int projectId)
         {
             ProjectId = projectId;
         }

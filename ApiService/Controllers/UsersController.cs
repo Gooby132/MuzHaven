@@ -4,6 +4,7 @@ using ApiService.Application.Users.Queries;
 using DomainSeed;
 using DomainSeed.CommonErrors;
 using DomainSeed.ValueObjects.Auth;
+using HashidsNet;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +29,7 @@ public class UsersController : ControllerBase
     private readonly ILogger<UsersController> _logger;
     private readonly IMediator _mediator;
     private readonly IPermissionTokenProvider _tokenProvider;
+    private readonly IHashids _ids;
 
     #endregion
 
@@ -36,11 +38,13 @@ public class UsersController : ControllerBase
     public UsersController(
         ILogger<UsersController> logger,
         IMediator mediator,
-        IPermissionTokenProvider tokenProvider)
+        IPermissionTokenProvider tokenProvider,
+        IHashids ids)
     {
         _logger = logger;
         _mediator = mediator;
         _tokenProvider = tokenProvider;
+        _ids = ids;
     }
 
     [Authorize(AuthenticationSchemes = IPermissionTokenProvider.PermissionSchemeName)]
@@ -97,7 +101,7 @@ public class UsersController : ControllerBase
           {
               Project = new ProjectService.Contracts.Dtos.CompleteProjectDto
               {
-                  Id = result.Value.Id,
+                  Id = _ids.Encode(result.Value.Id),
                   Title = result.Value.Title.Text,
                   Album = result.Value.Album,
                   BeatsPerMinute = result.Value.BeatsPerMinute,
@@ -119,7 +123,6 @@ public class UsersController : ControllerBase
         [FromBody] RegisterRequest request,
         CancellationToken token = default)
     {
-
         var res = await _mediator.Send(new RegisterUser.Command
         {
             Bio = request.Bio,

@@ -1,6 +1,7 @@
 ﻿using ApiService.Application.Stems.Commands;
 using ApiService.Application.Stems.Queries;
 using DomainSeed;
+using HashidsNet;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using ProjectService.Domain;
@@ -21,15 +22,17 @@ public class StemController : ControllerBase
 
     private readonly ILogger<StemController> _logger;
     private readonly IMediator _mediator;
+    private readonly IHashids _ids;
 
     #endregion
 
     #region Constructor
 
-    public StemController(ILogger<StemController> logger, IMediator mediator)
+    public StemController(ILogger<StemController> logger, IMediator mediator, IHashids ids)
     {
         _logger = logger;
         _mediator = mediator;
+        _ids = ids;
     }
 
     #endregion
@@ -65,7 +68,9 @@ public class StemController : ControllerBase
     [HttpGet("get-stems")]
     public async Task<IActionResult> GetStems([FromQuery] GetStemsByProjectIdRequest request, CancellationToken token = default)
     {
-        var res = await _mediator.Send(new GetStemsByProjectIdQuery.Query(request.ProjectId), token);
+        var id = _ids.DecodeSingle(request.ProjectId);
+
+        var res = await _mediator.Send(new GetStemsByProjectIdQuery.Query(id), token);
 
         if (res.IsFailed)
         {
@@ -83,10 +88,16 @@ public class StemController : ControllerBase
                 Instrument = stem.Instrument,
                 ProjectId = stem.ProjectId,
                 CreatorId = stem.UserId,
-                Comments = stem.Comments.Select(comment => new CommentDto
+                Comments = stem.Comments.OrderByDescending(comment => comment.CreatedOnUtc).Select(comment => new CommentDto
                 {
-                    CommenterId = comment.CommenterId,
-                    CreatedOnUtc = comment.CreatedOnUtc,
+                    Commenter = new CommenterDto
+                    {
+                        Id = comment.Commenter.Id,
+                        FirstName = comment.Commenter.FirstName,
+                        LastName = comment.Commenter.LastName,
+                        StageName = comment.Commenter.StageName,
+                    },
+                    CreatedOnUtc = comment.CreatedOnUtc.ToString("O"),
                     Text = comment.Text,
                     Time = comment.Time,
                 })
@@ -97,8 +108,10 @@ public class StemController : ControllerBase
     [HttpPost("upload-stem")]
     public async Task<IActionResult> UploadStem([FromForm] UploadStemRequest request, CancellationToken token = default)
     {
-        var res = await _mediator.Send(new Application.Stems.Commands.UploadStemCommand.Command(
-            request.ProjectId,
+        var id = _ids.DecodeSingle(request.ProjectId);
+
+        var res = await _mediator.Send(new UploadStemCommand.Command(
+            id,
             request.CreatorId,
             request.File.OpenReadStream(),
             request.Description,

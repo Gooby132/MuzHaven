@@ -15,6 +15,7 @@ import Modal from "react-modal";
 import { MainVer2 } from "components/layout/app/MainVer2";
 import { Project } from "components/pages/Project";
 import { fetchProjectById } from "services/project/projectServiceClient";
+import { NotFound } from "components/pages/NotFound";
 
 function App() {
   const user = useSelector((state: RootState) => state.user);
@@ -22,6 +23,7 @@ function App() {
   const router = createBrowserRouter([
     {
       path: "/",
+      errorElement: <Error />,
       element: <MainVer2 />,
       children: [
         {
@@ -58,6 +60,7 @@ function App() {
         },
         {
           path: "/project/:id",
+          errorElement: <NotFound />,
           element: !user.loggedIn ? (
             <Navigate to="/login" replace />
           ) : (
@@ -70,7 +73,9 @@ function App() {
               token: user.token!,
             });
 
-            if (res.isError) throw new Response("failure");
+            if (res.isError) throw new Response(null,{
+              status: 404
+            });
 
             return res.result;
           },

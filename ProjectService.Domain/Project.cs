@@ -5,7 +5,7 @@ using ProjectService.Domain.ValueObjects;
 
 namespace ProjectService.Domain;
 
-public class Project : Aggregate<Guid>
+public class Project : Aggregate<int>
 {
 
     private readonly Queue<DomainEvent> _domainEvents = new Queue<DomainEvent>();

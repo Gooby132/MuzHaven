@@ -1,6 +1,6 @@
 ﻿using DomainSeed;
 using FluentResults;
-using StemService.Domain.Entities;
+using StemService.Domain.Entities.Comments;
 using StemService.Domain.ValueObjects;
 
 namespace StemService.Domain;
@@ -8,7 +8,7 @@ namespace StemService.Domain;
 public class Stem : Aggregate<Guid>
 {
 
-    public Guid ProjectId { get; init; }
+    public int ProjectId { get; init; }
     public Guid UserId { get; init; }
     public string Name { get; internal set; }
     public List<Comment> Comments { get; init; } = new List<Comment>();
@@ -18,10 +18,10 @@ public class Stem : Aggregate<Guid>
 
     internal Stem() { }
 
-    public Result CreateComment(Guid userId, string text, int? time)
+    public Result CreateComment(Guid commenterId, string text, int? time)
     {
         var comment = Comment.Create(
-            userId,
+            commenterId,
             text,
             null,
             time

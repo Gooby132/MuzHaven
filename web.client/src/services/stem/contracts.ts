@@ -40,8 +40,15 @@ export interface CreateCommentResponse {}
 
 //dtos
 
+export interface CommenterDto {
+  id: string,
+  firstName: string,
+  lastName: string,
+  stageName: string
+}
+
 export interface CommentDto {
-  commenterId: string,
+  commenter: CommenterDto,
   createdOnUtc: string,
   text: string,
   time?: number

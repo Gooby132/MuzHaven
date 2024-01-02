@@ -12,7 +12,7 @@ public static class GetProjectByIdQuery
 
     public class Query : IRequest<Result<Project>>
     {
-        public Guid Id { get; init; }
+        public int Id { get; init; }
     }
 
     public class Handler : IRequestHandler<Query, Result<Project>>

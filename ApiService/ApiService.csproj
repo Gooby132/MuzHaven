@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Hashids.net" Version="1.7.0" />
     <PackageReference Include="MediatR" Version="12.1.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.0.2" />
@@ -21,6 +22,10 @@
     <ProjectReference Include="..\ProjectService.Contracts\ProjectService.Contracts.csproj" />
     <ProjectReference Include="..\StemService.Contacts\StemService.Contacts.csproj" />
     <ProjectReference Include="..\UserService.Contracts\UserService.Contracts.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>

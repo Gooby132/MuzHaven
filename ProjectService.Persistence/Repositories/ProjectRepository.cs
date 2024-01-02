@@ -52,7 +52,7 @@ internal class ProjectRepository : IProjectRepository
         }
     }
 
-    public async Task<Result<Project>> GetProjectById(Guid projectId, CancellationToken token = default)
+    public async Task<Result<Project>> GetProjectById(int projectId, CancellationToken token = default)
     {
         try
         {

@@ -5,7 +5,6 @@ using Microsoft.Extensions.Logging;
 using ProjectService.Domain;
 using ProjectService.Domain.Context;
 using ProjectService.Domain.Repositories;
-using ProjectService.Domain.ValueObjects;
 
 namespace ApiService.Application.Projects.Commands;
 

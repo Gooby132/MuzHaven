@@ -1,14 +1,15 @@
 ﻿using DomainSeed;
 using FluentResults;
+using StemService.Domain.Entities.Comments.ValueObjects;
 
-namespace StemService.Domain.Entities;
+namespace StemService.Domain.Entities.Comments;
 
 public class Comment : Entity<Guid>
 {
     public Guid? Parent { get; init; }
-    public Guid CommenterId { get; init; }
+    public Commenter Commenter { get; init; }
     public string Text { get; init; }
-    public string CreatedOnUtc { get; init; }
+    public DateTime CreatedOnUtc { get; init; }
     public int? Time { get; init; }
 
     private Comment() { }
@@ -18,8 +19,8 @@ public class Comment : Entity<Guid>
         return new Comment
         {
             Parent = parent,
-            CommenterId = commenterId,
-            CreatedOnUtc = DateTime.UtcNow.ToString("O"),
+            Commenter = Commenter.Create(commenterId, null, null, null),
+            CreatedOnUtc = DateTime.UtcNow,
             Text = text,
             Time = time
         };
@@ -30,9 +31,9 @@ public class Comment : Entity<Guid>
         return new Comment
         {
             Parent = Id,
-            CommenterId = replierId,
+            Commenter = Commenter.Create(replierId, null, null,null),
             Text = text,
-            CreatedOnUtc = DateTime.UtcNow.ToString("O"),
+            CreatedOnUtc = DateTime.UtcNow,
             Time = null
         };
     }

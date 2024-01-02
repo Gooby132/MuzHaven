@@ -2,7 +2,7 @@
 
 public class CompleteProjectDto
 {
-    public Guid Id { get; init; }
+    public string Id { get; init; }
     public string CreatedInUtc { get; init; }
     public string Title { get; init; }
     public string Album { get; init; }

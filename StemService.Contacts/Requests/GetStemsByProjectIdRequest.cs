@@ -3,6 +3,6 @@
 public class GetStemsByProjectIdRequest
 {
 
-    public Guid ProjectId { get; set; }
+    public string ProjectId { get; set; }
 
 }

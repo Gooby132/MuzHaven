@@ -9,6 +9,8 @@ using DomainSeed;
 using System.Linq;
 using ProjectService.Domain;
 using FluentResults;
+using DomainSeed.CommonErrors;
+using HashidsNet;
 
 namespace ApiService.Controllers;
 
@@ -22,16 +24,18 @@ public class ProjectsController : ControllerBase
     private readonly ILogger<ProjectsController> _logger;
     private readonly IMediator _mediator;
     private readonly IPermissionTokenProvider _tokenProvider;
+    private readonly IHashids _ids;
 
     #endregion
 
     #region Constructor
 
-    public ProjectsController(ILogger<ProjectsController> logger, IMediator mediator, IPermissionTokenProvider tokenProvider)
+    public ProjectsController(ILogger<ProjectsController> logger, IMediator mediator, IPermissionTokenProvider tokenProvider, IHashids ids)
     {
         _logger = logger;
         _mediator = mediator;
         _tokenProvider = tokenProvider;
+        _ids = ids;
     }
 
     #endregion
@@ -89,7 +93,7 @@ public class ProjectsController : ControllerBase
            {
                Project = new ProjectService.Contracts.Dtos.CompleteProjectDto
                {
-                   Id = res.Value.Id,
+                   Id = _ids.Encode(res.Value.Id),
                    Title = res.Value.Title.Text,
                    Album = res.Value.Album,
                    BeatsPerMinute = res.Value.BeatsPerMinute,
@@ -128,7 +132,7 @@ public class ProjectsController : ControllerBase
         {
             Projects = res.Value.Select(project => new ProjectService.Contracts.Dtos.CompleteProjectDto
             {
-                Id = project.Id,
+                Id = _ids.Encode(project.Id),
                 Title = project.Title.Text,
                 Album = project.Album,
                 BeatsPerMinute = project.BeatsPerMinute,
@@ -150,11 +154,14 @@ public class ProjectsController : ControllerBase
 
         var res = await _mediator.Send(new GetProjectByIdQuery.Query
         {
-            Id = request.Id,
+            Id = _ids.DecodeSingle(request.Id),
         });
 
         if (res.IsFailed)
         {
+            if (res.HasError<NotFoundError>())
+                return NotFound(request.Id);
+
             // defined errors
 
             return Problem(); // undefined errors
@@ -164,7 +171,7 @@ public class ProjectsController : ControllerBase
         {
             Project = new ProjectService.Contracts.Dtos.CompleteProjectDto
             {
-                Id = res.Value.Id,
+                Id = _ids.Encode(res.Value.Id),
                 Title = res.Value.Title.Text,
                 Album = res.Value.Album,
                 BeatsPerMinute = res.Value.BeatsPerMinute,

@@ -18,7 +18,8 @@ type Props = {
 export function Stem({stem}: Props) {
   const user = useSelector((state: RootState) => state.user)
   const [comment, setCommnet] = useState<string>("")
-  
+  const [, forceRender] = useState(false);
+
   const createCommentSubmit = async () => {
     const res = await createComment({
       stemId: stem.id,
@@ -26,7 +27,8 @@ export function Stem({stem}: Props) {
       text: comment,
     })
 
-    console.log(res)
+    if(!res.isError)
+      forceRender((prev) => !prev)
   }
 
   return (

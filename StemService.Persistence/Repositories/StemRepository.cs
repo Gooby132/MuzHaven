@@ -37,7 +37,7 @@ internal class StemRepository : IStemRepository
 
     #region Methods
 
-    public async Task<Result<IEnumerable<Stem>>> GetStemsByProjectId(Guid projectId, CancellationToken token = default)
+    public async Task<Result<IEnumerable<Stem>>> GetStemsByProjectId(int projectId, CancellationToken token = default)
     {
         try
         {

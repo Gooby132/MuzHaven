@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StemService.Domain;
+using StemService.Domain.Entities.Comments;
 using StemService.Domain.ValueObjects;
 
 namespace StemService.Persistence.Context;
@@ -22,6 +23,7 @@ internal class StemContext : DbContext
 
         modelBuilder.Entity<Stem>()
             .OwnsMany(stem => stem.Comments)
+            .OwnsOne(comment => comment.Commenter)
             .WithOwner();
 
         modelBuilder.Entity<Stem>()
