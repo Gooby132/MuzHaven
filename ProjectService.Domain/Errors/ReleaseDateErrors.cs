@@ -9,7 +9,7 @@ public class ReleaseDateErrors : ErrorBase
 
     private ReleaseDateErrors(string message, int code) : base(message, code, GroupCode) { }
 
-    public static ErrorBase CouldNotParseReleaseDate() => new ReleaseDateErrors("could not parse release date", 0);
-    public static ErrorBase ReleaseDateSetToPast() => new ReleaseDateErrors("release date cannot be set to past", 1);
+    public static ErrorBase CouldNotParseReleaseDate() => new ReleaseDateErrors("Could not parse release date", 0);
+    public static ErrorBase ReleaseDateSetToPast() => new ReleaseDateErrors("Release date cannot be set to past", 1);
 
 }

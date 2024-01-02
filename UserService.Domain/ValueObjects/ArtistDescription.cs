@@ -8,7 +8,7 @@ public class ArtistDescription : ValueObject
 {
 
     public const int MinBioLength = 2;
-    public const int MaxBioLength = 150;
+    public const int MaxBioLength = 300;
 
     public const int MinStageNameLength = 2;
     public const int MaxStageNameLength = 20;

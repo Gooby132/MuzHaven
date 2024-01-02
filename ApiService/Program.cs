@@ -1,6 +1,6 @@
 using ApiService.Application.DependencyInjection;
 using HashidsNet;
-using UserService.Persistence.Seed;
+using ApiService.Seeds.Users;
 
 const string DevelopmentCorsOrigins = "DevelopmentCorsOrigin";
 
@@ -34,7 +34,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
     app.UseCors(DevelopmentCorsOrigins);
-    app.Services.SeedUsers(token: app.Lifetime.ApplicationStopping);
+    app.Services.SeedUsersWithProjects(token: app.Lifetime.ApplicationStopping);
 }
 
 //app.UseHttpsRedirection();

@@ -19,7 +19,15 @@ public class Project : Aggregate<int>
     public float BeatsPerMinute { get; private set; }
     public MusicalProfile? MusicalProfile { get; private set; }
 
-    public static Result<Project> Create(string creatorId, string title, string album, string description, string? releaseInUtc, float beatsPerMinute, int? musicalKey, int? musicalScale)
+    public static Result<Project> Create(
+        string creatorId,
+        string title,
+        string album,
+        string description,
+        string? releaseInUtc,
+        float beatsPerMinute,
+        int? musicalKey,
+        int? musicalScale)
     {
 
         List<IError> errors = new List<IError>();

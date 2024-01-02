@@ -31,7 +31,11 @@ public class UsersController : ControllerBase
 
     #endregion
 
-    public string Name { get; set; }
+    #region Properties
+
+    public string Name { get; set; } = nameof(UsersController);
+
+    #endregion
 
     public UsersController(
         ILogger<UsersController> logger,
