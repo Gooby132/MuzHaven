@@ -11,7 +11,7 @@ public class ArtistDescription : ValueObject
     public const int MaxBioLength = 300;
 
     public const int MinStageNameLength = 2;
-    public const int MaxStageNameLength = 20;
+    public const int MaxStageNameLength = 30;
 
     public string StageName { get; init; }
     public string? Bio { get; init; }

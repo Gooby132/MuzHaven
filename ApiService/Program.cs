@@ -1,6 +1,7 @@
 using ApiService.Application.DependencyInjection;
 using HashidsNet;
 using ApiService.Seeds.Users;
+using PermissionService.Infrastructure.Authorization.Abstracts;
 
 const string DevelopmentCorsOrigins = "DevelopmentCorsOrigin";
 
@@ -35,6 +36,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
     app.UseCors(DevelopmentCorsOrigins);
     app.Services.SeedUsersWithProjects(token: app.Lifetime.ApplicationStopping);
+    var adminToken = app.Services.GetRequiredService<IPermissionTokenProvider>().CreateAdminToken();
 }
 
 //app.UseHttpsRedirection();

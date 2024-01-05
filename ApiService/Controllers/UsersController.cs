@@ -49,6 +49,31 @@ public class UsersController : ControllerBase
         _ids = ids;
     }
 
+    [Authorize(AuthenticationSchemes = IPermissionTokenProvider.PermissionSchemeName, Roles = "Admin")]
+    [HttpGet("all")]
+    public async Task<IActionResult> AllUsers(CancellationToken token = default)
+    {
+        var users = await _mediator.Send(new GetAllUsersQuery.Query { }, token);
+
+        if (users.IsFailed)
+        {
+            return Problem();
+        }
+
+        return Ok(new GetAllUsersResponse
+        {
+            Users = users.Value.Select(user => new UserService.Contracts.Dtos.UserDto
+            {
+                Id = user.Id,
+                StageName = user.ArtistDescription.StageName,
+                Bio = user.ArtistDescription.Bio,
+                FirstName = user.MetaData.FirstName,
+                LastName = user.MetaData.LastName,
+                Email = user.MetaData.Email.Raw,
+            })
+        });
+    }
+
     [Authorize(AuthenticationSchemes = IPermissionTokenProvider.PermissionSchemeName)]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CreateProjectResponse))]
     [HttpPost("create-project")]

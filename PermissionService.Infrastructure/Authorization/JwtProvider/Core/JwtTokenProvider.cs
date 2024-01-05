@@ -1,6 +1,5 @@
-﻿// Ignore Spelling: Jwt
-
-using DomainSeed.ValueObjects.Auth;
+﻿using DomainSeed.ValueObjects.Auth;
+using DomainSeed.ValueObjects.Internet;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -8,6 +7,7 @@ using PermissionService.Infrastructure.Authorization.Abstracts;
 using PermissionService.Infrastructure.Authorization.JwtProvider.Options;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace PermissionService.Infrastructure.Authorization.JwtProvider.Core;
@@ -144,4 +144,28 @@ internal class JwtTokenProvider : IPermissionTokenProvider
         return new Token(stringToken);
     }
 
+    public Token CreateAdminToken()
+    {
+        var issuer = _config.Issuer;
+        var audience = _config.Audience;
+        var key = Encoding.ASCII.GetBytes(_config.Key);
+
+        var tokenDescriptor = new SecurityTokenDescriptor
+        {
+            Subject = new ClaimsIdentity(new[]
+            {
+                new Claim(IPermissionTokenProvider.PermissionTypeClaim, Domain.UserPermissions.ValueObjects.Permissions.Admin.Name),
+                new Claim(ClaimTypes.Role, Domain.UserPermissions.ValueObjects.Permissions.Admin.Name)
+            }),
+            Expires = DateTime.UtcNow.AddDays(1),
+            Issuer = issuer,
+            Audience = audience,
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
+
+        };
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+        var stringToken = tokenHandler.WriteToken(token);
+        return new Token(stringToken);
+    }
 }

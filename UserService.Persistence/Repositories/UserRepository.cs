@@ -1,11 +1,9 @@
 ﻿using DomainSeed.CommonErrors;
-using DomainSeed.ValueObjects.Auth;
 using DomainSeed.ValueObjects.Internet;
 using FluentResults;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using UserService.Domain;
-using UserService.Domain.Errors;
 using UserService.Domain.Repositories;
 using UserService.Persistence.Context;
 using UserService.Persistence.Errors;
@@ -31,6 +29,20 @@ internal class UserRepository : IUserRepository
     {
         _logger = logger;
         _context = userContext;
+    }
+
+    public async Task<Result<IEnumerable<User>>> GetAll(CancellationToken token = default)
+    {
+        try
+        {
+            var users = await _context.Users.ToArrayAsync(token);
+
+            return users;
+        }
+        catch (Exception e)
+        {
+            return Result.Fail(new DatabaseError(e));
+        }
     }
 
     public async Task<Result<User>> GetUserById(Guid id, CancellationToken token = default)
@@ -82,4 +94,5 @@ internal class UserRepository : IUserRepository
     }
 
     public override string ToString() => Name;
+
 }
