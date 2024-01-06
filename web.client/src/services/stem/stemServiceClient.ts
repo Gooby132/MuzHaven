@@ -13,10 +13,10 @@ import {
 } from "./contracts";
 import { ResponseDto } from "services/commons/contracts";
 
-const STEM_SERVICE_BASE = "http://localhost:8080/api/Stem";
+export const STEM_SERVICE_BASE = "http://localhost:8080/api/Stem";
 const GET_STEMS = "/get-stems";
 const UPLOAD_STEMS = "/upload-stem";
-const GET_STREAM = "/get-stream";
+export const GET_STREAM = "/get-playback";
 const GET_STEM = "/get-stem";
 const CREATE_COMMENT = "/create-comment";
 
@@ -107,7 +107,12 @@ export const getStream = async (
   request: GetStreamRequest
 ): Promise<ResponseDto<GetStreamResponse>> => {
   try {
-    const response = await axios.get(`${STEM_SERVICE_BASE}${GET_STREAM}`);
+    const response = await axios.get(`${STEM_SERVICE_BASE}${GET_STREAM}`,{
+      params: {
+        stemId: request.stemId
+      },
+      responseType: 'arraybuffer'
+    });
 
     return {
       isError: false,

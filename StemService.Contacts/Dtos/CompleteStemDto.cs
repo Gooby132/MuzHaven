@@ -9,4 +9,5 @@ public class CompleteStemDto
     public string Description { get; init; }
     public string Instrument { get; init; }
     public IEnumerable<CommentDto> Comments { get; init; }
+    public MusicFileDto? MusicFile { get; set; }
 }

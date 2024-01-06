@@ -11,7 +11,12 @@ namespace ApiService.Application.Stems.Commands;
 public static class CreateCommentCommand
 {
 
-    public record Request(Guid StemId, Guid CommenterId, string Text, int? Time) : IRequest<Result>;
+    public record Request(
+        Guid StemId,
+        Guid CommenterId,
+        string StageName,
+        string Text,
+        int? Time) : IRequest<Result>;
 
     public class Handler : IRequestHandler<Request, Result>
     {
@@ -48,7 +53,7 @@ public static class CreateCommentCommand
                 return Result.Fail(stem.Errors);
             }
 
-            var res = stem.Value.CreateComment(request.CommenterId, request.Text, request.Time);
+            var res = stem.Value.CreateComment(request.CommenterId, request.Text, request.StageName, request.Time);
 
             if (res.IsFailed)
             {

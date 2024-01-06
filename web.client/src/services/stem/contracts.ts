@@ -19,7 +19,9 @@ export interface GetStreamRequest {
   stemId: string;
 }
 
-export interface GetStreamResponse {}
+export interface GetStreamResponse {
+  playback: ArrayBuffer
+}
 
 export interface GetStemRequest {
   stemId: string;
@@ -33,11 +35,11 @@ export interface CreateCommentRequest {
   commenterId: string,
   stemId: string,
   text: string,
+  stageName: string,
   time?: number
 }
 
 export interface CreateCommentResponse {}
-
 //dtos
 
 export interface CommenterDto {
@@ -64,6 +66,11 @@ export interface StemDto {
   name: string;
   instrument: string;
   description: string;
+  musicFile?: MusicFile;
   comments: CommentDto[];
   file?: FileList;
+}
+
+export interface MusicFile {
+  format: string,
 }

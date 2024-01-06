@@ -7,7 +7,7 @@ public class MusicFile : Entity<string>
 {
 
     public string Path { get; init; }
-    public int Length { get; init; }
+    public long Length { get; init; }
     public string Format { get; init; }
     public string AudioQuality { get; init; }
     public ICollection<AmplitudePoint>? AmplitudesPoints { get; private set; }
@@ -16,7 +16,7 @@ public class MusicFile : Entity<string>
 
     public static Result<MusicFile> Create(
         string path,
-        int length,
+        long length,
         string format,
         string audioQuality)
     {

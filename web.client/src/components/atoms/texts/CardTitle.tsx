@@ -10,7 +10,6 @@ const Container = styled.div<StyledProps>`
 
 export interface Props{
   text: string
-
 }
 
 export const CardTitle: React.FC<Props> = (props) => {

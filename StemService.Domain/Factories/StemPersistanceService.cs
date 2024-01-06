@@ -24,12 +24,13 @@ public class StemPersistenceService
         int projectId,
         Guid userId,
         Stream stream,
+        string fileName,
         Description description,
         string name,
         string instrument,
         CancellationToken token = default)
     {
-        var stem = await _fileService.SaveMediaFile(stream, token);
+        var stem = await _fileService.SaveMediaFile(stream, fileName, token);
 
         if (stem.IsFailed)
             Result.Fail(stem.Errors);
@@ -63,13 +64,13 @@ public class StemPersistenceService
         if (stem.Value.MusicFile is null)
             return InvalidOperationErrors.MusicFileWasNotInitialized();
 
-        var isAuthed = await _authorizer.ParseAuthorizedKey(claims);
+        //var isAuthed = await _authorizer.ParseAuthorizedKey(claims);
 
-        if (isAuthed.IsFailed)
-            return Result.Fail(isAuthed.Errors);
+        //if (isAuthed.IsFailed)
+        //    return Result.Fail(isAuthed.Errors);
 
-        if (!isAuthed.Value.Contains(stem.Value.Id))
-            return new NotAuthorizedError();
+        //if (!isAuthed.Value.Contains(stem.Value.Id))
+        //    return new NotAuthorizedError();
 
         var stream = await _fileService.GetStem(stem.Value.MusicFile.Path, token);
 

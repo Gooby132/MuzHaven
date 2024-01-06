@@ -14,7 +14,7 @@ public class Comment : Entity<Guid>
 
     private Comment() { }
 
-    public static Result<Comment> Create(Guid commenterId, string text, Guid? parent = null, int? time = null)
+    public static Result<Comment> Create(Guid commenterId, string text, string stageName, Guid? parent = null, int? time = null)
     {
         return new Comment
         {

@@ -18,13 +18,13 @@ public class Stem : Aggregate<Guid>
 
     internal Stem() { }
 
-    public Result CreateComment(Guid commenterId, string text, int? time)
+    public Result CreateComment(Guid commenterId, string text, string stageName, int? time)
     {
         var comment = Comment.Create(
             commenterId,
             text,
-            null,
-            time
+            stageName,
+            time: time
         );
 
         Comments.Add(comment.Value);

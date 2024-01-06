@@ -18,6 +18,7 @@ public static class UploadStemCommand
         int ProjectId,
         Guid UserId,
         Stream StemFile,
+        string FileName,
         string Name,
         string Instrument,
         string? Description
@@ -63,6 +64,7 @@ public static class UploadStemCommand
                 request.ProjectId,
                 request.UserId,
                 request.StemFile,
+                request.FileName,
                 description.Value,
                 request.Name,
                 request.Instrument,

@@ -1,6 +1,6 @@
 export interface ResponseDto<T> {
   isError: boolean
-  errors?: ErrorDto
+  errors?: ErrorDto[]
   result?: T
 }
 

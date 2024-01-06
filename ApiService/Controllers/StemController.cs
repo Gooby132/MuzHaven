@@ -100,7 +100,13 @@ public class StemController : ControllerBase
                     CreatedOnUtc = comment.CreatedOnUtc.ToString("O"),
                     Text = comment.Text,
                     Time = comment.Time,
-                })
+                }),
+                Description = stem.Desciption.Text,
+                MusicFile = stem.MusicFile is not null ? new MusicFileDto
+                {
+                    Format = stem.MusicFile.Format,
+                    Length = stem.MusicFile.Length,
+                } : null,
             })
         });
     }
@@ -114,9 +120,10 @@ public class StemController : ControllerBase
             id,
             request.CreatorId,
             request.File.OpenReadStream(),
-            request.Description,
+            request.File.FileName,
             request.Name,
-            request.Instrument
+            request.Instrument,
+            request.Description
             ), token);
 
         if (res.IsFailed)
@@ -150,7 +157,7 @@ public class StemController : ControllerBase
            });
     }
 
-    [HttpGet("get-stream")]
+    [HttpGet("get-playback")]
     public async Task<IActionResult> GetStreamById([FromQuery] GetStreamRequest request, CancellationToken token = default)
     {
 
@@ -187,6 +194,12 @@ public class StemController : ControllerBase
                 CreatorId = res.Value.UserId,
                 Instrument = res.Value.Instrument,
                 Name = res.Value.Name,
+                Description = res.Value.Desciption.Text,
+                MusicFile = res.Value.MusicFile is not null ? new MusicFileDto
+                {
+                    Format = res.Value.MusicFile.Format,
+                    Length = res.Value.MusicFile.Length
+                } : null
             }
         });
     }
@@ -194,7 +207,7 @@ public class StemController : ControllerBase
     [HttpPost("create-comment")]
     public async Task<IActionResult> CreateComment([FromBody] CreateCommentRequest request)
     {
-        var res = await _mediator.Send(new CreateCommentCommand.Request(request.StemId, request.CommenterId, request.Text, request.Time));
+        var res = await _mediator.Send(new CreateCommentCommand.Request(request.StemId, request.CommenterId, request.Text, request.StageName, request.Time));
 
         if (res.IsFailed)
         {

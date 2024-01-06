@@ -47,6 +47,8 @@ public static class OpenStemStreamByIdQuery
 
             return stem;
         }
+
+        public override string ToString() => nameof(OpenStemStreamByIdQuery);
     }
 
 }

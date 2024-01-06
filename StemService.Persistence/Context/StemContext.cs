@@ -30,10 +30,10 @@ internal class StemContext : DbContext
             .OwnsOne(stem => stem.Desciption)
             .WithOwner();
 
-        modelBuilder.Entity<MusicFile>()
-            .OwnsMany(stem => stem.AmplitudesPoints);
-            
-        
+        modelBuilder.Entity<Stem>()
+            .OwnsOne(stem => stem.MusicFile)
+            .OwnsMany(mf => mf.AmplitudesPoints);
+
     }
 
 }

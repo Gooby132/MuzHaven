@@ -22,13 +22,13 @@ public class LocalFileSystemService : IFileService
         LocalFileDirectory = Directory.CreateDirectory(Path.Combine(_config.BaseDirectory, StemDirectoryName));
     }
 
-    public async Task<Result<MusicFile>> SaveMediaFile(Stream stream, CancellationToken token = default)
+    public async Task<Result<MusicFile>> SaveMediaFile(Stream stream, string fileName, CancellationToken token = default)
     {
         try
         {
-            string fileName = Path.GetRandomFileName();
+            string randName = Path.GetRandomFileName();
 
-            using var write = File.Create(Path.Combine(LocalFileDirectory.FullName, fileName));
+            using var write = File.Create(Path.Combine(LocalFileDirectory.FullName, randName));
 
             await stream.CopyToAsync(write, token);
 
@@ -39,13 +39,13 @@ public class LocalFileSystemService : IFileService
 
             var musicFile = MusicFile.Create
             (
-                fileName,
-                0,
-                "",
+                randName,
+                write.Length,
+                Path.GetExtension(fileName).Substring(1),
                 ""
             );
 
-            return Result.Ok();
+            return musicFile;
         }
         catch (Exception e)
         {
