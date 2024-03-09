@@ -1,0 +1,2 @@
+#pragma code_page(65001)
+1 /* CREATEPROCESS_MANIFEST_RESOURCE_ID */ 24 /* RT_MANIFEST */ "D:/Documents/Dev/MuzHaven/out/build/x64-debug/FFmpegTrancoder/CMakeFiles/FFmpegTrancoder.dir/embed.manifest"
