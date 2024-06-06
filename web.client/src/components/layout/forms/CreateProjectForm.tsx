@@ -7,7 +7,11 @@ import { KeyPicker } from "../../atoms/form/KeyPicker";
 import { ScalePicker } from "../../atoms/form/ScalePicker";
 import { SubmitInput } from "../../atoms/form/SubmitInput";
 
-const Container = styled.form``;
+const Container = styled.form`
+  >* {
+    margin-top: .2em;
+  }
+`;
 
 type Props = {
   onSubmit: (project: ProjectDto) => void;
@@ -66,7 +70,7 @@ export const CreateProjectForm = ({ onSubmit }: Props) => {
       />
       <NumberInput
         name="beatsPerMinute"
-        text="BeatsPerMinute"
+        text="BPM"
         onChange={(val) => {
           setCreateProjectFields((prev) => {
             return {

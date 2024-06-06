@@ -6,6 +6,7 @@ import React from "react";
 // @ts-ignore
 import Modal from "react-modal";
 import { ProjectDto } from "services/project/contracts";
+import BasicModal from "./BasicModal";
 
 type Props = {
   showCreateModal: boolean,
@@ -15,7 +16,7 @@ type Props = {
 
 export const CreateProjectModal = ({showCreateModal, closeModalClicked, onSubmit}: Props) => {
   return (
-    <Modal isOpen={showCreateModal}>
+    <BasicModal isOpen={showCreateModal}>
       <BasicModalLayout
         headerChildren={[<ModalTitle key={0} text="Create Project" />]}
         footerChildren={[
@@ -29,6 +30,6 @@ export const CreateProjectModal = ({showCreateModal, closeModalClicked, onSubmit
       >
         <CreateProjectForm onSubmit={onSubmit} />
       </BasicModalLayout>
-    </Modal>
+    </BasicModal>
   );
 };

@@ -3,10 +3,7 @@ import styled from "styled-components";
 import { PageTitle } from "components/atoms/texts/PageTitle";
 import { SprededRow } from "components/layout/rows/SprededRow";
 import { PageSizeButton } from "components/atoms/buttons/PageSizeButton";
-import {
-  CompleteProjectDto,
-  ProjectDto,
-} from "services/project/contracts";
+import { CompleteProjectDto, ProjectDto } from "services/project/contracts";
 import { fetchProjects } from "services/project/projectServiceClient";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "redux/store";
@@ -15,6 +12,7 @@ import { CreateProjectModal } from "components/organizem/modals/CreateProjectMod
 import Seperator from "components/atoms/layouts/Seperator";
 import { createProject } from "services/user/userServiceClient";
 import { projectActions } from "redux/features/project/projectSlice";
+import { PageBase } from "components/layout/pages/PageBase";
 
 const Container = styled.div`
   position: relative;
@@ -26,7 +24,7 @@ type Props = {};
 export const Projects = ({}: Props) => {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.user);
-  const projects = useSelector((state: RootState) => state.project)
+  const projects = useSelector((state: RootState) => state.project);
   const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
 
   const onSubmit = async (project: ProjectDto) => {
@@ -45,36 +43,38 @@ export const Projects = ({}: Props) => {
       });
 
       if (!projects.isError) {
-        dispatch(projectActions.fetchProjects(projects))
-      };
+        dispatch(projectActions.fetchProjects(projects));
+      }
     };
     fetchCreatorProjects();
   }, []);
 
   return (
-    <Container>
-      <PageTitle text="Projects" />
-      <SprededRow>
-        <PageSizeButton onClick={() => setShowCreateModal((prev) => !prev)}>
-          Create Project
-        </PageSizeButton>
-      </SprededRow>
+    <PageBase>
+      <Container>
+        <PageTitle text="Projects" />
+        <SprededRow>
+          <PageSizeButton onClick={() => setShowCreateModal((prev) => !prev)}>
+            Create Project
+          </PageSizeButton>
+        </SprededRow>
 
-      <div className="projects">
-        {projects.projects?.map((project) => (
-          <>
-            <Seperator />
-            <ProjectRow key={project.id} project={project} />
-          </>
-        ))}
-      </div>
+        <div className="projects">
+          {projects.projects?.map((project) => (
+            <>
+              <Seperator />
+              <ProjectRow key={project.id} project={project} />
+            </>
+          ))}
+        </div>
 
-      <CreateProjectModal
-        showCreateModal={showCreateModal}
-        closeModalClicked={() => setShowCreateModal((prev) => !prev)}
-        onSubmit={onSubmit}
-      />
-    </Container>
+        <CreateProjectModal
+          showCreateModal={showCreateModal}
+          closeModalClicked={() => setShowCreateModal((prev) => !prev)}
+          onSubmit={onSubmit}
+        />
+      </Container>
+    </PageBase>
   );
 };
 

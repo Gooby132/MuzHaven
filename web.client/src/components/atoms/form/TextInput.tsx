@@ -11,6 +11,10 @@ const Container = styled.div`
     flex-direction: row;
     > input {
       margin: 0 1em;
+      background: ${({theme}) => theme.primary};
+      border: none;
+      color: ${({theme}) => theme.text};
+      padding: .3em;
     }
 
     > label {

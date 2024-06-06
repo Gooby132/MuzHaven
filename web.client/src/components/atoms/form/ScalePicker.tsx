@@ -1,27 +1,31 @@
 import React from "react";
+import { SelectInput } from "./SelectInput";
 
 type Props = {
-  onChange: (scale: number) => void;
+  onChange: (key: number) => void;
 };
 
 export const ScalePicker = ({ onChange }: Props) => {
   return (
     <div>
-      <select onChange={e => onChange(parseInt(e.target.value))}>
-        <option value={0}>Major</option>
-        <option value={1}>NaturalMinor</option>
-        <option value={2}>HarmonicMinor</option>
-        <option value={3}>MelodicMinor</option>
-        <option value={4}>Blues</option>
-        <option value={5}>PentatonicMajor</option>
-        <option value={6}>PentatonicMinor</option>
-        <option value={7}>Dorian</option>
-        <option value={8}>Mixolydian</option>
-        <option value={9}>Phrygian</option>
-        <option value={10}>Locrian</option>
-        <option value={11}>WholeTone</option>
-        <option value={12}>Chromatic</option>
-      </select>
+      <SelectInput
+        keyNames={[
+          [0, "Major"],
+          [1, "Natural Minor"],
+          [2, "Harmonic Minor"],
+          [3, "Melodic Minor"],
+          [4, "Blues"],
+          [5, "Pentatonic Major"],
+          [6, "Pentatonic Minor"],
+          [7, "Dorian"],
+          [8, "Mixolydian"],
+          [9, "Phrygian"],
+          [10, "Locrian"],
+          [11, "Whole Tone"],
+          [12, "Chromatic"],
+        ]}
+        onChange={onChange}
+      />
     </div>
   );
 };

@@ -1,19 +1,19 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const Container = styled.div`
-
+const Container = styled.input`
+  background: ${({theme}) => theme.primary};
+  color: ${({theme}) => theme.text};
+  border: none;
+  padding: 1em;
 `
 
 type Props = {
   text: string
-
 }
 
 export const SubmitInput = ({text}: Props) => {
   return (
-    <Container>
-      <input type='submit' value={text} />
-    </Container>
+    <Container type='submit' value={text} />
   )
 }

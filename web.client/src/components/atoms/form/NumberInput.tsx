@@ -6,19 +6,23 @@ const Container = styled.div`
   flex-direction: column;
   padding: 0.2em;
 
-  >div{
+  > div {
     display: flex;
     flex-direction: row;
     > input {
       margin: 0 1em;
+      background: ${({ theme }) => theme.primary};
+      border: none;
+      color: ${({ theme }) => theme.text};
+      padding: 0.3em;
     }
-    
+
     > label {
       white-space: nowrap;
     }
   }
   > p {
-    color:red;
+    color: red;
   }
 `;
 
@@ -34,7 +38,11 @@ export const NumberInput = ({ text, onChange, name, error }: Props) => {
     <Container>
       <div>
         <label htmlFor={name}>{text}</label>
-        <input id={name} type="number" onChange={(e) => onChange(e.target.valueAsNumber)} />
+        <input
+          id={name}
+          type="number"
+          onChange={(e) => onChange(e.target.valueAsNumber)}
+        />
       </div>
       {error && <p>{error}</p>}
     </Container>
