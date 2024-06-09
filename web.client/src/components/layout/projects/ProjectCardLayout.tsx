@@ -34,7 +34,7 @@ export const ProjectCardLayout = ({
   return (
     <Container>
       <div className="header">{header}</div>
-      <div className="body">{body}</div>
+        <div className="body">{body}</div>
       <div className="footer-container">
         <div className="footer">{footer}</div>
         <div className="footer-notes">{footerNotes}</div>

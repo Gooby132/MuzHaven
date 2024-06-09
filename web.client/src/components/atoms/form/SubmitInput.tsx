@@ -6,6 +6,7 @@ const Container = styled.input`
   color: ${({theme}) => theme.text};
   border: none;
   padding: 1em;
+  
 `
 
 type Props = {

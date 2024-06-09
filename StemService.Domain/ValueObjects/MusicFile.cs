@@ -6,12 +6,13 @@ namespace StemService.Domain.ValueObjects;
 public class MusicFile : Entity<string>
 {
 
-    public string Path { get; init; }
+    public string Path { get; init; } = default!;
     public long Length { get; init; }
-    public string Format { get; init; }
-    public string AudioQuality { get; init; }
+    public string Format { get; init; } = default!;
+    public string AudioQuality { get; init; } = default!;
     public ICollection<AmplitudePoint>? AmplitudesPoints { get; private set; }
 
+    // EF constructor
     private MusicFile() { }
 
     public static Result<MusicFile> Create(

@@ -2,10 +2,8 @@ import { UploadStemForm } from "components/layout/forms/UploadStemForm";
 import { BasicModalLayout } from "components/layout/modals/BasicModalLayout";
 import { ModalTitle } from "components/atoms/texts/ModalTitle";
 import { BasicButton } from "components/atoms/buttons/BasicButton";
-
-// @ts-ignore
-import Modal from "react-modal";
 import { StemDto } from "services/stem/contracts";
+import BasicModal from "./BasicModal";
 
 type Props = {
   projectId: string;
@@ -23,7 +21,7 @@ export const UploadStemModal = ({
   closeModalClicked,
 }: Props) => {
   return (
-    <Modal isOpen={showModal}>
+    <BasicModal isOpen={showModal}>
       <BasicModalLayout
         headerChildren={[<ModalTitle key={0} text="Upload Stem" />]}
         footerChildren={[
@@ -34,6 +32,6 @@ export const UploadStemModal = ({
       >
         <UploadStemForm onSubmit={onSubmit} projectId={projectId} creatorId={creatorId} />
       </BasicModalLayout>
-    </Modal>
+    </BasicModal>
   );
 };

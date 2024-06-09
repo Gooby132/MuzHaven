@@ -8,5 +8,5 @@ public class LocalFileServiceOptions
     public const string Key = "LocalFileOptions";
 
     [Required(AllowEmptyStrings = false)]
-    public string BaseDirectory { get; init; }
+    public string BaseDirectory { get; init; } = default!;
 }

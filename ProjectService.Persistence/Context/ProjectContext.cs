@@ -11,14 +11,15 @@ internal class ProjectContext : DbContext
 
     public ProjectContext()
     {
-        
+        Database.EnsureCreated();
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         base.OnConfiguring(optionsBuilder);
 
-        optionsBuilder.UseInMemoryDatabase("projects");
+        //optionsBuilder.UseSqlite("Data Source=Projects;Mode=Memory");
+        optionsBuilder.UseInMemoryDatabase("Projects");
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -27,8 +28,11 @@ internal class ProjectContext : DbContext
 
         modelBuilder
             .Entity<Project>()
-            .OwnsOne(p => p.Title)
-            .WithOwner();
+            .OwnsOne(p => p.Title, builder =>
+            {
+                builder.Property(a => a.Text).IsRequired();
+                builder.HasIndex(a => a.Text).IsUnique();
+            });
 
         modelBuilder
             .Entity<Project>()

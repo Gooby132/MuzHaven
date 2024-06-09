@@ -1,5 +1,4 @@
 import { Searchbar } from 'components/atoms/form/Searchbar'
-import { GroupTitle } from 'components/atoms/texts/GroupTitle'
 import { SidebarLink } from 'components/atoms/links/SidebarLink'
 import { ReactElement } from 'react'
 import styled from 'styled-components'
@@ -19,7 +18,7 @@ type Props = {
 export const ProjectsLinkGroup = ({ projects }: Props) => {
   return (
     <Container>
-      <GroupTitle text='Projects' />
+      <h4>Projects</h4>
       <Searchbar onChange={e => {}} />
       {projects}
     </Container>

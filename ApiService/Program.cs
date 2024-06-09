@@ -35,7 +35,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
     app.UseCors(DevelopmentCorsOrigins);
-    app.Services.SeedUsersWithProjects(token: app.Lifetime.ApplicationStopping);
+    //app.Services.SeedUsersWithProjects(token: app.Lifetime.ApplicationStopping);
     var adminToken = app.Services.GetRequiredService<IPermissionTokenProvider>().CreateAdminToken();
 }
 

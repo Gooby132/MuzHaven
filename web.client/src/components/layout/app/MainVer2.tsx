@@ -1,7 +1,5 @@
 import styled, { ThemeProvider } from "styled-components";
 import { Sidebar } from "../../organizem/Sidebar";
-import { CoreLink } from "../../atoms/links/CoreLink";
-import { LinkGroup } from "../../molecules/LinkGroup";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { Footer } from "../../organizem/Footer";
@@ -37,20 +35,20 @@ const Container = styled.div`
 
 export const MainVer2 = ({}: Props) => {
   const { projects } = useSelector((state: RootState) => state.project);
-  const [theme, setTheme] = useState<MuzHavenTheme>(darkTheme);
+  const [theme] = useState<MuzHavenTheme>(darkTheme);
 
   return (
     <ThemeProvider theme={theme}>
       <Container className="app-layout">
         <Sidebar
-          header={<WordMark text="MuzHaven" />}
+          header={ <WordMark text="MuzHaven" /> }
           links={[
             <ProjectsLinkGroup
               key={"projectLinkGroup"}
-              projects={projects.map((project, i) => (
+              projects={projects.slice(0, 3).map((project, i) => (
                 <SidebarLink
-                  key={i}
-                  projectId={project.id}
+                  key={project.id}
+                  project={project}
                   to={`/project/${project.id}`}
                   isActive={false}
                 />
@@ -61,7 +59,7 @@ export const MainVer2 = ({}: Props) => {
             <SlimSidebarLink
               key="create-project"
               to="/projects"
-              text="Create Project"
+              text="Projects"
               isActive={true}
             />,
             <SlimSidebarLink

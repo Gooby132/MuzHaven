@@ -1,70 +1,73 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { PageTitle } from "components/atoms/texts/PageTitle";
-import { SprededRow } from "components/layout/rows/SprededRow";
 import { PageSizeButton } from "components/atoms/buttons/PageSizeButton";
 import { CompleteProjectDto, ProjectDto } from "services/project/contracts";
-import { fetchProjects } from "services/project/projectServiceClient";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "redux/store";
-import { ProjectRow } from "components/molecules/projects/ProjectRow";
+import { ProjectItem } from "components/molecules/projects/ProjectItem";
 import { CreateProjectModal } from "components/organizem/modals/CreateProjectModal";
-import Seperator from "components/atoms/layouts/Seperator";
-import { createProject } from "services/user/userServiceClient";
-import { projectActions } from "redux/features/project/projectSlice";
 import { PageBase } from "components/layout/pages/PageBase";
+import { useFetchCreatorProjects } from "hooks/useFetchCreatorProjects";
+import { useCreateProject } from "hooks/useCreateProject";
+import { useDeleteProject } from "hooks/useDeleteProject";
 
 const Container = styled.div`
   position: relative;
-  color: ${({ theme }) => theme.text};
+
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1em;
+  }
+
+  .projects > * {
+    margin-top: 1em;
+  }
 `;
 
 type Props = {};
 
 export const Projects = ({}: Props) => {
-  const dispatch = useDispatch();
-  const user = useSelector((state: RootState) => state.user);
-  const projects = useSelector((state: RootState) => state.project);
+  const { projects } = useSelector((state: RootState) => state.project);
   const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
+  const [selectedProject, setSelectedProject] = useState<CompleteProjectDto>();
+  const [fetchProjects, fetchProjectsResponse] = useFetchCreatorProjects();
+  const [create, createResponse] = useCreateProject();
+  const [deleteProject, deleteResponse] = useDeleteProject();
 
   const onSubmit = async (project: ProjectDto) => {
-    const result = await createProject({
-      token: user.token,
-      project: project,
-    });
+    create(project);
+    setShowCreateModal(false);
   };
 
   useEffect(() => {
-    const fetchCreatorProjects = async () => {
-      if (user.token === undefined) return;
-
-      const projects = await fetchProjects({
-        token: user.token,
-      });
-
-      if (!projects.isError) {
-        dispatch(projectActions.fetchProjects(projects));
-      }
-    };
-    fetchCreatorProjects();
-  }, []);
+    fetchProjects();
+  }, [createResponse, deleteResponse]);
 
   return (
     <PageBase>
       <Container>
-        <PageTitle text="Projects" />
-        <SprededRow>
+        <div className="page-header">
+          <h1>Projects</h1>
           <PageSizeButton onClick={() => setShowCreateModal((prev) => !prev)}>
             Create Project
           </PageSizeButton>
-        </SprededRow>
+        </div>
 
         <div className="projects">
-          {projects.projects?.map((project) => (
-            <>
-              <Seperator />
-              <ProjectRow key={project.id} project={project} />
-            </>
+          {projects.map((project) => (
+            <ProjectItem
+              key={project.id}
+              highlight={selectedProject?.id === project.id}
+              onClick={(id) =>
+                setSelectedProject(projects.filter((p) => p.id === id)[0])
+              }
+              project={project}
+              deleteRequested={id => {
+                deleteProject(id)
+              }}
+            />
           ))}
         </div>
 

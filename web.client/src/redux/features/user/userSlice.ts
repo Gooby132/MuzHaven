@@ -31,6 +31,10 @@ export const userSlice = createSlice({
       state.stageName = action.payload.result?.user.stageName;
       state.loggedIn = true;
     },
+    logout: (state) => {
+      state.token = undefined;
+      state.loggedIn = false
+    }
   },
 });
 

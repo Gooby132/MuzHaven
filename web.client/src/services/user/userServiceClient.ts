@@ -1,5 +1,13 @@
 import axios from "axios";
-import { EMAIL_GROUP_CODE, LoginRequest, LoginResponse, RegisterRequest, RegisterResponse, CreateProjectRequest, CreateProjectResponse } from "./contracts";
+import {
+  EMAIL_GROUP_CODE,
+  LoginRequest,
+  LoginResponse,
+  RegisterRequest,
+  RegisterResponse,
+  CreateProjectRequest,
+  CreateProjectResponse,
+} from "./contracts";
 import { ErrorDto } from "services/commons/contracts";
 
 const USER_SERVICE_BASE = "http://localhost:8080/api/Users";
@@ -206,7 +214,10 @@ export const loginUser = async ({
   }
 };
 
-export const createProject = async ({project, token}: CreateProjectRequest): Promise<CreateProjectResponse> => {
+export const createProject = async ({
+  project,
+  token,
+}: CreateProjectRequest): Promise<CreateProjectResponse> => {
   try {
     if (token === undefined) {
       return {
@@ -266,6 +277,14 @@ export const createProject = async ({project, token}: CreateProjectRequest): Pro
             };
           }),
         };
+      case 401: 
+      return {
+        isError: true,
+        errors: [{
+          code: 401,
+          group: -1
+        }]
+      }
       default:
         console.log(e);
         return {
@@ -273,4 +292,4 @@ export const createProject = async ({project, token}: CreateProjectRequest): Pro
         };
     }
   }
-}
+};

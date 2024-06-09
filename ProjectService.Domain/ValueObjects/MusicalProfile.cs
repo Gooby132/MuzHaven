@@ -23,6 +23,9 @@ public class MusicalProfile
         if (!key.HasValue && !scale.HasValue)
             return Result.Ok<MusicalProfile?>(null);
 
+        if (!key.HasValue || !scale.HasValue)
+            return Result.Fail(MusicalProfileError.KeyAndScaleMustBeBothPresent());
+
         var errors = new List<Error>();
 
         if (!Enum.IsDefined(typeof(MusicalKey), key.Value))

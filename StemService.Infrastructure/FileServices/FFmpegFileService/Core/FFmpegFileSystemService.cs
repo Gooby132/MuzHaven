@@ -25,29 +25,29 @@ internal class FFmpegFileSystemService : IFileService
         LocalFileDirectory = Directory.CreateDirectory(Path.Combine(_config.BaseDirectory, StemDirectoryName));
     }
 
-    public async Task<Result<Stream>> GetStem(string fileName, CancellationToken token = default)
+    public Task<Result<Stream>> GetStem(string fileName, CancellationToken token = default)
     {
         try
         {
-            return File.OpenRead(Path.Combine(LocalFileDirectory.FullName, fileName));
+            return Task.FromResult<Result<Stream>>(File.OpenRead(Path.Combine(LocalFileDirectory.FullName, fileName)));
         }
         catch (Exception e)
         {
-            return Result.Fail(FFmpegError.FailedToDeleteFile(e.Message));
+            return Task.FromResult<Result<Stream>>(Result.Fail(FFmpegError.FailedToDeleteFile(e.Message)));
         }
     }
 
-    public async Task<Result> RemoveMediaFile(string fileName)
+    public Task<Result> RemoveMediaFile(string fileName)
     {
         try
         {
             File.Delete(Path.Combine(LocalFileDirectory.FullName, fileName));
 
-            return Result.Ok();
+            return Task.FromResult(Result.Ok());
         }
         catch (Exception e)
         {
-            return Result.Fail(FFmpegError.FailedToDeleteFile(e.Message));
+            return Task.FromResult(Result.Fail(FFmpegError.FailedToDeleteFile(e.Message)));
         }
     }
 

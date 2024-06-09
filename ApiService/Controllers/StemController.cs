@@ -4,15 +4,15 @@ using DomainSeed;
 using HashidsNet;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using ProjectService.Domain;
 using StemService.Contacts.Dtos;
 using StemService.Contacts.Requests;
 using StemService.Contacts.Responses;
-using StemService.Domain.Entities;
 
 namespace ApiService.Controllers;
 
-
+/// <summary>
+/// REST controller for remote stem operations
+/// </summary>
 [Route("api/[controller]")]
 [ApiController]
 public class StemController : ControllerBase
@@ -39,6 +39,11 @@ public class StemController : ControllerBase
 
     #region Methods
 
+    /// <summary>
+    /// Returns *ALL* steams 
+    /// </summary>
+    /// <param name="token"></param>
+    /// <returns></returns>
     [HttpGet("all")]
     public async Task<IActionResult> GetAll(CancellationToken token = default)
     {
@@ -64,7 +69,12 @@ public class StemController : ControllerBase
         });
     }
 
-
+    /// <summary>
+    /// Returns get stems
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="token"></param>
+    /// <returns></returns>
     [HttpGet("get-stems")]
     public async Task<IActionResult> GetStems([FromQuery] GetStemsByProjectIdRequest request, CancellationToken token = default)
     {
@@ -93,8 +103,6 @@ public class StemController : ControllerBase
                     Commenter = new CommenterDto
                     {
                         Id = comment.Commenter.Id,
-                        FirstName = comment.Commenter.FirstName,
-                        LastName = comment.Commenter.LastName,
                         StageName = comment.Commenter.StageName,
                     },
                     CreatedOnUtc = comment.CreatedOnUtc.ToString("O"),
@@ -111,6 +119,12 @@ public class StemController : ControllerBase
         });
     }
 
+    /// <summary>
+    /// Uploads a new stem
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="token"></param>
+    /// <returns></returns>
     [HttpPost("upload-stem")]
     public async Task<IActionResult> UploadStem([FromForm] UploadStemRequest request, CancellationToken token = default)
     {
@@ -157,6 +171,12 @@ public class StemController : ControllerBase
            });
     }
 
+    /// <summary>
+    /// Returns a stream of the stem
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="token"></param>
+    /// <returns></returns>
     [HttpGet("get-playback")]
     public async Task<IActionResult> GetStreamById([FromQuery] GetStreamRequest request, CancellationToken token = default)
     {
@@ -173,6 +193,12 @@ public class StemController : ControllerBase
         return File(res.Value.Stream, "audio/wav");
     }
 
+    /// <summary>
+    /// Returns a specific stem
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="token"></param>
+    /// <returns></returns>
     [HttpGet("get-stem")]
     public async Task<IActionResult> GetById([FromQuery] GetStreamRequest request, CancellationToken token = default)
     {
@@ -204,6 +230,11 @@ public class StemController : ControllerBase
         });
     }
 
+    /// <summary>
+    /// Adds a comment to a specific stem
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns></returns>
     [HttpPost("create-comment")]
     public async Task<IActionResult> CreateComment([FromBody] CreateCommentRequest request)
     {

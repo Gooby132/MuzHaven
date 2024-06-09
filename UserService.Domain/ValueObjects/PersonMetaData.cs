@@ -12,9 +12,9 @@ public class PersonMetaData : ValueObject
     public const int MinNameLength = 2;
     public const int MaxNameLength = 30;
 
-    public string FirstName { get; private set; }
-    public string LastName { get; private set; }
-    public Email Email { get; private set; }
+    public string FirstName { get; private set; } = default!;
+    public string LastName { get; private set; } = default!;
+    public Email Email { get; private set; } = default!;
 
     private PersonMetaData() { }
 

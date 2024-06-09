@@ -13,8 +13,8 @@ public class ArtistDescription : ValueObject
     public const int MinStageNameLength = 2;
     public const int MaxStageNameLength = 30;
 
-    public string StageName { get; init; }
-    public string? Bio { get; init; }
+    public string StageName { get; init; } = default!;
+    public string? Bio { get; init; } 
 
     private ArtistDescription() { }
 
@@ -50,7 +50,7 @@ public class ArtistDescription : ValueObject
         };
     }
 
-    protected override IEnumerable<object> GetEqualityComponents()
+    protected override IEnumerable<object?> GetEqualityComponents()
     {
         yield return StageName;
         yield return Bio;

@@ -18,7 +18,7 @@ export const SelectInput = (props: Props) => {
   return (
     <Container onChange={(e) => props.onChange(parseInt(e.target.value))}>
       {props.keyNames.map((keyName) => (
-        <option value={keyName[0]}>{keyName[1]}</option>
+        <option key={keyName[0]} value={keyName[0]}>{keyName[1]}</option>
       ))}
     </Container>
   );

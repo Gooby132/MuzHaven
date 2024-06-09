@@ -8,8 +8,9 @@ public class Title
     public const int MaximumTitleLength = 50;
     public const int MinimumTitleLength = 1;
 
-    public string Text { get; init; }
+    public string Text { get; init; } = default!;
 
+    // EF constructor
     private Title() { }
 
     public static Result<Title> Create(string text)

@@ -8,6 +8,7 @@ public interface IPermissionTokenProvider
     public const string PermissionSchemeName = "Permission";
 
     public const string PermissionTypeClaim = "type";
+    public const string PermissionAdminRoleTypeClaim = "Admin";
     public const string UserIdClaim = "user-id";
     public const string FirstNameClaim = "first-name";
     public const string LastNameClaim = "last-name";

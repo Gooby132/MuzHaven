@@ -5,12 +5,15 @@ import {
   CreateProjectRequest,
   CreateProjectResponse,
   FetchProjectsResponse,
+  DeleteProjectRequest,
+  DeleteProjectResponse,
 } from "./contracts";
 import { ErrorDto } from "services/commons/contracts";
 
 const PROJECT_SERVICE_BASE = "http://localhost:8080/api/Projects";
 const FETCH_PROJECTS = "/get-projects";
 const CREATE_PROJECT = "/create-project";
+const DELETE_PROJECT = "/delete-project";
 const FETCH_BY_ID = "/get-by-id";
 
 export const CLIENT_INTERNAL_ERROR = 999;
@@ -131,7 +134,6 @@ export const createProject = async ({
         },
       }
     );
-
     return {
       isError: false,
       project: {
@@ -151,6 +153,61 @@ export const createProject = async ({
             : undefined,
       },
     };
+  } catch (e: any) {
+    switch (e.response?.status || 0) {
+      case 400:
+        return {
+          isError: true,
+          errors: e.response.data.map((error: ErrorDto) => {
+            return {
+              code: error.code,
+              group: error.group,
+              message: error.message,
+            };
+          }),
+        };
+      default:
+        console.log(e);
+        return {
+          isError: true,
+        };
+    }
+  }
+};
+
+export const deleteProject = async ({
+  id,
+  token
+}: DeleteProjectRequest): Promise<DeleteProjectResponse> => {
+  try {
+    if (token === undefined) {
+      return {
+        isError: true,
+        errors: [
+          {
+            group: CLIENT_INTERNAL_ERROR,
+            code: 0,
+            message: "token was not provided",
+          },
+        ],
+      };
+    }
+
+    await axios.delete(
+      `${PROJECT_SERVICE_BASE}${DELETE_PROJECT}`,
+      {
+        params: {
+          id: id
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return {
+      isError: false,
+    }
   } catch (e: any) {
     switch (e.response?.status || 0) {
       case 400:

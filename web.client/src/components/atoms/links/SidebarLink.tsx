@@ -1,5 +1,6 @@
 import React, { PropsWithChildren } from "react";
-import {  NavLink, useMatches } from "react-router-dom";
+import { NavLink, useMatches } from "react-router-dom";
+import { CompleteProjectDto } from "services/user/contracts";
 import styled from "styled-components";
 
 const Container = styled(NavLink)<{ isActive: boolean }>`
@@ -7,30 +8,26 @@ const Container = styled(NavLink)<{ isActive: boolean }>`
     !isActive ? theme.primary : theme.lightAccent};
   width: 80%;
   min-height: 5.5em;
-  text-decoration:none;
-  
+  text-decoration: none;
+  color: ${({ theme }) => theme.text};
+
+  padding: .4em;
+
   &.active {
     background-color: ${({ theme }) => theme.lightAccent};
   }
 `;
 
 type Props = {
-  projectId: string;
+  project: CompleteProjectDto;
   to: string;
   isActive: boolean;
 };
 
-export const SidebarLink = ({
-  projectId,
-  to,
-  isActive,
-  children,
-}: PropsWithChildren<Props>) => {
-  const matches = useMatches()
-console.log(matches)
+export const SidebarLink = ({ project, to, isActive }: Props) => {
   return (
-    <Container to={to} isActive={isActive} key={projectId}>
-      {children}
+    <Container to={to} isActive={isActive}>
+      <h2>{project.title}</h2>
     </Container>
   );
 };

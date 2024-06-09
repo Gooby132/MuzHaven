@@ -23,6 +23,7 @@ const Container = styled.nav`
     height: 100%;
     overflow-y: scroll;
     background-color: ${({ theme }) => theme.accent};
+
     > .footer {
       margin-top: 2rem;
       padding-bottom: 1rem;
@@ -31,6 +32,24 @@ const Container = styled.nav`
       flex-direction: column;
       gap: 1rem;
     }
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: ${({ theme }) => theme.primary};
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: ${({ theme }) => theme.secondary};
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: ${({ theme }) => theme.lightAccent};
   }
 `;
 

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { PageTitle } from "../atoms/texts/PageTitle";
 import styled from "styled-components";
 import { RegisterForm } from "../layout/forms/RegisterForm";
 import {
@@ -32,9 +31,6 @@ type Props = {};
 
 export const Register = (props: Props) => {
   const dispatch = useDispatch();
-  const [registerResponse, setRegisterResponse] = useState<RegisterResponse>({
-    isError: false,
-  });
 
   const [formErrors, setFormErrors] = useState<FormErrors | null>(null);
 
@@ -87,7 +83,7 @@ export const Register = (props: Props) => {
   return (
     <PageBase>
       <Container>
-        <PageTitle text="Register" />
+        <h1>Register</h1>
         <RegisterForm
           passwordError={formErrors?.password}
           emailError={formErrors?.email}

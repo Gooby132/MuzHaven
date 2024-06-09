@@ -27,7 +27,7 @@ internal class JwtTokenProvider : IFileAuthorizer
         _config = options.Value;
     }
 
-    public async Task<Result<string>> GenerateKeyForStems(IEnumerable<Guid> stemsIds, CancellationToken cancellationToken = default)
+    public Task<Result<string>> GenerateKeyForStems(IEnumerable<Guid> stemsIds, CancellationToken cancellationToken = default)
     {
         _logger.LogTrace("{this} create reader was requested for stems - '{stemsIds}'",
             this, string.Join(", ", stemsIds));
@@ -50,13 +50,13 @@ internal class JwtTokenProvider : IFileAuthorizer
 
         var tokenHandler = new JwtSecurityTokenHandler();
         var token = tokenHandler.CreateToken(tokenDescriptor);
-        return Result.Ok(tokenHandler.WriteToken(token));
+        return Task.FromResult(Result.Ok(tokenHandler.WriteToken(token)));
     }
 
-    public async Task<Result<IEnumerable<Guid>>> ParseAuthorizedKey(ClaimsPrincipal user, CancellationToken token = default)
+    public Task<Result<IEnumerable<Guid>>> ParseAuthorizedKey(ClaimsPrincipal user, CancellationToken token = default)
     {
         if (user is null)
-            return Result.Fail(new UnauthorizedError("claims were not received"));
+            return Task.FromResult<Result<IEnumerable<Guid>>>(Result.Fail(new UnauthorizedError("claims were not received")));
 
         var stemClaims = user.Claims
             .Where(claim => claim.Type.StartsWith(IFileAuthorizer.StemClaimName))
@@ -72,6 +72,6 @@ internal class JwtTokenProvider : IFileAuthorizer
             }
         }
 
-        return Result.Ok<IEnumerable<Guid>>(stemGuids);
+        return Task.FromResult(Result.Ok<IEnumerable<Guid>>(stemGuids));
     }
 }

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { PageTitle } from "../atoms/texts/PageTitle";
 import { LoginForm, LoginFormErrors } from "../layout/forms/LoginForm";
 import {
   EMAIL_GROUP_CODE,
@@ -59,7 +58,7 @@ export const Login = (props: Props) => {
   return (
     <PageBase>
       <Container>
-        <PageTitle text="Login" />
+        <h1>Login</h1>
         <LoginForm formErrors={formErrors} onSubmit={onSubmit} />
         <Link to="/register" >register</Link>
       </Container>

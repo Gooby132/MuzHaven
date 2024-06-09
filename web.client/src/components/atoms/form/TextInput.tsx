@@ -18,7 +18,8 @@ const Container = styled.div`
     }
 
     > label {
-      white-space: nowrap;
+      color: ${({theme}) => theme.text};
+  white-space: nowrap;
       min-width:5em;
     }
   }
@@ -30,6 +31,7 @@ const Container = styled.div`
 type Props = {
   name: string;
   text: string;
+  type?: 'text' | 'email' | 'password'
   initialValue?: string;
   onChange: (value: string) => void;
   error?: string;
@@ -39,6 +41,7 @@ export const TextInput = ({
   text,
   onChange,
   name,
+  type,
   error,
   initialValue,
 }: Props) => {
@@ -48,7 +51,7 @@ export const TextInput = ({
         <label htmlFor={name}>{text}</label>
         <input
           id={name}
-          type="text"
+          type={type ?? 'text'}
           value={initialValue}
           onChange={(e) => onChange(e.target.value)}
         />

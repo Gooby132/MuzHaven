@@ -11,9 +11,10 @@ public class User : Aggregate<Guid>
 
     private readonly Queue<DomainEvent> _domainEvents = new Queue<DomainEvent>();
 
-    public PersonMetaData MetaData { get; init; }
-    public ArtistDescription ArtistDescription { get; init; }
+    public PersonMetaData MetaData { get; init; } = default!; // will never be null
+    public ArtistDescription ArtistDescription { get; init; } = default!; // will never be null
 
+    // EF constructor
     private User() { }
 
     private User(PersonMetaData metaData, ArtistDescription artistDescription)

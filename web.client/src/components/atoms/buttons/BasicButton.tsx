@@ -1,16 +1,8 @@
 import { PropsWithChildren } from 'react'
 import styled from 'styled-components'
 
-const Container = styled.button`
-
+export const BasicButton = styled.button`
+  background: ${({theme}) => theme.secondary};
+  border: none;
+  color: ${({theme}) => theme.text};
 `
-
-export type Props = { 
-  onClick: () => void
-}
-
-export const BasicButton = ({children, onClick}: PropsWithChildren<Props>) => {
-  return (
-    <Container onClick={onClick} >{children}</Container>
-  )
-}

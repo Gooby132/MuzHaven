@@ -9,8 +9,9 @@ public class Description
     public const int MaximumDescriptionLength = 300;
     public const int MinimumDescriptionLength = 1;
 
-    public string Text { get; init; }
+    public string Text { get; init; } = default!;
 
+    // EF constructor
     private Description() { }
     
     public static Result<Description> Create(string text)

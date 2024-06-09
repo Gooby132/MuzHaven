@@ -1,5 +1,6 @@
 ﻿using DomainSeed;
 using FluentResults;
+using ProjectService.Domain.DomainEvents;
 using ProjectService.Domain.Errors;
 using ProjectService.Domain.ValueObjects;
 
@@ -10,10 +11,10 @@ public class Project : Aggregate<int>
 
     private readonly Queue<DomainEvent> _domainEvents = new Queue<DomainEvent>();
 
-    public string CreatorId { get; init; }
-    public Title Title { get; private set; }
-    public string Album { get; private set; }
-    public Description Description { get; private set; }
+    public string CreatorId { get; init; } = default!;
+    public Title Title { get; private set; } = default!;
+    public string Album { get; private set; } = default!;
+    public Description Description { get; private set; } = default!;
     public DateTime CreatedInUtc { get; init; }
     public DateTime? ReleaseInUtc { get; init; }
     public float BeatsPerMinute { get; private set; }
@@ -72,6 +73,19 @@ public class Project : Aggregate<int>
             BeatsPerMinute = beatsPerMinute,
             MusicalProfile = musicalProfile.Value,
         };
+    }
+
+    public Result Delete(string creatorId)
+    {
+        if (creatorId != CreatorId)
+            return Result.Fail(new UnautherizedError("user trying to delete project is not the creator", 1));
+
+        _domainEvents.Enqueue(new DeleteProjectDomainEvent
+        {
+            Project = this
+        });
+
+        return Result.Ok();
     }
 
     public override DomainEvent? DequeueDomainEvent() => _domainEvents.Any() ? _domainEvents.Dequeue() : null;

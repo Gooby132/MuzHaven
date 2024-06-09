@@ -58,10 +58,10 @@ export const RegisterForm = ({
         });
       }}
     >
-      <Row>
         <TextInput
           error={emailError}
           name="email"
+          type="email"
           text="Email"
           onChange={(email) => setEmail(email)}
         />
@@ -71,16 +71,12 @@ export const RegisterForm = ({
           text="Password"
           onChange={(password) => setPassword(password)}
         />
-      </Row>
-      <Row>
         <TextInput
           error={stageNameError}
           name="stage-name"
           text="Stage Name"
           onChange={(stageName) => setStageName(stageName)}
         />
-      </Row>
-      <Row>
         <TextInput
           error={firstNameError}
           name="first-name"
@@ -93,18 +89,13 @@ export const RegisterForm = ({
           text="Last Name"
           onChange={(lastName) => setLastName(lastName)}
         />
-      </Row>
-      <Row>
         <TextInput
           error={bioError}
           name="bio"
           text="Bio"
           onChange={(bio) => setBio(bio)}
         />
-      </Row>
-      <Row>
         <SubmitInput text="Register" />
-      </Row>
     </Container>
   );
 };

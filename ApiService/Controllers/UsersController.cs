@@ -17,6 +17,9 @@ using UserService.Contracts.Responses;
 
 namespace ApiService.Controllers;
 
+/// <summary>
+/// REST controller for remote user operations
+/// </summary>
 [Route("api/[controller]")]
 [ApiController]
 public class UsersController : ControllerBase
@@ -28,12 +31,6 @@ public class UsersController : ControllerBase
     private readonly IMediator _mediator;
     private readonly IPermissionTokenProvider _tokenProvider;
     private readonly IHashids _ids;
-
-    #endregion
-
-    #region Properties
-
-    public string Name { get; set; } = nameof(UsersController);
 
     #endregion
 
@@ -49,6 +46,11 @@ public class UsersController : ControllerBase
         _ids = ids;
     }
 
+    /// <summary>
+    /// fetches *ALL* users
+    /// </summary>
+    /// <param name="token"></param>
+    /// <returns></returns>
     [Authorize(AuthenticationSchemes = IPermissionTokenProvider.PermissionSchemeName, Roles = "Admin")]
     [HttpGet("all")]
     public async Task<IActionResult> AllUsers(CancellationToken token = default)
@@ -280,6 +282,6 @@ public class UsersController : ControllerBase
         });
     }
 
-    public override string ToString() => Name;
+    public override string ToString() => nameof(UsersController);
 
 }

@@ -27,10 +27,6 @@ public static class CreateProjectCommand
 
         #endregion
 
-        #region Properties
-
-        #endregion
-
         #region Constructor
 
         public Handler(ILogger<Handler> logger, IProjectRepository repository, IProjectUnitOfWork unitOfWork, IMediator mediator)

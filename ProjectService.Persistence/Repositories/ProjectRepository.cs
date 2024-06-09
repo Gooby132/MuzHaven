@@ -7,6 +7,7 @@ using ProjectService.Domain;
 using ProjectService.Domain.Repositories;
 using ProjectService.Persistence.Context;
 using ProjectService.Persistence.Errors;
+using System.Threading;
 
 namespace ProjectService.Persistence.Repositories;
 
@@ -82,6 +83,35 @@ internal class ProjectRepository : IProjectRepository
         catch (Exception e)
         {
             return Result.Fail(new DatabaseError(e));
+        }
+    }
+
+    public async Task<Result<IEnumerable<Project>>> GetAllProjects(CancellationToken cancellationToken)
+    {
+        try
+        {
+            var projects = await _context.Projects
+                .ToListAsync(cancellationToken);
+
+            return Result.Ok<IEnumerable<Project>>(projects);
+        }
+        catch (Exception e)
+        {
+            return Result.Fail(new DatabaseError(e));
+        }
+    }
+
+    public Task<Result> DeleteProject(Project project, CancellationToken token = default)
+    {
+        try
+        {
+            _context.Projects.Remove(project);
+
+            return Task.FromResult(Result.Ok());
+        }
+        catch (Exception e)
+        {
+            return Task.FromResult(Result.Fail(new DatabaseError(e)));
         }
     }
 

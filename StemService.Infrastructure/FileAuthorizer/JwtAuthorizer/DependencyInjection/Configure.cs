@@ -29,9 +29,18 @@ public static class Configure
             .AddAuthentication(IFileAuthorizer.StemSchemeName)
             .AddJwtBearer(IFileAuthorizer.StemSchemeName, options =>
             {
-                string key = configuration["Options:Key"];
-                string issuer = configuration["Options:Issuer"];
-                string audience = configuration["Options:Audience"];
+                string? key = configuration["Options:Key"];
+                string? issuer = configuration["Options:Issuer"];
+                string? audience = configuration["Options:Audience"];
+
+                if (string.IsNullOrEmpty(key))
+                    throw new ArgumentNullException(nameof(key));
+
+                if (string.IsNullOrEmpty(issuer))
+                    throw new ArgumentNullException(nameof(issuer));
+
+                if (string.IsNullOrEmpty(audience))
+                    throw new ArgumentNullException(nameof(audience));
 
                 options.Events = new JwtBearerEvents
                 {
@@ -46,8 +55,8 @@ public static class Configure
 
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidIssuer = configuration["Options:Issuer"],
-                    ValidAudience = configuration["Options:Audience"],
+                    ValidIssuer = issuer,
+                    ValidAudience = audience,
                     IssuerSigningKey = new SymmetricSecurityKey(
                         Encoding.UTF8.GetBytes(key)),
                     ValidateIssuer = true,

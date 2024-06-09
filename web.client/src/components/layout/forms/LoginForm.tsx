@@ -42,7 +42,6 @@ export const LoginForm = ({formErrors, onSubmit}: Props) => {
         });
       }}
     >
-      <Row>
         <TextInput
           error={formErrors?.emailError}
           name="email"
@@ -55,7 +54,6 @@ export const LoginForm = ({formErrors, onSubmit}: Props) => {
           text="Password"
           onChange={(password) => setPassword(password)}
         />
-      </Row>
       <Row>
         <SubmitInput text="Login" />
       </Row>

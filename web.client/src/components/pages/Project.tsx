@@ -4,7 +4,6 @@ import { useLoaderData } from "react-router";
 import styled from "styled-components";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import { PageBase } from "components/layout/pages/PageBase";
-import { PageTitle } from "components/atoms/texts/PageTitle";
 import { ChangesTab } from "components/organizem/project/ChangesTab";
 import { DetailsTab } from "components/organizem/project/DetailsTab";
 import { StemsTab } from "components/organizem/stem/StemsTab";
@@ -14,7 +13,14 @@ import { useSelector } from "react-redux";
 import { RootState } from "redux/store";
 
 const Container = styled.div`
-  color: ${({ theme }) => theme.text};
+  >h1 {
+    margin-bottom: 1em;
+  }
+
+  .tab-panels{
+    margin-top: 1em;
+  }
+
   .react-tabs__tab {
     display: inline-block;
     position: relative;
@@ -22,11 +28,13 @@ const Container = styled.div`
     padding: 6px 12px;
     cursor: pointer;
   }
+
   .react-tabs__tab--selected {
     background: ${({ theme }) => theme.text};
     border-bottom: ${({ theme }) => theme.accent} 0.3rem solid;
     color: black;
   }
+
   .react-tabs__tab-panel {
     display: none;
   }
@@ -72,7 +80,7 @@ export const Project = ({}: Props) => {
         setTabSelected(2);
         break;
       case "#Contributers":
-        setTabSelected(4);
+        setTabSelected(3);
         break;
       case "#Changes":
       default:
@@ -84,8 +92,8 @@ export const Project = ({}: Props) => {
   return (
     <PageBase>
       <Container>
-        <PageTitle text={project.title} />
-        <Tabs selectedIndex={tabSelected} onSelect={(x) =>navigateHash(x)}>
+        <h1>{project.title}</h1>
+        <Tabs selectedIndex={tabSelected} onSelect={(x) => navigateHash(x)}>
           <TabList>
             <Tab>Changes</Tab>
             <Tab>Details</Tab>
@@ -93,7 +101,7 @@ export const Project = ({}: Props) => {
             <Tab>Contributers</Tab>
           </TabList>
 
-          <TabPanel>
+          <TabPanel className={"tab-panels"}>
             <ChangesTab />
           </TabPanel>
           <TabPanel>

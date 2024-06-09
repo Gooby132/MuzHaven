@@ -53,29 +53,29 @@ public class LocalFileSystemService : IFileService
         }
     }
 
-    public async Task<Result> RemoveMediaFile(string fileName)
+    public Task<Result> RemoveMediaFile(string fileName)
     {
         try
         {
             File.Delete(Path.Combine(LocalFileDirectory.FullName, fileName));
 
-            return Result.Ok();
+            return Task.FromResult(Result.Ok());
         }
         catch (Exception e)
         {
-            return Result.Fail(new LocalIOError(e));
+            return Task.FromResult(Result.Fail(new LocalIOError(e)));
         }
     }
 
-    public async Task<Result<Stream>> GetStem(string fileName, CancellationToken token = default)
+    public Task<Result<Stream>> GetStem(string fileName, CancellationToken token = default)
     {
         try
         {
-            return File.OpenRead(Path.Combine(LocalFileDirectory.FullName, fileName));
+            return Task.FromResult<Result<Stream>>(File.OpenRead(Path.Combine(LocalFileDirectory.FullName, fileName)));
         }
         catch (Exception e)
         {
-            return Result.Fail(new LocalIOError(e));
+            return Task.FromResult<Result<Stream>>(Result.Fail(new LocalIOError(e)));
         }
     }
 

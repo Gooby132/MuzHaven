@@ -1,11 +1,10 @@
 import { TextInput } from "components/atoms/form/TextInput";
-import React from "react";
 import { ProjectDto } from "services/user/contracts";
 import styled from "styled-components";
 
 const Container = styled.div`
-  display:grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-wrap: wrap;
 `;
 
 type Props = {
@@ -33,7 +32,6 @@ export const DetailsTab = ({ project }: Props) => {
         initialValue={project.description}
         onChange={() => {}}
       />
-      
     </Container>
   );
 };

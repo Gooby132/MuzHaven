@@ -1,5 +1,15 @@
 import { ErrorDto } from "services/commons/contracts"
 
+export type DeleteProjectRequest = {
+  id: string,
+  token?: string
+}
+
+export type DeleteProjectResponse = {
+  isError: boolean,
+  errors?: ErrorDto[];
+}
+
 export type FetchProjectByIdRequest = {
   id: string,
   token: string
