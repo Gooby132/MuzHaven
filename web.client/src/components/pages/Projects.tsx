@@ -60,13 +60,9 @@ export const Projects = ({}: Props) => {
             <ProjectItem
               key={project.id}
               highlight={selectedProject?.id === project.id}
-              onClick={(id) =>
-                setSelectedProject(projects.filter((p) => p.id === id)[0])
-              }
+              onClick={(id: string) => setSelectedProject(projects.filter((p) => p.id === id)[0]) }
               project={project}
-              deleteRequested={id => {
-                deleteProject(id)
-              }}
+              deleteRequested={(id: string) => deleteProject(id) }
             />
           ))}
         </div>
