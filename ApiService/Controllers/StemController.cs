@@ -238,7 +238,12 @@ public class StemController : ControllerBase
     [HttpPost("create-comment")]
     public async Task<IActionResult> CreateComment([FromBody] CreateCommentRequest request)
     {
-        var res = await _mediator.Send(new CreateCommentCommand.Request(request.StemId, request.CommenterId, request.Text, request.StageName, request.Time));
+        var res = await _mediator.Send(new CreateCommentCommand.Request(
+            request.StemId,
+            request.CommenterId,
+            request.StageName,
+            request.Text,
+            request.Time));
 
         if (res.IsFailed)
         {
