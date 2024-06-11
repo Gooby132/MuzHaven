@@ -45,6 +45,7 @@ export const FileInput = ({
         <input
           id={name}
           type="file"
+          accept="audio/*"
           value={initialValue}
           onChange={(e) =>
             onChange(e.target.files === null ? undefined : e.target.files)

@@ -83,7 +83,7 @@ export const UploadStemForm = ({ onSubmit, projectId, creatorId }: Props) => {
       />
       <FileInput
         name="stem-file"
-        text="file"
+        text="File"
         onChange={(val) => {
           setStem((prev) => {
             return {
